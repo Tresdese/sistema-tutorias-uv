@@ -4,13 +4,15 @@
  */
 package com.sistematutoriascomp.sistematutorias.utilidad;
 
-/**
- *
- * @author HP
- */
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class Sesion {
+
+    private static final Logger LOGGER = LogManager.getLogger(Sesion.class);
+
     private static Tutor tutorSesion;
     // Aqui podrias agregar: private static Coordinador coordinadorSesion; para el futuro
     private static String rolActual; // "TUTOR", "COORDINADOR", "ADMINISTRADOR"
