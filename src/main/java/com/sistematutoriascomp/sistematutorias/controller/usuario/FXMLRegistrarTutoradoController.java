@@ -67,10 +67,17 @@ public class FXMLRegistrarTutoradoController implements Initializable {
     @FXML
     private void onCancelar(ActionEvent event) {
         limpiarCampos();
+        irAtras(event);
     }
 
     @FXML
     private void onVolver(ActionEvent event) {
+        limpiarCampos();
+        irAtras(event);
+    }
+
+    private void irAtras(ActionEvent event) {
+        Utilidades.cerrarVentana(event);
     }
 
     private void llenarCombos() {

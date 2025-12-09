@@ -40,6 +40,7 @@ public class Utilidades {
         return FXMLLoader.load(Utilidades.class.getResource(RUTA_VISTAS + fxmlPath));
     }
 
+    // actualiza la ventana actual
     public static void goToWindow(String fxmlPath, ActionEvent event, String title) throws IOException, NullPointerException {
         Parent vista = loadFXML(fxmlPath);
         Scene escena = new Scene(vista);
@@ -50,6 +51,7 @@ public class Utilidades {
         escenario.show();
     }
 
+    // abre una nueva ventana modal
     public static void openModal(String fxmlPath, String title) throws IOException, NullPointerException {
         Parent vista = loadFXML(fxmlPath);
         Scene escena = new Scene(vista);
@@ -58,6 +60,11 @@ public class Utilidades {
         escenario.setTitle(title);
         escenario.initModality(Modality.APPLICATION_MODAL);
         escenario.showAndWait();
+    }
+
+    public static void cerrarVentana(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     public static void clicVolverMenuPrincipal(ActionEvent event) throws IOException {

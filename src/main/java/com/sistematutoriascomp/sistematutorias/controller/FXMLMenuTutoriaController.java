@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 
 import com.sistematutoriascomp.sistematutorias.dominio.AsistenciaImp;
 import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
@@ -41,23 +42,30 @@ public class FXMLMenuTutoriaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarVistaPorRol();
+        cargarDatosUsuario();
     }
 
-    private void configurarVistaPorRol() {
+    private void cargarDatosUsuario() {
+        Tutor tutor = Sesion.getTutorSesion();
         String rol = Sesion.getRolActual();
 
-        btnRegistrarHorario.setVisible(false);
-        btnRegistrarAsistencia.setVisible(false);
-        if (btnRegistrarFechaTutoria != null && btnAsignarTutorado != null) {
-            btnRegistrarFechaTutoria.setVisible(false);
-            btnAsignarTutorado.setVisible(false);
-
-        }
-
-        if ("TUTOR".equals(rol)) {
-            btnRegistrarHorario.setVisible(true);
-            btnRegistrarAsistencia.setVisible(true);
+        if (tutor != null) {
+            if (rol.equals("ACADEMICO")) {
+                btnAsignarTutorado.setVisible(false);
+                btnRegistrarFechaTutoria.setVisible(false);
+                btnRegistrarHorario.setVisible(true);
+                btnRegistrarAsistencia.setVisible(true);
+            } else if (rol.equals("COORDINADOR")) {
+                btnAsignarTutorado.setVisible(true);
+                btnRegistrarFechaTutoria.setVisible(true);
+                btnRegistrarHorario.setVisible(true);
+                btnRegistrarAsistencia.setVisible(false);
+            } else if (rol.equals("ADMINISTRADOR")) {
+                btnAsignarTutorado.setVisible(true);
+                btnRegistrarFechaTutoria.setVisible(true);
+                btnRegistrarHorario.setVisible(true);
+                btnRegistrarAsistencia.setVisible(false);
+            }
         }
     }
 

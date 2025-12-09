@@ -75,7 +75,7 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
 
     @FXML
     private void onVolver(ActionEvent event) {
-        volverAlMenuPrincipal(event);
+        irVolver(event);
     }
 
     @FXML
@@ -119,16 +119,8 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
         colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
     }
 
-    private void volverAlMenuPrincipal(ActionEvent event) {
-        try {
-            Utilidades.clicVolverMenuPrincipal(event);
-        } catch (IOException e) {
-            LOGGER.error("Error al volver al menú principal", e);
-            e.printStackTrace();
-        } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú principal", e);
-            e.printStackTrace();
-        }
+    private void irVolver(ActionEvent event) {
+        Utilidades.cerrarVentana(event);
     }
 
     private void abrirVentanaRegistrarReporteGeneral() {

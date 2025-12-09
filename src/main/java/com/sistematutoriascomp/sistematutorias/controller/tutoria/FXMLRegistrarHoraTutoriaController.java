@@ -21,16 +21,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.stage.Stage;
 
 public class FXMLRegistrarHoraTutoriaController implements Initializable {
 
@@ -120,17 +116,24 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     @FXML
     private void clicVolver(ActionEvent event) {
         try {
-            Stage escenario = (Stage) cbFechas.getScene().getWindow();
-            URL url = getClass().getResource("/sistematutorias/vista/FXMLMenuTutoria.fxml");
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent root = loader.load();
-            Scene escena = new Scene(root);
-            escenario.setScene(escena);
-            escenario.setTitle("Menú Tutoría");
-            escenario.show();
+            // Stage escenario = (Stage) cbFechas.getScene().getWindow();
+            // URL url = getClass().getResource("/sistematutorias/vista/FXMLMenuTutoria.fxml");
+            // FXMLLoader loader = new FXMLLoader(url);
+            // Parent root = loader.load();
+            // Scene escena = new Scene(root);
+            // escenario.setScene(escena);
+            // escenario.setTitle("Menú Tutoría");
+            // escenario.show();
+            Utilidades.goToWindow("/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
         } catch (IOException ex) {
             ex.printStackTrace();
             Utilidades.mostrarAlertaSimple("Error", "No se pudo volver al menú.", Alert.AlertType.ERROR);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", "Recurso no encontrado al volver al menú.", Alert.AlertType.ERROR);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error", "Error inesperado al volver al menú.", Alert.AlertType.ERROR);
         }
     }
 }

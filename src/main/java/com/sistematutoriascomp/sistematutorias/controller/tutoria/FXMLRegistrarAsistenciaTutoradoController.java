@@ -454,7 +454,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
     private void navegarAMenuTutoria(ActionEvent event) {
         try {
-            Utilidades.goToWindow("/sistematutorias/vista/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
+            Utilidades.goToWindow("/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
         } catch (IOException ex) {
             ex.printStackTrace();
             Utilidades.mostrarAlertaSimple(

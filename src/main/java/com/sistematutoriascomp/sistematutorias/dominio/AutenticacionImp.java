@@ -14,6 +14,7 @@ import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 public class AutenticacionImp {
     
     public static boolean iniciarSesionTutor(String numeroPersonal, String password) {
+        boolean respuesta = false;
         try {
             Tutor tutor = AutenticacionDAO.verificarSesionTutor(numeroPersonal, password);
             if (tutor != null) {
@@ -28,11 +29,11 @@ public class AutenticacionImp {
                 } catch (SQLException exPeriodo) {
                     System.err.println("Error al obtener periodo: " + exPeriodo.getMessage());
                 }
-                return true;
+                respuesta = true;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return false;
+        return respuesta;
     }
 }

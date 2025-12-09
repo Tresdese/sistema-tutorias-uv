@@ -35,6 +35,8 @@ public class FXMLMenuPrincipalController implements Initializable {
     private Label lbInfoExtra;
     @FXML
     private Label lbNombreUsuario;
+    @FXML
+    private Button btnMenuEspecial;
 
     /**
      * Initializes the controller class.
@@ -50,22 +52,29 @@ public class FXMLMenuPrincipalController implements Initializable {
         String nombreCompleto = "";
 
         // Verificamos el rol para saber de qué objeto sacar el nombre
-        if ("TUTOR".equals(rol)) {
+        if ("ACADEMICO".equals(rol)) {
             Tutor tutor = Sesion.getTutorSesion();
             if (tutor != null) {
                 nombreCompleto = tutor.getNombre() + " "
                         + tutor.getApellidoPaterno() + " "
                         + tutor.getApellidoMaterno();
             }
+        } else if ("COORDINADOR".equals(rol)) {
+            Tutor tutor = Sesion.getTutorSesion();
+            if (tutor != null) {
+                nombreCompleto = tutor.getNombre() + " "
+                        + tutor.getApellidoPaterno() + " "
+                        + tutor.getApellidoMaterno();
+            }
+        } else if ("ADMINISTRADOR".equals(rol)) {
+            Tutor tutor = Sesion.getTutorSesion();
+            if (tutor != null) {
+                nombreCompleto = tutor.getNombre() + " "
+                + tutor.getApellidoPaterno() + " "
+                + tutor.getApellidoMaterno();
+            }
         }
-        /* // A FUTURO: Cuando agregues otros roles, solo añades el else if:
-        else if ("COORDINADOR".equals(rol)) {
-            Coordinador coord = Sesion.getCoordinadorSesion();
-            nombreCompleto = coord.getNombre() + ...;
-        }
-         */
-
-        // Mostramos el nombre en la etiqueta
+        
         lbNombreUsuario.setText(nombreCompleto);
     }
 
@@ -77,12 +86,22 @@ public class FXMLMenuPrincipalController implements Initializable {
         btnReporte.setVisible(false);
         btnPersonal.setVisible(false);
 
-        if ("TUTOR".equals(rol)) {
-            // El tutor solo ve Tutoría y Reporte
+        if ("ACADEMICO".equals(rol)) {
             btnTutoria.setVisible(true);
             btnReporte.setVisible(true);
+            btnPersonal.setVisible(false);
+            btnMenuEspecial.setVisible(false);
+        } else if ("COORDINADOR".equals(rol)) {
+            btnTutoria.setVisible(true);
+            btnReporte.setVisible(true);
+            btnPersonal.setVisible(false);
+            btnMenuEspecial.setVisible(true);
+        } else if ("ADMINISTRADOR".equals(rol)) {
+            btnTutoria.setVisible(true);
+            btnReporte.setVisible(true);
+            btnPersonal.setVisible(true);
+            btnMenuEspecial.setVisible(true);
         }
-        // else if ("COORDINADOR".equals(rol)) { ... logica futuro }
     }
 
     @FXML
@@ -97,7 +116,12 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void btnClicPersonal(ActionEvent event) {
-        irPantalla("/FXMLMenuPersonal.fxml", "Menú Personal", event);
+        
+    }
+
+    @FXML
+    private void btnClicMenuEspecial(ActionEvent event) {
+        irPantalla("/FXMLMenuPersonal.fxml", "Menú Especial", event);
     }
 
     private void irPantalla(String ruta, String titulo, ActionEvent event) {
@@ -121,4 +145,5 @@ public class FXMLMenuPrincipalController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

@@ -32,13 +32,17 @@ public class AutenticacionDAO {
                      ResultSet resultado = prepararSentencia.executeQuery();
                      
                      if (resultado.next()) {
-                          tutor = new Tutor();
-                          tutor.setIdTutor(resultado.getInt("idTutor"));
-                          tutor.setNumeroDePersonal(resultado.getString("numeroDePersonal"));
-                          tutor.setNombre(resultado.getString("nombre"));
-                          tutor.setApellidoPaterno(resultado.getString("apellidoPaterno"));
-                          tutor.setApellidoMaterno(resultado.getString("apellidoMaterno"));
-                          tutor.setCorreo(resultado.getString("correo"));
+                         tutor = new Tutor();
+                         tutor.setIdTutor(resultado.getInt("idTutor"));
+                         tutor.setNumeroDePersonal(resultado.getString("numeroDePersonal"));
+                         tutor.setNombre(resultado.getString("nombre"));
+                         tutor.setApellidoPaterno(resultado.getString("apellidoPaterno"));
+                         tutor.setApellidoMaterno(resultado.getString("apellidoMaterno"));
+                         tutor.setCorreo(resultado.getString("correo"));
+                         tutor.setPassword(resultado.getString("password"));
+                         tutor.setIdRol(resultado.getInt("idRol"));
+                         tutor.setActivo(resultado.getBoolean("esActivo"));
+                         tutor.setIdCarrera(resultado.getInt("idCarrera"));
                      }
                 } catch (SQLException ex) {
                      ex.printStackTrace();

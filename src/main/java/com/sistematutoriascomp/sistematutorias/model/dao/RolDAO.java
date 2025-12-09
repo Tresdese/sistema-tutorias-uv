@@ -13,6 +13,25 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Rol;
 public class RolDAO {
 
     private static final String SQL_SELECT_ALL = "SELECT * FROM rol";
+    private static final String SQL_SELECT_ROLENAME_BY_ID = "SELECT nombre FROM rol WHERE idRol = ?";
+
+    public String obtenerRolPorId(int idRol) throws SQLException {
+        String rol = null;
+
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ROLENAME_BY_ID);
+                statement.setInt(1, idRol);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        rol = resultSet.getString("nombre");
+                    }
+                }
+            }
+        }
+
+        return rol;
+    }
 
     public List<Rol> obtenerTodosRoles() throws SQLException {
         List<Rol> roles = new ArrayList<>();

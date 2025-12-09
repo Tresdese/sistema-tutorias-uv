@@ -1,6 +1,5 @@
 package com.sistematutoriascomp.sistematutorias.controller.usuario;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -69,19 +68,17 @@ public class FXMLRegistrarAcademicoController implements Initializable {
     @FXML
     private void onCancelar(ActionEvent event) {
         limpiarCampos();
+        irAtras(event);
     }
 
     @FXML
     private void onVolver(ActionEvent event) {
-        try {
-            Utilidades.clicVolverMenuPrincipal(event);
-        } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú principal", ex);
-            ex.printStackTrace();
-        } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú principal", e);
-            e.printStackTrace();
-        }
+        limpiarCampos();
+        irAtras(event);
+    }
+
+    private void irAtras(ActionEvent event) {
+        Utilidades.cerrarVentana(event);
     }
 
     private void limpiarCampos() {

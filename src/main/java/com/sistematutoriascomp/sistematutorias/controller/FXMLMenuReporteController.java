@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
@@ -53,28 +54,35 @@ public class FXMLMenuReporteController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarVistaPorRol();
+        cargarDatosUsuario();
     }
-    private void configurarVistaPorRol() {
+    private void cargarDatosUsuario() {
+        Tutor tutor = Sesion.getTutorSesion();
         String rol = Sesion.getRolActual();
-        btnGenerarReporte.setVisible(false);
-        btnEnviarReporte.setVisible(false);
 
-        if (btnResponderReporteTutoria != null) {
-            btnResponderReporteTutoria.setVisible(false);
-        }
-        if (btnGenerarReporteGeneral != null) {
-            btnGenerarReporteGeneral.setVisible(false);
-        }
-        if (btnRevisarReporteGeneral != null) {
-            btnRevisarReporteGeneral.setVisible(false);
-        }
-        if (btnResponderReporteGeneral != null) {
-            btnResponderReporteGeneral.setVisible(false);
-        }
-        if ("TUTOR".equals(rol)) {
-            btnGenerarReporte.setVisible(true);
-            btnEnviarReporte.setVisible(true);
+        if (tutor != null) {
+            if (rol.equals("ACADEMICO")) {
+                btnGenerarReporte.setVisible(false);
+                btnEnviarReporte.setVisible(false);
+                btnResponderReporteTutoria.setVisible(false);
+                btnGenerarReporteGeneral.setVisible(false);
+                btnRevisarReporteGeneral.setVisible(false);
+                btnResponderReporteGeneral.setVisible(false);
+            } else if (rol.equals("COORDINADOR")) {
+                btnGenerarReporte.setVisible(true);
+                btnEnviarReporte.setVisible(false);
+                btnResponderReporteTutoria.setVisible(true);
+                btnGenerarReporteGeneral.setVisible(true);
+                btnRevisarReporteGeneral.setVisible(false);
+                btnResponderReporteGeneral.setVisible(false);
+            } else if (rol.equals("ADMINISTRADOR")) {
+                btnGenerarReporte.setVisible(true);
+                btnEnviarReporte.setVisible(true);
+                btnResponderReporteTutoria.setVisible(false);
+                btnGenerarReporteGeneral.setVisible(true);
+                btnRevisarReporteGeneral.setVisible(false);
+                btnResponderReporteGeneral.setVisible(false);
+            }
         }
     }
 
@@ -120,6 +128,7 @@ public class FXMLMenuReporteController implements Initializable {
 
     @FXML
     private void clicGenerarReporteGeneral(ActionEvent event) {
+        irPantalla("/reporte/FXMLFormularioReporteGeneral.fxml", "Generar Reporte General");
     }
 
     @FXML
@@ -140,6 +149,15 @@ public class FXMLMenuReporteController implements Initializable {
         } catch (Exception e) {
             LOGGER.error("Error inesperado al volver al menú principal desde el menú de reportes", e);
             e.printStackTrace();
+        }
+    }
+
+    private void irPantalla(String ruta, String titulo) {
+        try {
+            Utilidades.openModal(ruta, titulo);
+        } catch (IOException ex) {
+            LOGGER.error("Error al cambiar de pantalla a {}: {}", ruta, ex.getMessage(), ex);
+            ex.printStackTrace();
         }
     }
 }
