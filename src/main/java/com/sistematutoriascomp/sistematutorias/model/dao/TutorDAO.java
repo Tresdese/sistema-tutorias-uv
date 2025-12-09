@@ -1,0 +1,111 @@
+package com.sistematutoriascomp.sistematutorias.model.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
+
+public class TutorDAO {
+
+    private static final String SQL_INSERT = "INSERT INTO tutor (numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correo, password, idRol, esActivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE tutor SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idRol = ?, esActivo = ? WHERE numeroDePersonal = ?";
+    private static final String SQL_DELETE = "DELETE FROM tutor WHERE idTutor = ?";
+    private static final String SQL_SELECT_BY_STAFF_NUMBER = "SELECT * FROM tutor WHERE numeroDePersonal = ?";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM tutor";
+
+    public boolean insertarTutor(Tutor tutor) throws SQLException {
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT);
+                statement.setString(1, tutor.getNumeroDePersonal());
+                statement.setString(2, tutor.getNombre());
+                statement.setString(3, tutor.getApellidoPaterno());
+                statement.setString(4, tutor.getApellidoMaterno());
+                statement.setString(5, tutor.getCorreo());
+                statement.setString(6, tutor.getPassword());
+                statement.setInt(7, tutor.getIdRol());
+                statement.setBoolean(8, tutor.esActivo());
+                return statement.executeUpdate() > 0;
+            }
+        }
+        return false;
+    }
+
+    public boolean updateTutor(Tutor tutor) throws SQLException {
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
+                statement.setString(1, tutor.getNombre());
+                statement.setString(2, tutor.getApellidoPaterno());
+                statement.setString(3, tutor.getApellidoMaterno());
+                statement.setString(4, tutor.getCorreo());
+                statement.setString(5, tutor.getPassword());
+                statement.setInt(6, tutor.getIdRol());
+                statement.setBoolean(7, tutor.esActivo());
+                statement.setString(8, tutor.getNumeroDePersonal());
+                return statement.executeUpdate() > 0;
+            }
+        }
+        return false;
+    }
+
+    public boolean deleteTutor(int idTutor) throws SQLException {
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
+                statement.setInt(1, idTutor);
+                return statement.executeUpdate() > 0;
+            }
+        }
+        return false;
+    }
+
+    public Tutor searchTutorByStaffNumber(String numeroDePersonal) throws SQLException {
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_STAFF_NUMBER);
+                statement.setString(1, numeroDePersonal);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return mapResultSetToTutor(resultSet);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Tutor> getAllTutors() throws SQLException {
+        List<Tutor> tutores = new ArrayList<>();
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        tutores.add(mapResultSetToTutor(resultSet));
+                    }
+                }
+            }
+        }
+        return tutores;
+    }
+
+    private Tutor mapResultSetToTutor(ResultSet resultSet) throws SQLException {
+        Tutor tutor = new Tutor();
+        tutor.setIdTutor(resultSet.getInt("idTutor"));
+        tutor.setNumeroDePersonal(resultSet.getString("numeroDePersonal"));
+        tutor.setNombre(resultSet.getString("nombre"));
+        tutor.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+        tutor.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+        tutor.setCorreo(resultSet.getString("correo"));
+        tutor.setPassword(resultSet.getString("password"));
+        tutor.setIdRol(resultSet.getInt("idRol"));
+        tutor.setActivo(resultSet.getBoolean("esActivo"));
+        return tutor;
+    }
+}
