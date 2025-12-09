@@ -16,23 +16,14 @@ public class Tutor {
     private String apellidoMaterno;
     private String correo;
     private String password;
-    private Integer idRol;
+    private int idRol;
     private boolean esActivo;
+    private int idCarrera;
 
     public Tutor() {
     }
 
-    public Tutor(int idTutor, String numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password) {
-        this.idTutor = idTutor;
-        this.numeroDePersonal = numeroDePersonal;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.correo = correo;
-        this.password = password;
-    }
-
-    public Tutor(int idTutor, String numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password, Integer idRol, boolean esActivo) {
+    public Tutor(int idTutor, String numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password, int idRol, boolean esActivo, int idCarrera) {
         this.idTutor = idTutor;
         this.numeroDePersonal = numeroDePersonal;
         this.nombre = nombre;
@@ -42,6 +33,7 @@ public class Tutor {
         this.password = password;
         this.idRol = idRol;
         this.esActivo = esActivo;
+        this.idCarrera = idCarrera;
     }
 
     public int getIdTutor() {
@@ -114,5 +106,18 @@ public class Tutor {
 
     public void setActivo(boolean esActivo) {
         this.esActivo = esActivo;
+    }
+
+    public int getIdCarrera() {
+        return idCarrera;
+    }
+
+    public void setIdCarrera(int idCarrera) {
+        this.idCarrera = idCarrera;
+    }
+
+    @Override
+    public String toString() {
+        return "Tutor{" + "idTutor=" + idTutor + ", numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idRol=" + idRol + ", esActivo=" + esActivo + '}';
     }
 }

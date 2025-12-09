@@ -14,22 +14,28 @@ public class Tutorado {
     private String nombre;
     private String apellidoPaterno;
     private String apellidoMaterno;
-    private String correo;      
-    private int idCarrera;  
+    private String correo;
+    private String password;
+    private int idCarrera;
     private int semestre;
+    private boolean esActivo;
+    private int idTutor;
 
     public Tutorado() {
     }
 
-    public Tutorado(int idTutorado, String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, int idCarrera, int semestre) {
+    public Tutorado(int idTutorado, String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password, int idCarrera, int semestre, boolean esActivo, int idTutor) {
         this.idTutorado = idTutorado;
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.correo = correo;
+        this.password = password;
         this.idCarrera = idCarrera;
         this.semestre = semestre;
+        this.esActivo = esActivo;
+        this.idTutor = idTutor;
     }
 
     public int getIdTutorado() {
@@ -80,6 +86,14 @@ public class Tutorado {
         this.correo = correo;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public int getIdCarrera() {
         return idCarrera;
     }
@@ -95,5 +109,25 @@ public class Tutorado {
     public void setSemestre(int semestre) {
         this.semestre = semestre;
     }
+
+    public boolean isActivo() {
+        return esActivo;
+    }
+
+    public void setActivo(boolean esActivo) {
+        this.esActivo = esActivo;
+    }
+
+    public int getIdTutor() {
+        return idTutor;
+    }
+
+    public void setIdTutor(int idTutor) {
+        this.idTutor = idTutor;
+    }
     
+    @Override
+    public String toString() {
+        return "Tutorado{" + "idTutorado=" + idTutorado + ", matricula=" + matricula + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idCarrera=" + idCarrera + ", semestre=" + semestre + ", esActivo=" + esActivo + ", idTutor=" + idTutor + '}';
+    }
 }

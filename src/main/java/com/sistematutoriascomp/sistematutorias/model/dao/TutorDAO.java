@@ -12,13 +12,14 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class TutorDAO {
 
-    private static final String SQL_INSERT = "INSERT INTO tutor (numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correo, password, idRol, esActivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE tutor SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idRol = ?, esActivo = ? WHERE numeroDePersonal = ?";
+    private static final String SQL_INSERT = "INSERT INTO tutor (numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correo, password, idRol, esActivo, idCarrera) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE tutor SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idRol = ?, esActivo = ?, idCarrera = ? WHERE numeroDePersonal = ?";
     private static final String SQL_DELETE = "DELETE FROM tutor WHERE idTutor = ?";
     private static final String SQL_SELECT_BY_STAFF_NUMBER = "SELECT * FROM tutor WHERE numeroDePersonal = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM tutor";
 
     public boolean insertarTutor(Tutor tutor) throws SQLException {
+        boolean resultado = false;
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 PreparedStatement statement = connection.prepareStatement(SQL_INSERT);
@@ -30,13 +31,15 @@ public class TutorDAO {
                 statement.setString(6, tutor.getPassword());
                 statement.setInt(7, tutor.getIdRol());
                 statement.setBoolean(8, tutor.esActivo());
-                return statement.executeUpdate() > 0;
+                statement.setInt(9, tutor.getIdCarrera());
+                resultado = statement.executeUpdate() > 0;
             }
         }
-        return false;
+        return resultado;
     }
 
     public boolean updateTutor(Tutor tutor) throws SQLException {
+        boolean resultado = false;
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
@@ -47,22 +50,24 @@ public class TutorDAO {
                 statement.setString(5, tutor.getPassword());
                 statement.setInt(6, tutor.getIdRol());
                 statement.setBoolean(7, tutor.esActivo());
-                statement.setString(8, tutor.getNumeroDePersonal());
-                return statement.executeUpdate() > 0;
+                statement.setInt(8, tutor.getIdCarrera());
+                statement.setString(9, tutor.getNumeroDePersonal());
+                resultado = statement.executeUpdate() > 0;
             }
         }
-        return false;
+        return resultado;
     }
 
     public boolean deleteTutor(int idTutor) throws SQLException {
+        boolean resultado = false;
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 PreparedStatement statement = connection.prepareStatement(SQL_DELETE);
                 statement.setInt(1, idTutor);
-                return statement.executeUpdate() > 0;
+                resultado = statement.executeUpdate() > 0;
             }
         }
-        return false;
+        return resultado;
     }
 
     public Tutor searchTutorByStaffNumber(String numeroDePersonal) throws SQLException {
@@ -78,6 +83,27 @@ public class TutorDAO {
             }
         }
         return null;
+    }
+
+    public int obtenerIdPorNombre(String nombreTutor) throws SQLException {
+        int idTutor = -1; 
+        Connection conexion = ConexionBaseDatos.abrirConexionBD();
+
+        if (conexion != null) {
+            try {
+                String consulta = "SELECT idTutor FROM tutor WHERE nombre = ?";
+                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                sentencia.setString(1, nombreTutor);
+                ResultSet resultado = sentencia.executeQuery();
+
+                if (resultado.next()) {
+                    idTutor = resultado.getInt("idTutor");
+                }
+            } finally {
+                ConexionBaseDatos.cerrarConexionBD();
+            }
+        }
+        return idTutor;
     }
 
     public List<Tutor> getAllTutors() throws SQLException {
@@ -106,6 +132,7 @@ public class TutorDAO {
         tutor.setPassword(resultSet.getString("password"));
         tutor.setIdRol(resultSet.getInt("idRol"));
         tutor.setActivo(resultSet.getBoolean("esActivo"));
+        tutor.setIdCarrera(resultSet.getInt("idCarrera"));
         return tutor;
     }
 }
