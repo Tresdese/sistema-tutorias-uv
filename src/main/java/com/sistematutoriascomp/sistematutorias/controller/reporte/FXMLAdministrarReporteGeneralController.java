@@ -155,6 +155,7 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
             Utilidades.mostrarAlertaSimple("Sin selección",
                     "Debe seleccionar un reporte general en la tabla para poder editarlo.",
                     Alert.AlertType.WARNING);
+            return;
         }
 
         try {

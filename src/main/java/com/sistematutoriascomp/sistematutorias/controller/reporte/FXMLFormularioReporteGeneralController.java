@@ -4,6 +4,7 @@
  */
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.SQLException;
@@ -25,13 +26,16 @@ import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -43,6 +47,9 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
 
     @FXML
     private Button btnVolver;
+
+    @FXML
+    private Button btnResponder;
 
     @FXML
     private TextField txtIdReporteGeneral;
@@ -64,9 +71,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
 
     @FXML
     private TextField txtTotalProblematicas;
-
-    @FXML
-    private TextArea txtObservaciones;
 
     @FXML
     private Button btnCancelar;
@@ -104,6 +108,11 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     }
 
     @FXML
+    private void onResponder(ActionEvent event) {
+        responderReporte();
+    }
+
+    @FXML
     private void onCancelar(ActionEvent event) {
         cerrarVentana(event);
     }
@@ -134,11 +143,13 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         btnEditar.setVisible(false);
         btnEditar.setManaged(false);
         btnGuardar.setDisable(false);
+        btnResponder.setVisible(false);
         habilitarEdicion(true);
     }
 
     private void configurarModoSoloLecturaEdicion() {
         habilitarEdicion(false);
+        btnResponder.setVisible(true);
         btnGuardar.setDisable(true);
         btnEditar.setVisible(true);
         btnEditar.setManaged(true);
@@ -150,7 +161,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         txtTotalTutores.setDisable(!habilitar);
         txtPorcentajeAsistencia.setDisable(!habilitar);
         txtTotalProblematicas.setDisable(!habilitar);
-        txtObservaciones.setDisable(!habilitar);
 
         cbEstado.setDisable(!habilitar);
         cbPeriodo.setDisable(!habilitar);
@@ -190,7 +200,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
                 BigDecimal.valueOf(Double.parseDouble(txtPorcentajeAsistencia.getText().trim())));
         reporteGeneral.setTotalProblematicas(Integer.parseInt(txtTotalProblematicas.getText().trim()));
 
-        reporteGeneral.setObservaciones(txtObservaciones.getText());
         reporteGeneral.setEstado(cbEstado.getValue().toString());
         reporteGeneral.setIdPeriodo(obtenerIdPeriodo());
         reporteGeneral.setIdCoordinador(obtenerIdCoordinador());
@@ -209,7 +218,8 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
                         : "El reporte general se ha guardado correctamente.";
                 Utilidades.mostrarAlertaSimple("Éxito", mensaje, Alert.AlertType.INFORMATION);
             } else {
-                Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar el reporte general.", Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudo guardar el reporte general.",
+                        Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
             LOGGER.error("Error inesperado al guardar el reporte general en la base de datos", e);
@@ -224,29 +234,74 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         if (cbPeriodo.getSelectionModel().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El periodo es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
-        } if (cbCoordinador.getSelectionModel().isEmpty()) {
+        }
+        if (cbCoordinador.getSelectionModel().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El coordinador es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
-        } if (cbEstado.getSelectionModel().isEmpty()) {
+        }
+        if (cbEstado.getSelectionModel().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El estado es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
-        } if (txtTotalTutorados.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de tutorados es obligatorio", Alert.AlertType.WARNING);
+        }
+        if (txtTotalTutorados.getText().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de tutorados es obligatorio",
+                    Alert.AlertType.WARNING);
             respuesta = false;
-        } if (txtTotalEstudiantesRiesgo.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de estudiantes en riesgo es obligatorio", Alert.AlertType.WARNING);
+        }
+        if (txtTotalEstudiantesRiesgo.getText().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de estudiantes en riesgo es obligatorio",
+                    Alert.AlertType.WARNING);
             respuesta = false;
-        } if (txtTotalTutores.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de tutores es obligatorio", Alert.AlertType.WARNING);
+        }
+        if (txtTotalTutores.getText().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de tutores es obligatorio",
+                    Alert.AlertType.WARNING);
             respuesta = false;
-        } if (txtPorcentajeAsistencia.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El porcentaje de asistencia es obligatorio", Alert.AlertType.WARNING);
+        }
+        if (txtPorcentajeAsistencia.getText().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Campos vacíos", "El porcentaje de asistencia es obligatorio",
+                    Alert.AlertType.WARNING);
             respuesta = false;
-        } if (txtTotalProblematicas.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de problemáticas es obligatorio", Alert.AlertType.WARNING);
+        }
+        if (txtTotalProblematicas.getText().trim().isEmpty()) {
+            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de problemáticas es obligatorio",
+                    Alert.AlertType.WARNING);
             respuesta = false;
         }
         return respuesta;
+    }
+
+    private void responderReporte() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLRespuestaReporteGeneral.fxml"));
+            Parent vista = loader.load();
+            FXMLRespuestaReporteGeneralController controller = loader.getController();
+            controller.inicializarParaEdicion(reporteEnEdicion);
+
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Responder Reporte General");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+
+        } catch (IOException e) {
+            LOGGER.error("Error al abrir la ventana para responder un reporte general", e);
+            Utilidades.mostrarAlertaSimple("Error",
+                    "No se pudo abrir la ventana de respuesta del reporte general: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+            e.printStackTrace();
+        } catch (NullPointerException ex) {
+            LOGGER.error("Error al responder el reporte general", ex);
+            Utilidades.mostrarAlertaSimple("Error",
+                    "No se pudo abrir la ventana de respuesta del reporte general: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al responder el reporte general", e);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+        }
     }
 
     public void inicializarParaEdicion(ReporteGeneral reporte) {
@@ -265,9 +320,9 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         txtTotalTutorados.setText(String.valueOf(reporte.getTotalTutorados()));
         txtTotalEstudiantesRiesgo.setText(String.valueOf(reporte.getTotalEstudiantesRiesgo()));
         txtTotalTutores.setText(String.valueOf(reporte.getTotalTutores()));
-        txtPorcentajeAsistencia.setText(reporte.getPorcentajeAsistencia() != null ? reporte.getPorcentajeAsistencia().toPlainString() : "");
+        txtPorcentajeAsistencia.setText(
+                reporte.getPorcentajeAsistencia() != null ? reporte.getPorcentajeAsistencia().toPlainString() : "");
         txtTotalProblematicas.setText(String.valueOf(reporte.getTotalProblematicas()));
-        txtObservaciones.setText(reporte.getObservaciones());
 
         cbEstado.setValue(reporte.getEstado());
         cbPeriodo.setValue(reporte.getNombrePeriodo());
@@ -299,21 +354,21 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         List<Tutor> tutores;
         try {
             tutores = tutorDAO.getAllTutors();
-                for (Tutor tutor : tutores) {
-                    if (tutor.getIdRol() == 2) {
-                        cbCoordinador.getItems().add(tutor.getNombre());
-                    }
+            for (Tutor tutor : tutores) {
+                if (tutor.getIdRol() == 2) {
+                    cbCoordinador.getItems().add(tutor.getNombre());
                 }
+            }
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener tutores de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar tutores: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al cargar tutores: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener tutores de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
         }
     }
 
@@ -323,14 +378,14 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
             idPeriodo = periodoDAO.obtenerIdPorNombre(cbPeriodo.getValue().toString());
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener IDs de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al obtener IDs: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al obtener IDs: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener IDs de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
         }
         return idPeriodo;
     }
@@ -341,14 +396,14 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
             idCoordinador = tutorDAO.obtenerIdPorNombre(cbCoordinador.getValue().toString());
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener ID del coordinador de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al obtener ID del coordinador: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al obtener ID del coordinador: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener ID del coordinador de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
         }
         return idCoordinador;
     }
@@ -361,19 +416,19 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         List<Periodo> periodos;
         try {
             periodos = periodoDAO.obtenerTodosPeriodos();
-                for (Periodo periodo : periodos) {
-                    cbPeriodo.getItems().add(periodo.getNombre());
-                }
+            for (Periodo periodo : periodos) {
+                cbPeriodo.getItems().add(periodo.getNombre());
+            }
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener periodos de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar periodos: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al cargar periodos: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener periodos de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
         }
     }
 
