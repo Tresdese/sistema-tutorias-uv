@@ -84,14 +84,14 @@
 
       <resource>
         <directory>src/main/resources</directory>
-    </resource>
+      </resource>
 
-    <resource>
-        <directory>src/main/java/com/sistematutoriascomp/sistematutorias/views</directory>
+      <resource>
+        <directory>src/main/java</directory>
         <includes>
-            <include>**/*.fxml</include>
+          <include>**/*.fxml</include>
         </includes>
-    </resource>
+      </resource>
 
     </resources>
 
