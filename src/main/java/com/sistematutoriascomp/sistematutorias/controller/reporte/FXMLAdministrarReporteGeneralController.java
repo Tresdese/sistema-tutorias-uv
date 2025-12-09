@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.sistematutoriascomp.sistematutorias.model.dao.ReporteGeneralDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteGeneral;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.collections.ObservableList;
@@ -68,6 +70,7 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        cargarDatosUsuario();
         reporteGeneralDAO = new ReporteGeneralDAO();
         llenarTabla();
         cargarInformacion();
@@ -86,6 +89,21 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
     @FXML
     private void onVerReporte(ActionEvent event) {
         editarReporteSeleccionado();
+    }
+
+    private void cargarDatosUsuario() {
+        Tutor tutor = Sesion.getTutorSesion();
+        String rol = Sesion.getRolActual();
+
+        if (tutor != null) {
+            if (rol.equals("ACADEMICO")) {
+                btnRegistrar.setVisible(true);
+            } else if (rol.equals("COORDINADOR")) {
+                btnRegistrar.setVisible(true);
+            } else if (rol.equals("ADMINISTRADOR")) {
+                btnRegistrar.setVisible(false);
+            }
+        }
     }
 
     private void cargarInformacion() {

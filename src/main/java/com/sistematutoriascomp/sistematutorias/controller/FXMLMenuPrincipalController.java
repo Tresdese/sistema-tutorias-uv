@@ -97,8 +97,8 @@ public class FXMLMenuPrincipalController implements Initializable {
             btnPersonal.setVisible(false);
             btnMenuEspecial.setVisible(true);
         } else if ("ADMINISTRADOR".equals(rol)) {
-            btnTutoria.setVisible(true);
-            btnReporte.setVisible(true);
+            btnTutoria.setVisible(false);
+            btnReporte.setVisible(false);
             btnPersonal.setVisible(true);
             btnMenuEspecial.setVisible(true);
         }

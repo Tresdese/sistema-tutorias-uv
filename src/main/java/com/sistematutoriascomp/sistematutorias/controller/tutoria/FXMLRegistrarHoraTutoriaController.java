@@ -93,13 +93,13 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
         nuevaTutoria.setFecha(fechaSeleccionada.getFecha());
         nuevaTutoria.setHoraInicio(LocalTime.of(hora, minuto));
         guardarTutoria(nuevaTutoria);
+        irAtras(event);
     }
 
     private void guardarTutoria(Tutoria tutoria) {
         HashMap<String, Object> respuesta = TutoriaImp.registrarHorarioTutoria(tutoria);
         if (!(boolean) respuesta.get("error")) {
             Utilidades.mostrarAlertaSimple("Éxito", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
-            clicVolver(null);
         } else {
             Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
         }
@@ -115,15 +115,11 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
 
     @FXML
     private void clicVolver(ActionEvent event) {
+        irAtras(event);
+    }
+
+    private void irAtras(ActionEvent event) {
         try {
-            // Stage escenario = (Stage) cbFechas.getScene().getWindow();
-            // URL url = getClass().getResource("/sistematutorias/vista/FXMLMenuTutoria.fxml");
-            // FXMLLoader loader = new FXMLLoader(url);
-            // Parent root = loader.load();
-            // Scene escena = new Scene(root);
-            // escenario.setScene(escena);
-            // escenario.setTitle("Menú Tutoría");
-            // escenario.show();
             Utilidades.goToWindow("/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
         } catch (IOException ex) {
             ex.printStackTrace();

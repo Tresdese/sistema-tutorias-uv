@@ -97,7 +97,7 @@ public class FXMLMenuPersonalController implements Initializable {
                 btnRegistrarUsuario.setVisible(true);
                 btnRegistrarTutorado.setVisible(true);
                 btnVerReportesGenerales.setVisible(true);
-                btnCrearReporteGeneral.setVisible(true);
+                btnCrearReporteGeneral.setVisible(false);
             }
         }
     }
