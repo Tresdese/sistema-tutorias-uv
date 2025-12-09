@@ -25,5 +25,6 @@ buildNumber.properties
 .mvn/
 .vscode/
 .out/
+logs/
 
 config.properties
