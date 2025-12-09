@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="520.0" prefWidth="820.0"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.sistematutoriascomp.sistematutorias.controller.FXMLInicioSesionController">
+
+    <children>
+        <BorderPane AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
+
+            <!-- LADO IZQUIERDO: logo y fondo en degradado -->
+            <left>
+                <StackPane prefWidth="300.0"
+                           style="-fx-background-color: linear-gradient(to bottom, #f7fbff, #ffffff);">
+                    <children>
+                        <VBox alignment="CENTER" spacing="16.0" style="-fx-padding: 30;">
+                            <children>
+                                <ImageView fitHeight="260.0" fitWidth="260.0"
+                                           preserveRatio="true" pickOnBounds="true">
+                                    <image>
+                                        <Image url="@../recurso/logouv.png" />
+                                    </image>
+                                    <effect>
+                                        <DropShadow color="#00000033" offsetY="3.0" radius="14.0" />
+                                    </effect>
+                                </ImageView>
+
+                                <Label text="Sistema de Tutorías" textFill="#18529d">
+                                    <font>
+                                        <Font name="Segoe UI Semibold" size="24.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                    </children>
+                </StackPane>
+            </left>
+
+            <!-- LADO DERECHO: tarjeta con formulario de inicio de sesión -->
+            <center>
+                <StackPane prefWidth="520.0" style="-fx-padding: 30;">
+                    <children>
+                        <VBox maxWidth="380.0" spacing="16.0"
+                              style="-fx-background-color: white; -fx-background-radius: 14; -fx-padding: 28;">
+                            <effect>
+                                <DropShadow offsetY="3.0" radius="16.0">
+                                    <color>
+                                        <Color red="0.0" green="0.0" blue="0.0" opacity="0.20" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                            <children>
+
+                                <!-- Título y mensaje -->
+                                <Label text="Bienvenido(a)">
+                                    <font>
+                                        <Font name="Segoe UI Bold" size="24.0" />
+                                    </font>
+                                </Label>
+
+                                <Label text="Ingrese su número de personal y contraseña para continuar"
+                                       textAlignment="CENTER" wrapText="true" textFill="#666666">
+                                    <font>
+                                        <Font name="Segoe UI" size="14.0" />
+                                    </font>
+                                </Label>
+
+                                <!-- Campo usuario -->
+                                <Label text="Número de personal">
+                                    <font>
+                                        <Font name="Segoe UI Semibold" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="tfUsuario"
+                                           prefHeight="38.0"
+                                           promptText="Ejemplo: 12345"
+                                           style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-border-width: 1.4; -fx-padding: 0 12 0 12;">
+                                    <font>
+                                        <Font name="Segoe UI" size="14.0" />
+                                    </font>
+                                </TextField>
+
+                                <!-- Label de error para usuario -->
+                                <Label fx:id="lbErrorUsuario"
+                                       textFill="RED"
+                                       visible="false" managed="false">
+                                    <font>
+                                        <Font name="Segoe UI" size="11.0" />
+                                    </font>
+                                </Label>
+
+                                <!-- Campo contraseña -->
+                                <Label text="Contraseña">
+                                    <font>
+                                        <Font name="Segoe UI Semibold" size="13.0" />
+                                    </font>
+                                </Label>
+                                <PasswordField fx:id="pfContrasenia"
+                                               prefHeight="38.0"
+                                               promptText="Ingrese su contraseña"
+                                               style="-fx-background-color: #f8f9fa; -fx-background-radius: 8; -fx-border-color: #dddddd; -fx-border-radius: 8; -fx-border-width: 1.4; -fx-padding: 0 12 0 12;">
+                                    <font>
+                                        <Font name="Segoe UI" size="14.0" />
+                                    </font>
+                                </PasswordField>
+
+                                <!-- Label de error para contraseña -->
+                                <Label fx:id="lbErrorContrasenia"
+                                       textFill="RED"
+                                       visible="false" managed="false">
+                                    <font>
+                                        <Font name="Segoe UI" size="11.0" />
+                                    </font>
+                                </Label>
+
+                                <!-- Botón ingresar -->
+                                <Button text="Iniciar sesión"
+                                        defaultButton="true"
+                                        maxWidth="Infinity"
+                                        onAction="#btnClicIniciarSesion"
+                                        style="-fx-background-color: #18529d; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 10 16; -fx-cursor: hand;">
+                                    <font>
+                                        <Font name="Segoe UI Semibold" size="15.0" />
+                                    </font>
+                                </Button>
+
+                                <!-- Pie pequeño -->
+                                <Label text="¿Problemas para ingresar? Contacte al administrador"
+                                       textAlignment="CENTER" wrapText="true" textFill="#888888">
+                                    <font>
+                                        <Font name="Segoe UI" size="12.0" />
+                                    </font>
+                                </Label>
+
+                            </children>
+                        </VBox>
+                    </children>
+                </StackPane>
+            </center>
+
+        </BorderPane>
+    </children>
+</AnchorPane>

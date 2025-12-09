@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="520.0" prefWidth="820.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.FXMLMenuReporteController">
+
+    <children>
+        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+            <!-- HEADER -->
+            <top>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="12.0" style="-fx-background-color: #18529d; -fx-padding: 0 20 0 20;">
+                    <children>
+
+                        <!-- Botón Volver al menú principal -->
+                        <Button mnemonicParsing="false" onAction="#clicVolverMenuPrincipal" style="-fx-background-color: rgba(255,255,255,0.15);                                        -fx-text-fill: white;                                        -fx-background-radius: 8;                                        -fx-padding: 8 16;                                        -fx-cursor: hand;" text="Volver">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="14.0" />
+                            </font>
+                        </Button>
+
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <!-- Título -->
+                        <Label text="Menú de Reportes" textFill="WHITE">
+                            <font>
+                                <Font name="Segoe UI Bold" size="22.0" />
+                            </font>
+                        </Label>
+
+                    </children>
+                </HBox>
+            </top>
+
+            <!-- CONTENIDO -->
+            <center>
+                <VBox alignment="TOP_LEFT" spacing="20.0" style="-fx-padding: 24;">
+                    <children>
+
+                        <!-- Texto de guía -->
+                        <VBox spacing="6.0">
+                            <children>
+                                <Label text="Opciones de reporte de tutoría" textFill="#18529d">
+                                    <font>
+                                        <Font name="Segoe UI Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Seleccione la acción que desea realizar con los reportes." textFill="#666666" wrapText="true">
+                                    <font>
+                                        <Font name="Segoe UI" size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <!-- Tarjeta con botones -->
+                        <VBox spacing="16.0" style="-fx-background-color: white;                                      -fx-background-radius: 12;                                      -fx-padding: 20;">
+                            <effect>
+                                <DropShadow offsetY="2.0" radius="14.0">
+                                    <color>
+                                        <Color blue="0.0" green="0.0" opacity="0.18" red="0.0" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                            <children>
+
+                                <FlowPane hgap="14.0" prefWrapLength="600.0" vgap="14.0">
+                                    <children>
+
+                                        <!-- Generar Reporte de Tutoría CU-13 -->
+                                        <Button fx:id="btnGenerarReporte" onAction="#clicGenerarReporteTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #18529d;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Generar Reporte de Tutoría">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Enviar Reporte de Tutoría CU-17 -->
+                                        <Button fx:id="btnEnviarReporte" onAction="#clicEnviarReporteTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #1565c0;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Enviar Reporte de Tutoría (CU-17)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Responder Reporte de Tutoría CU-31 -->
+                                        <Button fx:id="btnResponderReporteTutoria" onAction="#clicResponderReporteTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #2e7d32;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Responder Reporte de Tutoría (CU-31)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Generar Reporte General CU-32 -->
+                                        <Button fx:id="btnGenerarReporteGeneral" onAction="#clicGenerarReporteGeneral" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #6a1b9a;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Generar Reporte General (CU-32)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Revisar Reporte General CU-39 -->
+                                        <Button fx:id="btnRevisarReporteGeneral" onAction="#clicRevisarReporteGeneral" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #8e24aa;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Revisar Reporte General (CU-39)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Responder Reporte General CU-40 -->
+                                        <Button fx:id="btnResponderReporteGeneral" onAction="#clicResponderReporteGeneral" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #ef6c00;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Responder Reporte General (CU-40)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                    </children>
+                                </FlowPane>
+
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+            </center>
+
+        </BorderPane>
+    </children>
+</AnchorPane>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="520.0" prefWidth="820.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.FXMLMenuTutoriaController">
+
+    <children>
+        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+            <!-- HEADER -->
+            <top>
+                <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="12.0" style="-fx-background-color: #18529d; -fx-padding: 0 20 0 20;">
+                    <children>
+
+                        <!-- Botón Volver al menú principal -->
+                        <Button mnemonicParsing="false" onAction="#clicVolverMenuPrincipal" style="-fx-background-color: rgba(255,255,255,0.15);                                        -fx-text-fill: white;                                        -fx-background-radius: 8;                                        -fx-padding: 8 16;                                        -fx-cursor: hand;" text="Volver">
+                            <font>
+                                <Font name="Segoe UI Semibold" size="14.0" />
+                            </font>
+                        </Button>
+
+                        <!-- Empuja el título al centro/derecha -->
+                        <Region HBox.hgrow="ALWAYS" />
+
+                        <!-- Título -->
+                        <Label text="Menú de Tutoría" textFill="WHITE">
+                            <font>
+                                <Font name="Segoe UI Bold" size="22.0" />
+                            </font>
+                        </Label>
+
+                    </children>
+                </HBox>
+            </top>
+
+            <!-- CONTENIDO -->
+            <center>
+                <VBox alignment="TOP_LEFT" spacing="20.0" style="-fx-padding: 24;">
+                    <children>
+
+                        <!-- Texto de guía -->
+                        <VBox spacing="6.0">
+                            <children>
+                                <Label text="Opciones de tutoría" textFill="#18529d">
+                                    <font>
+                                        <Font name="Segoe UI Bold" size="20.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Seleccione una acción relacionada con las tutorías." textFill="#666666" wrapText="true">
+                                    <font>
+                                        <Font name="Segoe UI" size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+
+                        <!-- Tarjeta con botones -->
+                        <VBox spacing="16.0" style="-fx-background-color: white;                                      -fx-background-radius: 12;                                      -fx-padding: 20;">
+                            <effect>
+                                <DropShadow offsetY="2.0" radius="14.0">
+                                    <color>
+                                        <Color blue="0.0" green="0.0" opacity="0.18" red="0.0" />
+                                    </color>
+                                </DropShadow>
+                            </effect>
+                            <children>
+
+                                <FlowPane hgap="14.0" prefWrapLength="600.0" vgap="14.0">
+                                    <children>
+
+                                        <!-- Registrar Horario de Tutoría CU-3 -->
+                                        <Button fx:id="btnRegistrarHorario" onAction="#clicRegistrarHoraTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #18529d;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Horario de Tutoría">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Registrar Asistencia de Tutorado CU-5 -->
+                                        <Button fx:id="btnRegistrarAsistencia" onAction="#clicRegistrarAsistenciaTutorado" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #1565c0;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Asistencia de Tutorado">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Registrar Fecha de Tutoría CU-28 -->
+                                        <Button fx:id="btnRegistrarFechaTutoria" onAction="#clicRegistrarFechaTutoria" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #2e7d32;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Registrar Fecha de Tutoría (CU-28)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                        <!-- Asignar Tutorado CU-23 -->
+                                        <Button fx:id="btnAsignarTutorado" onAction="#clicAsignarTutorado" prefHeight="55.0" prefWidth="320.0" style="-fx-background-color: #6a1b9a;                                                        -fx-text-fill: white;                                                        -fx-font-size: 14px;                                                        -fx-background-radius: 10;                                                        -fx-cursor: hand;" text="Asignar Tutorado (CU-23)">
+                                            <font>
+                                                <Font name="Segoe UI Semibold" size="15.0" />
+                                            </font>
+                                        </Button>
+
+                                    </children>
+                                </FlowPane>
+
+                            </children>
+                        </VBox>
+
+                    </children>
+                </VBox>
+            </center>
+
+        </BorderPane>
+    </children>
+</AnchorPane>
