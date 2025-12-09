@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.control.ScrollPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.sistematutoriascomp.sistematutorias.controller.reporte.FXMLFormularioReporteGeneralController">
+
+    <children>
+        <BorderPane AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0"
+                    AnchorPane.topAnchor="0.0">
+
+            <!-- HEADER -->
+            <top>
+                <HBox alignment="CENTER_LEFT"
+                      prefHeight="70.0"
+                      spacing="12.0"
+                      style="-fx-background-color: #18529d; -fx-padding: 0 20 0 20;">
+                    <children>
+                        <Label text="Sistema de Tutorías"
+                               textFill="WHITE"
+                               style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <Button fx:id="btnVolver"
+                                text="Volver"
+                                onAction="#onVolver"
+                                style="-fx-background-color: rgba(255,255,255,0.15);
+                                       -fx-text-fill: white;
+                                       -fx-background-radius: 8;
+                                       -fx-padding: 8 16;
+                                       -fx-cursor: hand;
+                                       -fx-font-size: 13;"/>
+                    </children>
+                </HBox>
+            </top>
+
+            <!-- CONTENIDO CENTRAL CON SCROLL -->
+            <center>
+                <ScrollPane fitToWidth="true"
+                            hbarPolicy="NEVER"
+                            vbarPolicy="AS_NEEDED"
+                            style="-fx-background-color: transparent; -fx-padding: 16 24 16 24;">
+                    <content>
+                        <VBox alignment="TOP_LEFT"
+                              spacing="16.0">
+                            <children>
+
+                                <!-- Tarjeta blanca -->
+                                <VBox spacing="14.0"
+                                      style="-fx-background-color: white;
+                                             -fx-background-radius: 12;
+                                             -fx-padding: 18;">
+                                    <children>
+
+                                        <!-- Título -->
+                                        <Label text="Administrar reporte general"
+                                               textFill="#18529d"
+                                               style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+                                        <Label text="Revise y capture los datos generales del reporte de tutorías."
+                                               textFill="#666666"
+                                               style="-fx-font-size: 13px;"/>
+
+                                        <!-- ID reporte / Fecha / Estado en una sección compacta -->
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                            <children>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="ID reporte:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtIdReporteGeneral"
+                                                                   prefWidth="140.0"
+                                                                   promptText="Autogenerado"
+                                                                   editable="false"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Fecha de generación:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtFechaGeneracion"
+                                                                   prefWidth="200.0"
+                                                                   promptText="Automática"
+                                                                   editable="false"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Estado:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <ComboBox fx:id="cbEstado"
+                                                                  prefWidth="200.0"
+                                                                  promptText="Seleccione el estado"
+                                                                  style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Periodo y Coordinador -->
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                            <children>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Periodo:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <ComboBox fx:id="cbPeriodo"
+                                                                  prefWidth="260.0"
+                                                                  promptText="Seleccione un periodo"
+                                                                  style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Coordinador:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <ComboBox fx:id="cbCoordinador"
+                                                                  prefWidth="260.0"
+                                                                  promptText="Seleccione un coordinador"
+                                                                  style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Separador visual -->
+                                        <Separator/>
+
+                                        <!-- Sección: Totales -->
+                                        <Label text="Totales y estadísticas"
+                                               textFill="#18529d"
+                                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+                                        <!-- Totales fila 1 -->
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                            <children>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Total de tutorados:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtTotalTutorados"
+                                                                   prefWidth="160.0"
+                                                                   promptText="0"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Estudiantes en riesgo:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtTotalEstudiantesRiesgo"
+                                                                   prefWidth="160.0"
+                                                                   promptText="0"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Total de tutores:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtTotalTutores"
+                                                                   prefWidth="160.0"
+                                                                   promptText="0"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Totales fila 2 -->
+                                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                                            <children>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Porcentaje de asistencia (%):"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtPorcentajeAsistencia"
+                                                                   prefWidth="160.0"
+                                                                   promptText="Ej. 85.50"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox spacing="6.0">
+                                                    <children>
+                                                        <Label text="Total de problemáticas:"
+                                                               style="-fx-font-size: 14px;"/>
+                                                        <TextField fx:id="txtTotalProblematicas"
+                                                                   prefWidth="160.0"
+                                                                   promptText="0"
+                                                                   style="-fx-font-size: 13px;"/>
+                                                    </children>
+                                                </VBox>
+
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Observaciones -->
+                                        <Label text="Observaciones:"
+                                               style="-fx-font-size: 14px;"/>
+                                        <TextArea fx:id="txtObservaciones"
+                                                  prefRowCount="4"
+                                                  prefWidth="820.0"
+                                                  promptText="Anote comentarios generales, acuerdos o situaciones relevantes..."
+                                                  wrapText="true"
+                                                  style="-fx-font-size: 13px;"/>
+
+                                        <!-- BOTONES -->
+                                        <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                            <children>
+                                                <Button fx:id="btnCancelar"
+                                                        text="Cancelar"
+                                                        cancelButton="true"
+                                                        onAction="#onCancelar"
+                                                        style="-fx-background-color: transparent;
+                                                               -fx-border-color: #b0bec5;
+                                                               -fx-border-radius: 8;
+                                                               -fx-text-fill: #546e7a;
+                                                               -fx-padding: 6 16;
+                                                               -fx-cursor: hand;
+                                                               -fx-font-size: 13;"/>
+
+                                            <Button fx:id="btnEditar"
+                                                text="Editar"
+                                                onAction="#onEditar"
+                                                visible="false"
+                                                managed="false"
+                                                style="-fx-background-color: #ffffff;
+                                                       -fx-border-color: #18529d;
+                                                       -fx-border-radius: 8;
+                                                       -fx-text-fill: #18529d;
+                                                       -fx-padding: 6 16;
+                                                       -fx-cursor: hand;
+                                                       -fx-font-size: 13;"/>
+
+                                                <Button fx:id="btnGuardar"
+                                                        text="Guardar"
+                                                        defaultButton="true"
+                                                        onAction="#onGuardar"
+                                                        style="-fx-background-color: #18529d;
+                                                               -fx-text-fill: white;
+                                                               -fx-background-radius: 8;
+                                                               -fx-padding: 6 20;
+                                                               -fx-cursor: hand;
+                                                               -fx-font-size: 13;"/>
+                                            </children>
+                                        </HBox>
+
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

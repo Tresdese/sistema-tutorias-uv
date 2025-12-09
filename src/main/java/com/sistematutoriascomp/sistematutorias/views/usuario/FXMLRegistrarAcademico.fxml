@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="820.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistematutorias.controlador.usuario.FXMLRegistrarAcademicoController">
+<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="820.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.usuario.FXMLRegistrarAcademicoController">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -14,7 +14,7 @@
                     <children>
                         <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Sistema de Tutorías" textFill="WHITE" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand; -fx-font-size: 13;" text="Cerrar sesión" />
+                        <Button fx:id="btnVolver" onAction="#onVolver" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand; -fx-font-size: 13;" text="Volver" />
                     </children>
                 </HBox>
             </top>
@@ -49,7 +49,12 @@
                                         <TextField fx:id="txtApellidoMaterno" prefWidth="300.0" promptText="Ej. García" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
-                                <HBox alignment="CENTER_LEFT" spacing="10.0" />
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label style="-fx-font-size: 14px;" text="Contraseña:" />
+                                        <PasswordField fx:id="txtPassword" prefWidth="300.0" promptText="Ingrese contraseña" style="-fx-font-size: 13px;" />
+                                    </children>
+                                </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
                                         <Label style="-fx-font-size: 14px;" text="Rol:" />
@@ -64,7 +69,7 @@
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Carrera" />
+                                        <Label style="-fx-font-size: 14px;" text="Carrera:" />
                                         <ComboBox fx:id="cbCarrera" prefWidth="300.0" promptText="Seleccione una carrera" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
