@@ -449,19 +449,12 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
     @FXML
     private void clicVolver(ActionEvent event) {
-        navegarAMenuTutoria();
+        navegarAMenuTutoria(event);
     }
 
-    private void navegarAMenuTutoria() {
+    private void navegarAMenuTutoria(ActionEvent event) {
         try {
-            Stage escenario = (Stage) tvAsistencia.getScene().getWindow();
-            URL url = getClass().getResource("/sistematutorias/vista/FXMLMenuTutoria.fxml");
-            FXMLLoader loader = new FXMLLoader(url);
-            Parent root = loader.load();
-            Scene escena = new Scene(root);
-            escenario.setScene(escena);
-            escenario.setTitle("Menú Tutoría");
-            escenario.show();
+            Utilidades.goToWindow("/sistematutorias/vista/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
         } catch (IOException ex) {
             ex.printStackTrace();
             Utilidades.mostrarAlertaSimple(

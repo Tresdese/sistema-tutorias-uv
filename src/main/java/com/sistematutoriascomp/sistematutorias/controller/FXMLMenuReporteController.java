@@ -13,20 +13,18 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -34,6 +32,8 @@ import javafx.stage.Stage;
  * @author HP
  */
 public class FXMLMenuReporteController implements Initializable {
+
+    private final Logger LOGGER = LogManager.getLogger(FXMLMenuReporteController.class);
 
     @FXML
     private Button btnGenerarReporte;
@@ -85,6 +85,7 @@ public class FXMLMenuReporteController implements Initializable {
         if (!(boolean) respuesta.get("error")) {
             abrirVentanaGenerarReporte();
         } else {
+            LOGGER.info("No hay sesiones de tutoría pendientes para generar reportes para el tutor con ID: {}", idTutor);
             Utilidades.mostrarAlertaSimple("Sin pendientes",
                     (String) respuesta.get("mensaje"),
                     Alert.AlertType.INFORMATION);
@@ -93,24 +94,18 @@ public class FXMLMenuReporteController implements Initializable {
 
     private void abrirVentanaGenerarReporte() {
         try {
-            FXMLLoader cargador = new FXMLLoader(
-                    getClass().getResource("vista/reporte/FXMLGenerarReporteTutoria.fxml")
-            );
-            Parent vista = cargador.load();
-            Scene escena = new Scene(vista);
-            Stage escenario = new Stage();
-            escenario.setScene(escena);
-            escenario.setTitle("Generar reporte de tutoría");
-            escenario.initOwner(btnGenerarReporte.getScene().getWindow());
-            escenario.initModality(Modality.APPLICATION_MODAL);
-            escenario.showAndWait();
+            Utilidades.openModal("/reporte/FXMLGenerarReporteTutoria.fxml", "Generar Reporte de Tutoría");
         } catch (IOException ex) {
+            LOGGER.error("Error al abrir la ventana para generar el reporte de tutoría", ex);
             ex.printStackTrace();
             Utilidades.mostrarAlertaSimple(
                     "Error",
                     "No se pudo abrir la ventana para generar el reporte de tutoría.",
                     Alert.AlertType.ERROR
             );
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al abrir la ventana para generar el reporte de tutoría", e);
+            e.printStackTrace();
         }
     }
 
@@ -138,14 +133,13 @@ public class FXMLMenuReporteController implements Initializable {
     @FXML
     private void clicVolverMenuPrincipal(ActionEvent event) {
         try {
-            Parent vista = FXMLLoader.load(getClass().getResource("vista/FXMLMenuPrincipal.fxml"));
-            Scene escena = new Scene(vista);
-            Stage stPrincipal = (Stage) btnGenerarReporte.getScene().getWindow();
-            stPrincipal.setScene(escena);
-            stPrincipal.setTitle("Menú Principal");
-            stPrincipal.show();
+            Utilidades.clicVolverMenuPrincipal(event);
         } catch (IOException ex) {
+            LOGGER.error("Error al volver al menú principal desde el menú de reportes", ex);
             ex.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al volver al menú principal desde el menú de reportes", e);
+            e.printStackTrace();
         }
     }
 }

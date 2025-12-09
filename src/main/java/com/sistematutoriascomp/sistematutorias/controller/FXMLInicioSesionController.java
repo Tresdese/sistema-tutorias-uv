@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.dominio.AutenticacionImp;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,6 +31,8 @@ import javafx.stage.Stage;
  * @author HP
  */
 public class FXMLInicioSesionController implements Initializable {
+
+    private static final Logger LOGGER = LogManager.getLogger(FXMLInicioSesionController.class);
 
     @FXML
     private TextField tfUsuario;
@@ -105,36 +109,32 @@ public class FXMLInicioSesionController implements Initializable {
             Utilidades.mostrarAlertaSimple(
                     "Bienvenido",
                     "Credenciales correctas",
-                    Alert.AlertType.INFORMATION
-            );
+                    Alert.AlertType.INFORMATION);
             irMenuPrincipal();
         } else {
+            LOGGER.warn("Intento de inicio de sesión fallido para el usuario: {}", usuario);
             Utilidades.mostrarAlertaSimple(
                     "Credenciales incorrectas",
                     "No. de personal y/o contraseña incorrectos, por favor verifica la información",
-                    Alert.AlertType.ERROR
-            );
+                    Alert.AlertType.ERROR);
         }
     }
 
     private void irMenuPrincipal() {
         try {
             Stage escenario = (Stage) tfUsuario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("vista/FXMLMenuPrincipal.fxml")
-            );
-            Parent root = loader.load();
+            Parent root = Utilidades.loadFXML("/FXMLMenuPrincipal.fxml");
             Scene escena = new Scene(root);
             escenario.setScene(escena);
             escenario.setTitle("Menú Principal");
             escenario.show();
         } catch (IOException ex) {
+            LOGGER.error("Error al abrir el menú principal", ex);
             ex.printStackTrace();
             Utilidades.mostrarAlertaSimple(
                     "Error",
                     "No se pudo abrir el menú principal.",
-                    Alert.AlertType.ERROR
-            );
+                    Alert.AlertType.ERROR);
         }
     }
 }

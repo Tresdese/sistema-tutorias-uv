@@ -16,13 +16,9 @@ import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -69,7 +65,7 @@ public class FXMLMenuTutoriaController implements Initializable {
     private void clicRegistrarHoraTutoria(ActionEvent event) {
         HashMap<String, Object> respuesta = TutoriaImp.obtenerFechasPeriodoActual();
         if (!(boolean) respuesta.get("error")) {
-            irPantalla("/sistematutorias/vista/tutoria/FXMLRegistrarHoraTutoria.fxml", "Registrar Hora");
+            irPantalla("/tutoria/FXMLRegistrarHoraTutoria.fxml", "Registrar Hora", event);
         } else {
             Utilidades.mostrarAlertaSimple("No se puede continuar",
                     (String) respuesta.get("mensaje"),
@@ -84,7 +80,7 @@ public class FXMLMenuTutoriaController implements Initializable {
         HashMap<String, Object> respuesta = AsistenciaImp.obtenerSesionesTutor(idTutor);
 
         if (!(boolean) respuesta.get("error")) {
-            irPantalla("/sistematutorias/vista/tutoria/FXMLRegistrarAsistenciaTutorado.fxml", "Registrar Asistencia");
+            irPantalla("/tutoria/FXMLRegistrarAsistenciaTutorado.fxml", "Registrar Asistencia", event);
         } else {
             Utilidades.mostrarAlertaSimple("No se puede continuar",
                     (String) respuesta.get("mensaje"),
@@ -103,26 +99,15 @@ public class FXMLMenuTutoriaController implements Initializable {
     @FXML
     private void clicVolverMenuPrincipal(ActionEvent event) {
         try {
-            Parent vista = FXMLLoader.load(getClass().getResource("vista/FXMLMenuPrincipal.fxml"));
-            Scene escena = new Scene(vista);
-            Stage stPrincipal = (Stage) btnRegistrarHorario.getScene().getWindow();
-            stPrincipal.setScene(escena);
-            stPrincipal.setTitle("Menú Principal");
-            stPrincipal.show();
+            Utilidades.clicVolverMenuPrincipal(event);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
-    private void irPantalla(String ruta, String titulo) {
+    private void irPantalla(String ruta, String titulo, ActionEvent event) {
         try {
-            Stage escenario = (Stage) btnRegistrarHorario.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
-            Parent root = loader.load();
-            Scene escena = new Scene(root);
-            escenario.setScene(escena);
-            escenario.setTitle(titulo);
-            escenario.show();
+            Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

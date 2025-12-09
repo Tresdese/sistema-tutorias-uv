@@ -10,16 +10,13 @@ import java.util.ResourceBundle;
 
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -90,30 +87,26 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void btnClicTutoria(ActionEvent event) {
-        irPantalla("/sistematutorias/vista/FXMLMenuTutoria.fxml", "Menú Tutoría");
+        irPantalla("/FXMLMenuTutoria.fxml", "Menú Tutoría", event);
     }
 
     @FXML
     private void btnClicReporte(ActionEvent event) {
-        irPantalla("/sistematutorias/vista/FXMLMenuReporte.fxml", "Menú Reporte");
+        irPantalla("/FXMLMenuReporte.fxml", "Menú Reporte", event);
     }
 
     @FXML
     private void btnClicPersonal(ActionEvent event) {
-        irPantalla("/sistematutorias/vista/FXMLMenuPersonal.fxml", "Menú Personal");
+        irPantalla("/FXMLMenuPersonal.fxml", "Menú Personal", event);
     }
 
-    private void irPantalla(String ruta, String titulo) {
+    private void irPantalla(String ruta, String titulo, ActionEvent event) {
         try {
-            Stage escenario = (Stage) btnTutoria.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(ruta));
-            Parent root = loader.load();
-            Scene escena = new Scene(root);
-            escenario.setScene(escena);
-            escenario.setTitle(titulo);
-            escenario.show();
+            Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -121,14 +114,11 @@ public class FXMLMenuPrincipalController implements Initializable {
     private void btnClicSalir(ActionEvent event) {
         Sesion.cerrarSesion(); 
         try {
-            Parent vista = FXMLLoader.load(getClass().getResource("vista/FXMLInicioSesion.fxml"));
-            Scene escena = new Scene(vista);
-            Stage stPrincipal = (Stage) btnTutoria.getScene().getWindow();
-            stPrincipal.setScene(escena);
-            stPrincipal.setTitle("Iniciar sesión");
-            stPrincipal.show();
+            Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
