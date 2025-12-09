@@ -41,6 +41,7 @@ public class ReporteGeneralDAO {
             "FROM reportegeneral rg " +
             "INNER JOIN periodo p ON rg.idPeriodo = p.idPeriodo " +
             "WHERE rg.idCoordinador = ? ORDER BY rg.fechaGeneracion DESC";
+    private static final String SQL_INSERT_ANSWERS = "UPDATE reportegeneral SET observaciones = ?, estado = ? WHERE idReporteGeneral = ?";
 
     public boolean insertar(ReporteGeneral reporteGeneral) throws SQLException {
         boolean resultado = false;
@@ -90,6 +91,21 @@ public class ReporteGeneralDAO {
                 statement.setInt(9, reporteGeneral.getTotalProblematicas());
                 statement.setString(10, reporteGeneral.getObservaciones());
                 statement.setInt(11, reporteGeneral.getIdReporteGeneral());
+                
+                resultado = statement.executeUpdate() > 0;
+            }
+        }
+        return resultado;
+    }
+
+    public boolean actualizarRespuestas(ReporteGeneral reporteGeneral) throws SQLException {
+        boolean resultado = false;
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                PreparedStatement statement = connection.prepareStatement(SQL_INSERT_ANSWERS);
+                statement.setString(1, reporteGeneral.getObservaciones());
+                statement.setString(2, reporteGeneral.getEstado());
+                statement.setInt(3, reporteGeneral.getIdReporteGeneral());
                 
                 resultado = statement.executeUpdate() > 0;
             }
