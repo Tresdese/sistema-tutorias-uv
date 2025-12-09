@@ -62,8 +62,8 @@ public class FXMLMenuReporteController implements Initializable {
 
         if (tutor != null) {
             if (rol.equals("ACADEMICO")) {
-                btnGenerarReporte.setVisible(false);
-                btnEnviarReporte.setVisible(false);
+                btnGenerarReporte.setVisible(true);
+                btnEnviarReporte.setVisible(true);
                 btnResponderReporteTutoria.setVisible(false);
                 btnGenerarReporteGeneral.setVisible(false);
                 btnRevisarReporteGeneral.setVisible(false);
