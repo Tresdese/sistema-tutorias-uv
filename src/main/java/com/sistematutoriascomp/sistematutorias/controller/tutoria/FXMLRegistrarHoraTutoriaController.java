@@ -48,7 +48,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     }
 
     private void configurarSpinners() {
-        SpinnerValueFactory<Integer> horasFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 20, 10);
+        SpinnerValueFactory<Integer> horasFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(7, 20, 7);
         spHora.setValueFactory(horasFactory);
         SpinnerValueFactory<Integer> minutosFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0);
         spMinuto.setValueFactory(minutosFactory);
@@ -73,7 +73,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
         boolean valido = true;
         if (fechaSeleccionada == null) {
             lbErrorFecha.setText("Selecciona una fecha.");
-            lbErrorFecha.setVisible(true); // Asegurar visibilidad
+            lbErrorFecha.setVisible(true);
             valido = false;
         }
         if (hora == null || hora < 7 || hora > 20) {
@@ -82,7 +82,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
             valido = false;
         }
         if (minuto == null || minuto < 0 || minuto > 59) {
-             valido = false;
+            valido = false;
         }
         if (!valido) {
             return;
@@ -92,17 +92,23 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
         nuevaTutoria.setIdPeriodo(Sesion.getIdPeriodoActual());
         nuevaTutoria.setFecha(fechaSeleccionada.getFecha());
         nuevaTutoria.setHoraInicio(LocalTime.of(hora, minuto));
-        guardarTutoria(nuevaTutoria);
-        irAtras(event);
+        boolean seGuardo = guardarTutoria(nuevaTutoria);
+        if (seGuardo) {
+            irAtras(event);
+        }
     }
 
-    private void guardarTutoria(Tutoria tutoria) {
+    private boolean guardarTutoria(Tutoria tutoria) {
         HashMap<String, Object> respuesta = TutoriaImp.registrarHorarioTutoria(tutoria);
-        if (!(boolean) respuesta.get("error")) {
+        boolean exito = !(boolean) respuesta.get("error");
+
+        if (exito) {
             Utilidades.mostrarAlertaSimple("Éxito", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
         } else {
             Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
         }
+
+        return exito;
     }
 
     @FXML
