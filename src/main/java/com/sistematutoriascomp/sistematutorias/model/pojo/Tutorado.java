@@ -15,7 +15,6 @@ public class Tutorado {
     private String apellidoPaterno;
     private String apellidoMaterno;
     private String correo;
-    private String password;
     private int idCarrera;
     private int semestre;
     private boolean esActivo;
@@ -24,14 +23,13 @@ public class Tutorado {
     public Tutorado() {
     }
 
-    public Tutorado(int idTutorado, String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password, int idCarrera, int semestre, boolean esActivo, int idTutor) {
+    public Tutorado(int idTutorado, String matricula, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, int idCarrera, int semestre, boolean esActivo, int idTutor) {
         this.idTutorado = idTutorado;
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.correo = correo;
-        this.password = password;
         this.idCarrera = idCarrera;
         this.semestre = semestre;
         this.esActivo = esActivo;
@@ -86,14 +84,6 @@ public class Tutorado {
         this.correo = correo;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public int getIdCarrera() {
         return idCarrera;
     }
@@ -128,6 +118,6 @@ public class Tutorado {
     
     @Override
     public String toString() {
-        return "Tutorado{" + "idTutorado=" + idTutorado + ", matricula=" + matricula + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idCarrera=" + idCarrera + ", semestre=" + semestre + ", esActivo=" + esActivo + ", idTutor=" + idTutor + '}';
+        return "Tutorado{" + "idTutorado=" + idTutorado + ", matricula=" + matricula + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", idCarrera=" + idCarrera + ", semestre=" + semestre + ", esActivo=" + esActivo + ", idTutor=" + idTutor + '}';
     }
 }

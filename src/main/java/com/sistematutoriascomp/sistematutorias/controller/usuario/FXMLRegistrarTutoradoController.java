@@ -22,7 +22,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class FXMLRegistrarTutoradoController implements Initializable {
@@ -37,8 +36,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
     @FXML private Button btnVolver;
     @FXML
     private TextField txtCorreo;
-    @FXML
-    private PasswordField txtPassword;
     @FXML
     private TextField txtSemestre;
     @FXML
@@ -137,9 +134,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
             tutorado.setIdCarrera(cbProgramaEducativo.getSelectionModel().getSelectedIndex() + 1);
             tutorado.setActivo(true);
             tutorado.setIdTutor(cbTutor.getSelectionModel().getSelectedIndex() + 1);
-            if (txtPassword != null) {
-                    tutorado.setPassword(txtPassword.getText());
-            }
     
             boolean registrado = tutoradoDAO.insertarTutorado(tutorado);
             if (registrado) {
@@ -192,10 +186,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El correo es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
         }
-        if (txtPassword.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "La contraseña es obligatoria", Alert.AlertType.WARNING);
-            respuesta = false;
-        }
         if (txtSemestre.getText().trim().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El semestre es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
@@ -217,7 +207,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
         txtApellidoPaterno.clear();
         txtApellidoMaterno.clear();
         txtCorreo.clear();
-        txtPassword.clear();
         txtSemestre.clear();
         cbProgramaEducativo.getSelectionModel().clearSelection();
         cbTutor.getSelectionModel().clearSelection();

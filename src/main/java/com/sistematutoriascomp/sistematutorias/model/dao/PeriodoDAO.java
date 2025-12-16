@@ -16,14 +16,18 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Periodo;
 
 public class PeriodoDAO {
 
+    private static final String SQL_SELECT_PERIODO_ACTUAL = "SELECT idPeriodo FROM periodo WHERE esActual = 1";
+    private static final String SQL_SELECT_PERIODO_POR_ID = "SELECT idPeriodo, nombre, esActual FROM periodo WHERE idPeriodo = ?";
+    private static final String SQL_SELECT_ID_POR_NOMBRE = "SELECT idPeriodo FROM periodo WHERE nombre = ?";
+    private static final String SQL_SELECT_TODOS = "SELECT idPeriodo, nombre, esActual FROM periodo";
+
     public static int obtenerIdPeriodoActual() throws SQLException {
         int idPeriodo = -1; 
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT idPeriodo FROM periodo WHERE esActual = 1";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SELECT_PERIODO_ACTUAL);
                 ResultSet resultado = sentencia.executeQuery();
 
                 if (resultado.next()) {
@@ -42,8 +46,7 @@ public class PeriodoDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT idPeriodo, nombre, esActual FROM periodo WHERE idPeriodo = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SELECT_PERIODO_POR_ID);
                 sentencia.setInt(1, idPeriodo);
                 ResultSet resultado = sentencia.executeQuery();
 
@@ -66,8 +69,7 @@ public class PeriodoDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT idPeriodo FROM periodo WHERE nombre = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SELECT_ID_POR_NOMBRE);
                 sentencia.setString(1, nombrePeriodo);
                 ResultSet resultado = sentencia.executeQuery();
 
@@ -87,8 +89,7 @@ public class PeriodoDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT idPeriodo, nombre, esActual FROM periodo";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SELECT_TODOS);
                 ResultSet rs = sentencia.executeQuery();
 
                 while (rs.next()) {

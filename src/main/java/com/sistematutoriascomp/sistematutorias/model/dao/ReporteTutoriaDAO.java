@@ -17,21 +17,28 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class ReporteTutoriaDAO {
 
+    private static final String SQL_OBTENER_SESIONES_PENDIENTES = "SELECT t.idTutoria, t.fecha, t.hora_inicio "
+         + "FROM tutoria t "
+         + "LEFT JOIN reportetutoria r ON r.idTutoria = t.idTutoria "
+         + "WHERE t.idTutor = ? AND t.idPeriodo = ? "
+         + "AND r.idTutoria IS NULL "
+         + "AND EXISTS (SELECT 1 FROM asistencia a WHERE a.idTutoria = t.idTutoria) "
+         + "ORDER BY t.fecha, t.hora_inicio";
+    private static final String SQL_OBTENER_TOTALES_ASISTENCIA = "SELECT COUNT(*) as total, "
+         + "SUM(CASE WHEN asistio = 1 THEN 1 ELSE 0 END) as asistentes, "
+         + "SUM(CASE WHEN asistio = 0 THEN 1 ELSE 0 END) as faltantes "
+         + "FROM asistencia WHERE idTutoria = ?";
+    private static final String SQL_OBTENER_TOTAL_PROBLEMATICAS = "SELECT COUNT(*) as total FROM problematica WHERE idTutoria = ?";
+    private static final String SQL_REGISTRAR_REPORTE = "INSERT INTO reportetutoria (idTutoria, fechaGeneracion, observaciones, estatus) "
+         + "VALUES (?, NOW(), ?, ?)";
+
     public static ArrayList<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
           ArrayList<Tutoria> sesiones = new ArrayList<>();
           Connection conexion = ConexionBaseDatos.abrirConexionBD();
           if (conexion != null) {
                 try {
-             
-                     String sql = "SELECT t.idTutoria, t.fecha, t.hora_inicio " +
-                                      "FROM tutoria t " +
-                                      "LEFT JOIN reportetutoria r ON r.idTutoria = t.idTutoria " +
-                                      "WHERE t.idTutor = ? AND t.idPeriodo = ? " +
-                                      "AND r.idTutoria IS NULL " +  
-                                      "AND EXISTS (SELECT 1 FROM asistencia a WHERE a.idTutoria = t.idTutoria) " + 
-                                      "ORDER BY t.fecha, t.hora_inicio";
-                                      
-                     PreparedStatement ps = conexion.prepareStatement(sql);
+
+               PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_SESIONES_PENDIENTES);
                      ps.setInt(1, idTutor);
                      ps.setInt(2, idPeriodo);
                      ResultSet rs = ps.executeQuery();
@@ -56,11 +63,7 @@ public class ReporteTutoriaDAO {
           
           if (conexion != null) {
                 try {
-                     String sqlAsist = "SELECT COUNT(*) as total, " +
-                                             "SUM(CASE WHEN asistio = 1 THEN 1 ELSE 0 END) as asistentes, " +
-                                             "SUM(CASE WHEN asistio = 0 THEN 1 ELSE 0 END) as faltantes " +
-                                             "FROM asistencia WHERE idTutoria = ?";
-                     PreparedStatement ps = conexion.prepareStatement(sqlAsist);
+                     PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_TOTALES_ASISTENCIA);
                      ps.setInt(1, idTutoria);
                      ResultSet rs = ps.executeQuery();
                      
@@ -70,8 +73,7 @@ public class ReporteTutoriaDAO {
                           totales.put("faltantes", rs.getInt("faltantes"));
                      }
                      
-                     String sqlProb = "SELECT COUNT(*) as total FROM problematica WHERE idTutoria = ?";
-                     PreparedStatement ps2 = conexion.prepareStatement(sqlProb);
+                     PreparedStatement ps2 = conexion.prepareStatement(SQL_OBTENER_TOTAL_PROBLEMATICAS);
                      ps2.setInt(1, idTutoria);
                      ResultSet rs2 = ps2.executeQuery();
                      
@@ -90,9 +92,7 @@ public class ReporteTutoriaDAO {
           Connection conexion = ConexionBaseDatos.abrirConexionBD();
           if (conexion != null) {
                 try {
-                     String sql = "INSERT INTO reportetutoria (idTutoria, fechaGeneracion, observaciones, estatus) " +
-                                      "VALUES (?, NOW(), ?, ?)";
-                     PreparedStatement ps = conexion.prepareStatement(sql);
+                     PreparedStatement ps = conexion.prepareStatement(SQL_REGISTRAR_REPORTE);
                      ps.setInt(1, reporte.getIdTutoria());
                      ps.setString(2, reporte.getObservaciones());
                      ps.setString(3, "BORRADOR"); 

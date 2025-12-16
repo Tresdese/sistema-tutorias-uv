@@ -11,8 +11,8 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
 
 public class TutoradoDAO {
 
-    private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, password, idCarrera, semestre, esActivo, idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idCarrera = ?, semestre = ?, esActivo = ?, idTutor = ? WHERE matricula = ?";
+    private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, idCarrera, semestre, esActivo, idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, idCarrera = ?, semestre = ?, esActivo = ?, idTutor = ? WHERE matricula = ?";
     private static final String SQL_DELETE = "DELETE FROM tutorado WHERE idTutorado = ?";
     private static final String SQL_SELECT_BY_MATRICULA = "SELECT * FROM tutorado WHERE matricula = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM tutorado";
@@ -27,11 +27,10 @@ public class TutoradoDAO {
                 statement.setString(3, tutorado.getApellidoPaterno());
                 statement.setString(4, tutorado.getApellidoMaterno());
                 statement.setString(5, tutorado.getCorreo());
-                statement.setString(6, tutorado.getPassword());
-                statement.setInt(7, tutorado.getIdCarrera());
-                statement.setInt(8, tutorado.getSemestre());
-                statement.setBoolean(9, tutorado.isActivo());
-                statement.setInt(10, tutorado.getIdTutor());
+                statement.setInt(6, tutorado.getIdCarrera());
+                statement.setInt(7, tutorado.getSemestre());
+                statement.setBoolean(8, tutorado.isActivo());
+                statement.setInt(9, tutorado.getIdTutor());
                 resultado = statement.executeUpdate() > 0;
             }
         }
@@ -47,12 +46,11 @@ public class TutoradoDAO {
                 statement.setString(2, tutorado.getApellidoPaterno());
                 statement.setString(3, tutorado.getApellidoMaterno());
                 statement.setString(4, tutorado.getCorreo());
-                statement.setString(5, tutorado.getPassword());
-                statement.setInt(6, tutorado.getIdCarrera());
-                statement.setInt(7, tutorado.getSemestre());
-                statement.setBoolean(8, tutorado.isActivo());
-                statement.setInt(9, tutorado.getIdTutor());
-                statement.setString(10, tutorado.getMatricula());
+                statement.setInt(5, tutorado.getIdCarrera());
+                statement.setInt(6, tutorado.getSemestre());
+                statement.setBoolean(7, tutorado.isActivo());
+                statement.setInt(8, tutorado.getIdTutor());
+                statement.setString(9, tutorado.getMatricula());
                 resultado = statement.executeUpdate() > 0;
             }
         }
@@ -109,7 +107,6 @@ public class TutoradoDAO {
         tutorado.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
         tutorado.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
         tutorado.setCorreo(resultSet.getString("correo"));
-        tutorado.setPassword(resultSet.getString("password"));
         tutorado.setIdCarrera(resultSet.getInt("idCarrera"));
         tutorado.setSemestre(resultSet.getInt("semestre"));
         tutorado.setActivo(resultSet.getBoolean("esActivo"));

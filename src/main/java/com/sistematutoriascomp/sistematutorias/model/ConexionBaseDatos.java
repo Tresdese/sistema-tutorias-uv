@@ -19,17 +19,48 @@ public class ConexionBaseDatos {
             e.printStackTrace();
         }
 
+        String urlSistema = System.getProperty("db.url");
+        String usuarioSistema = System.getProperty("db.user");
+        String contraseniaSistema = System.getProperty("db.password");
+        String driverSistema = System.getProperty("db.driver");
+        String opcionesSistema = System.getProperty("db.options");
+
+        if (urlSistema != null) {
+            properties.setProperty("db.url", urlSistema);
+        }
+        if (usuarioSistema != null) {
+            properties.setProperty("db.user", usuarioSistema);
+        }
+        if (contraseniaSistema != null) {
+            properties.setProperty("db.password", contraseniaSistema);
+        }
+        if (driverSistema != null) {
+            properties.setProperty("db.driver", driverSistema);
+        }
+        if (opcionesSistema != null) {
+            properties.setProperty("db.options", opcionesSistema);
+        }
+
         return properties;
     }
 
     public static Connection abrirConexionBD() {
         Properties properties = cargarPropiedades();
-        String URL_CONEXION = properties.getProperty("db.url") + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        String URL_CONEXION = properties.getProperty("db.url");
         String USUARIO = properties.getProperty("db.user");
         String CONTRASENIA = properties.getProperty("db.password");
+        String DRIVER_CONFIG = properties.getProperty("db.driver", DRIVER);
+
+        String opcionesPersonalizadas = properties.getProperty("db.options");
+        if (URL_CONEXION != null && opcionesPersonalizadas != null && !opcionesPersonalizadas.isBlank()) {
+            String separador = URL_CONEXION.contains("?") ? "&" : "?";
+            URL_CONEXION = URL_CONEXION + separador + opcionesPersonalizadas;
+        } else if (URL_CONEXION != null && URL_CONEXION.startsWith("jdbc:mysql") && !URL_CONEXION.contains("?")) {
+            URL_CONEXION = URL_CONEXION + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        }
 
         try {
-            Class.forName(DRIVER);
+            Class.forName(DRIVER_CONFIG);
 
             if (CONEXION == null || CONEXION.isClosed()) {
                 CONEXION = DriverManager.getConnection(URL_CONEXION, USUARIO, CONTRASENIA);
