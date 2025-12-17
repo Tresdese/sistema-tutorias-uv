@@ -68,12 +68,11 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     private void onVolver(ActionEvent event) {
         cerrarVentana(event);
     }
-/*
+
     @FXML
     private void onResponder(ActionEvent event) {
         responderReporte();
     }
-*/
     @FXML
     private void onCancelar(ActionEvent event) {
         cerrarVentana(event);
@@ -126,6 +125,49 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         cbEstado.setDisable(!habilitar);
         cbPeriodo.setDisable(!habilitar);
         cbCoordinador.setDisable(!habilitar);
+    }
+
+    private void responderReporte() {
+        if (reporteEnEdicion == null) {
+            Utilidades.mostrarAlertaSimple("Sin reporte seleccionado",
+                    "No hay un reporte general para responder.",
+                    Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLRespuestaReporteGeneral.fxml"));
+            Parent vista = loader.load();
+            FXMLResponderReporteGeneralController controller = loader.getController();
+            controller.inicializarReporte(reporteEnEdicion);
+
+            Stage escenario = new Stage();
+            escenario.setScene(new Scene(vista));
+            escenario.setTitle("Responder Reporte General");
+            escenario.initModality(Modality.APPLICATION_MODAL);
+            escenario.showAndWait();
+
+            if (controller.isRespuestaGuardada()) {
+                cbEstado.setValue(reporteEnEdicion.getEstado());
+            }
+
+        } catch (IOException e) {
+            LOGGER.error("Error al abrir la ventana para responder un reporte general", e);
+            Utilidades.mostrarAlertaSimple("Error",
+                    "No se pudo abrir la ventana de respuesta del reporte general: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+        } catch (NullPointerException ex) {
+            LOGGER.error("Error al responder el reporte general", ex);
+            Utilidades.mostrarAlertaSimple("Error",
+                    "No se pudo abrir la ventana de respuesta del reporte general: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al responder el reporte general", e);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+        }
     }
 
     private void guardarReporteGeneral() {
@@ -225,40 +267,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         }
         return respuesta;
     }
-/*
-    private void responderReporte() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(
-                    "/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLRespuestaReporteGeneral.fxml"));
-            Parent vista = loader.load();
-            FXMLRespuestaReporteGeneralController controller = loader.getController();
-            controller.inicializarParaEdicion(reporteEnEdicion);
-
-            Stage escenario = new Stage();
-            escenario.setScene(new Scene(vista));
-            escenario.setTitle("Responder Reporte General");
-            escenario.initModality(Modality.APPLICATION_MODAL);
-            escenario.showAndWait();
-
-        } catch (IOException e) {
-            LOGGER.error("Error al abrir la ventana para responder un reporte general", e);
-            Utilidades.mostrarAlertaSimple("Error",
-                    "No se pudo abrir la ventana de respuesta del reporte general: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-            e.printStackTrace();
-        } catch (NullPointerException ex) {
-            LOGGER.error("Error al responder el reporte general", ex);
-            Utilidades.mostrarAlertaSimple("Error",
-                    "No se pudo abrir la ventana de respuesta del reporte general: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
-        } catch (Exception e) {
-            LOGGER.error("Error inesperado al responder el reporte general", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-        }
-    }
-*/
     public void inicializarParaEdicion(ReporteGeneral reporte) {
         this.reporteEnEdicion = reporte;
 
