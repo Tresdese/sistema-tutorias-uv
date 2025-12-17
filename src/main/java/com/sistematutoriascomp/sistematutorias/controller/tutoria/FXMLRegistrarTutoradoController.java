@@ -12,7 +12,6 @@ import com.sistematutoriascomp.sistematutorias.model.dao.CarreraDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.TutorDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.TutoradoDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Carrera;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
@@ -34,7 +33,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
     @FXML private TextField txtCorreo;
     @FXML private TextField txtSemestre;
     @FXML private ComboBox<String> cbProgramaEducativo;
-    @FXML private ComboBox<String> cbTutor;
     @FXML private Button btnVolver;
     @FXML private Button btnCancelar;
     @FXML private Button btnGuardar;
@@ -73,27 +71,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
 
     private void llenarCombos() {
         llenarComboBoxCarreras();
-        llenarComboBoxTutores();
-    }
-
-    private void llenarComboBoxTutores() {
-        List<Tutor> tutores;
-        try {
-            tutores = tutorDAO.getAllTutors();
-                for (Tutor tutor : tutores) {
-                    cbTutor.getItems().add(tutor.getNombre());
-                }
-        } catch (SQLException ex) {
-            LOGGER.error("Error al obtener tutores de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar tutores: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
-        } catch (Exception e) {
-            LOGGER.error("Error inesperado al obtener tutores de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
-        }
     }
 
     private void llenarComboBoxCarreras() {
@@ -185,10 +162,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
         }
         if (cbProgramaEducativo.getSelectionModel().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El programa educativo es obligatorio", Alert.AlertType.WARNING);
-            respuesta = false;
-        }
-        if (cbTutor.getSelectionModel().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El tutor es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
         }
         return respuesta;
