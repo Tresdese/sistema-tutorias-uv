@@ -97,9 +97,23 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
                     private void manejarClickProblematica() {
                         AsistenciaRow data = getTableView().getItems().get(getIndex());
-                        if (data == null) {
+                        Tutoria sesionActual = cbSesiones.getValue(); 
+
+                        if (data == null || sesionActual == null) {
                             return;
                         }
+
+                        boolean asistenciaCerrada = AsistenciaImp.yaTieneAsistenciaRegistrada(sesionActual.getIdTutoria());
+
+                        if (asistenciaCerrada) {
+                            Utilidades.mostrarAlertaSimple(
+                                    "Registro cerrado",
+                                    "La asistencia ya fue registrada. No se pueden agregar más problemáticas.",
+                                    Alert.AlertType.WARNING
+                            );
+                            return;
+                        }
+
                         if (data.isAsistio()) {
                             abrirVentanaProblematica(data.getIdTutorado(), data.getNombreCompleto());
                         } else {
@@ -148,13 +162,35 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             limpiarTablaAsistencia();
             ocultarMensajeInfo();
             btnSubirEvidencia.setDisable(true);
-            btnRegistrar.setDisable(false); // por si acaso
+            btnRegistrar.setDisable(false);
             return;
         }
 
         cargarAlumnos();
-        cargarEstadoEvidencia(nuevaSesion.getIdTutoria());
-        configurarEstadoBotonRegistrar(nuevaSesion.getIdTutoria());
+        configurarEstadoBotones(nuevaSesion.getIdTutoria());
+    }
+
+    private void configurarEstadoBotones(int idTutoria) {
+        boolean yaTieneAsistencia = AsistenciaImp.yaTieneAsistenciaRegistrada(idTutoria);
+
+        btnRegistrar.setDisable(yaTieneAsistencia);
+
+        try {
+            boolean tieneEvidencia = TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
+
+            if (tieneEvidencia) {
+                btnSubirEvidencia.setDisable(true);
+                mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
+            } else if (yaTieneAsistencia) {
+                btnSubirEvidencia.setDisable(false);
+                ocultarMensajeInfo();
+            } else {
+                btnSubirEvidencia.setDisable(true);
+                ocultarMensajeInfo();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void configurarEstadoBotonRegistrar(int idTutoria) {

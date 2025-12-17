@@ -11,13 +11,17 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class TutoriaDAO {
+    private static final String SQL_INSERT_TUTORIA = "INSERT INTO tutoria (idTutor, idPeriodo, fecha, hora_inicio) VALUES (?, ?, ?, ?)";
+    private static final String SQL_COMPROBAR_TUTORIA_REGISTRADA = "SELECT idTutoria FROM tutoria WHERE idTutor = ? AND fecha = ?";
+    private static final String SQL_SUBIR_EVIDENCIA = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
+    private static final String SQL_COMPROBAR_EXISTENCIA_EVIDENCIA = "SELECT idTutoria FROM tutoria WHERE idTutoria = ? AND evidencia IS NOT NULL";
+
     public static int registrarTutoria(Tutoria tutoria) throws SQLException {
         int resultado = 0;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "INSERT INTO tutoria (idTutor, idPeriodo, fecha, hora_inicio) VALUES (?, ?, ?, ?)";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_INSERT_TUTORIA);
                 sentencia.setInt(1, tutoria.getIdTutor());
                 sentencia.setInt(2, tutoria.getIdPeriodo());
                 sentencia.setDate(3, Date.valueOf(tutoria.getFecha()));
@@ -38,8 +42,7 @@ public class TutoriaDAO {
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "SELECT idTutoria FROM tutoria WHERE idTutor = ? AND fecha = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_COMPROBAR_TUTORIA_REGISTRADA);
                 sentencia.setInt(1, idTutor);
                 sentencia.setDate(2, Date.valueOf(fecha));
                 ResultSet resultado = sentencia.executeQuery();
@@ -59,8 +62,7 @@ public class TutoriaDAO {
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SUBIR_EVIDENCIA);
                 sentencia.setBytes(1, evidencia);
                 sentencia.setInt(2, idTutoria);
 
@@ -78,8 +80,7 @@ public class TutoriaDAO {
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "SELECT idTutoria FROM tutoria WHERE idTutoria = ? AND evidencia IS NOT NULL";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_COMPROBAR_EXISTENCIA_EVIDENCIA);
                 sentencia.setInt(1, idTutoria);
                 ResultSet resultado = sentencia.executeQuery();
                 existe = resultado.next();
@@ -110,4 +111,3 @@ public class TutoriaDAO {
         return evidencia;
     }
 }
-

@@ -12,14 +12,16 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 public class ProblematicaDAO {
+
+    private static final String SQL_INSERT_PROBLEMATICA = "INSERT INTO problematica (idTutorado, idTutoria, titulo, descripcion, fecha, estatus) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+    
     public static boolean registrarProblematica(Problematica problematica) throws SQLException {
         boolean resultado = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "INSERT INTO problematica (idTutorado, idTutoria, titulo, descripcion, fecha, estatus) " +
-                                  "VALUES (?, ?, ?, ?, ?, ?)";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_INSERT_PROBLEMATICA);
                 sentencia.setInt(1, problematica.getIdTutorado());
                 sentencia.setInt(2, problematica.getIdTutoria());
                 sentencia.setString(3, problematica.getTitulo());
@@ -60,7 +62,6 @@ public class ProblematicaDAO {
                 ConexionBaseDatos.cerrarConexionBD();
             }
         }
-        
         return lista;
     }
     

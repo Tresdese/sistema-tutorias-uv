@@ -28,7 +28,6 @@ public class TutoriaImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al consultar fechas: " + ex.getMessage());
-            ex.printStackTrace();
         }
 
         return respuesta;
@@ -72,7 +71,6 @@ public class TutoriaImp {
             }
         } catch (SQLException ex) {
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
-            ex.printStackTrace();
         }
         return respuesta;
     }

@@ -11,18 +11,16 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
 
 public class FechaTutoriaDAO {
+    private static final String SQL_OBTENER_FECHAS_POR_PERIODO = "SELECT idFechaTutoria, idPeriodo, numeroSesion, fecha, titulo, descripcion "
+            + "FROM fechatutoria WHERE idPeriodo = ? ORDER BY numeroSesion ASC";
+
     public static ArrayList<FechaTutoria> obtenerFechasPorPeriodo(int idPeriodo) throws SQLException {
         ArrayList<FechaTutoria> fechas = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         
         if (conexion != null) {
             try {
-                String consulta = "SELECT idFechaTutoria, idPeriodo, numeroSesion, fecha, titulo, descripcion " +
-                                  "FROM fechatutoria " +
-                                  "WHERE idPeriodo = ? " +
-                                  "ORDER BY numeroSesion ASC";
-                
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_OBTENER_FECHAS_POR_PERIODO);
                 sentencia.setInt(1, idPeriodo);
                 ResultSet resultado = sentencia.executeQuery();
                 

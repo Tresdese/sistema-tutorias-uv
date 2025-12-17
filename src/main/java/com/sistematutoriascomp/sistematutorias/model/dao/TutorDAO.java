@@ -21,7 +21,9 @@ public class TutorDAO {
     private static final String SQL_SELECT_ALL = "SELECT * FROM tutor";
     private static final String SQL_SELECT_ALL_TUTORES_DISPONIBLES = "SELECT t.*, COUNT(tu.idTutorado) AS totalAlumnos FROM tutor t LEFT JOIN tutorado tu ON t.idTutor = tu.idTutor " +
                                                                                     "WHERE t.esActivo = 1 " +
-                                                                                    "GROUP BY t.idTutor, t.nombre, t.apellidoPaterno";
+                                                                                    "GROUP BY t.idTutor, t.nombre, t.apellidoPaterno";                                          
+    private static final String SQL_SELECT_ID_POR_NOMBRE = "SELECT idTutor FROM tutor WHERE nombre = ?";
+
 
     public boolean insertarTutor(Tutor tutor) throws SQLException {
         boolean resultado = false;
@@ -96,8 +98,7 @@ public class TutorDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT idTutor FROM tutor WHERE nombre = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SELECT_ID_POR_NOMBRE);
                 sentencia.setString(1, nombreTutor);
                 ResultSet resultado = sentencia.executeQuery();
 

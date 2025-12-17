@@ -11,13 +11,27 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class AsistenciaDAO {
+    private static final String SQL_OBTENER_SESIONES_POR_TUTOR = "SELECT idTutoria, fecha, hora_inicio FROM tutoria WHERE idTutor = ? AND idPeriodo = ? ORDER BY fecha DESC";
+    
+    private static final String SQL_OBTENER_TUTORADOS_POR_TUTOR_LEGACY = "SELECT t.idTutorado, t.matricula, "
+        + "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, "
+        + "t.semestre, "
+        + "asi.asistio "
+        + "FROM tutorado t "
+        + "INNER JOIN asignaciontutor a ON t.idTutorado = a.idTutorado "
+        + "LEFT JOIN asistencia asi ON (asi.idTutorado = t.idTutorado AND asi.idTutoria = ?) "
+        + "WHERE a.idTutor = ? AND a.idPeriodo = ?";
+        
+    private static final String SQL_REGISTRAR_ASISTENCIA = "INSERT INTO asistencia (idTutoria, idTutorado, asistio) VALUES (?, ?, ?) "
+        + "ON DUPLICATE KEY UPDATE asistio = VALUES(asistio)";
+    private static final String SQL_EXISTE_ASISTENCIA_POR_TUTORIA = "SELECT COUNT(*) AS total FROM asistencia WHERE idTutoria = ?";
+
     public static ArrayList<Tutoria> obtenerSesionesPorTutor(int idTutor, int idPeriodo) throws SQLException {
         ArrayList<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "SELECT idTutoria, fecha, hora_inicio FROM tutoria WHERE idTutor = ? AND idPeriodo = ? ORDER BY fecha DESC";
-                PreparedStatement ps = conexion.prepareStatement(consulta);
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_SESIONES_POR_TUTOR);
                 ps.setInt(1, idTutor);
                 ps.setInt(2, idPeriodo);
 
@@ -78,9 +92,7 @@ public class AsistenciaDAO {
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "INSERT INTO asistencia (idTutoria, idTutorado, asistio) VALUES (?, ?, ?) "
-                        + "ON DUPLICATE KEY UPDATE asistio = VALUES(asistio)";
-                PreparedStatement ps = conexion.prepareStatement(consulta);
+                PreparedStatement ps = conexion.prepareStatement(SQL_REGISTRAR_ASISTENCIA);
                 ps.setInt(1, idTutoria);
                 ps.setInt(2, idTutorado);
                 ps.setBoolean(3, asistio);
@@ -97,8 +109,7 @@ public class AsistenciaDAO {
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "SELECT COUNT(*) AS total FROM asistencia WHERE idTutoria = ?";
-                PreparedStatement ps = conexion.prepareStatement(consulta);
+                PreparedStatement ps = conexion.prepareStatement(SQL_EXISTE_ASISTENCIA_POR_TUTORIA);
                 ps.setInt(1, idTutoria);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {

@@ -9,14 +9,15 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class AutenticacionDAO {
-    public static Tutor verificarSesionTutor(String numeroPersonal, String password) throws SQLException {
+
+     private static final String SQL_VERIFICAR_SESION_TUTOR = "SELECT * FROM tutor WHERE numeroDePersonal = ? AND password = ?";
+
+     public static Tutor verificarSesionTutor(String numeroPersonal, String password) throws SQLException {
           Tutor tutor = null;
           Connection conexion = ConexionBaseDatos.abrirConexionBD();
           
           if (conexion != null) {
-                try {
-                     String consulta = "SELECT * FROM tutor WHERE numeroDePersonal = ? AND password = ?";
-                     PreparedStatement prepararSentencia = conexion.prepareStatement(consulta);
+               PreparedStatement prepararSentencia = conexion.prepareStatement(SQL_VERIFICAR_SESION_TUTOR);
                      prepararSentencia.setString(1, numeroPersonal);
                      prepararSentencia.setString(2, password);
                      
@@ -34,14 +35,9 @@ public class AutenticacionDAO {
                          tutor.setIdRol(resultado.getInt("idRol"));
                          tutor.setEsActivo(resultado.getBoolean("esActivo"));
                          tutor.setIdCarrera(resultado.getInt("idCarrera"));
-                     }
-                } catch (SQLException ex) {
-                     ex.printStackTrace();
-                     throw ex; 
-                } finally {
-                     ConexionBaseDatos.cerrarConexionBD();
-                }
+                    }
           }
+          
           return tutor;
      }
 }
