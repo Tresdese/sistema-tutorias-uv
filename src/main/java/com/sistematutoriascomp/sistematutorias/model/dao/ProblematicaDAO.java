@@ -1,19 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 public class ProblematicaDAO {
-    
     public static boolean registrarProblematica(Problematica problematica) throws SQLException {
         boolean resultado = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
@@ -35,5 +33,58 @@ public class ProblematicaDAO {
             }
         }
         return resultado;
+    }
+
+    public static List<Problematica> obtenerProblematicasPorFecha(int idFechaTutoria) throws SQLException {
+        List<Problematica> lista = new ArrayList<>();
+        Connection conexion = ConexionBaseDatos.abrirConexionBD();
+
+        if (conexion != null) {
+            try {
+                String consulta = "SELECT p.titulo, p.descripcion " +
+                                  "FROM problematica p " +
+                                  "INNER JOIN tutoria t ON p.idTutoria = t.idTutoria " +
+                                  "WHERE t.fecha = (SELECT fecha FROM fechatutoria WHERE idFechaTutoria = ?)";
+                
+                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                sentencia.setInt(1, idFechaTutoria);
+                ResultSet resultado = sentencia.executeQuery();
+                
+                while(resultado.next()){
+                    Problematica prob = new Problematica();
+                    prob.setTitulo(resultado.getString("titulo"));
+                    prob.setDescripcion(resultado.getString("descripcion"));
+                    lista.add(prob);
+                }
+            } finally {
+                ConexionBaseDatos.cerrarConexionBD();
+            }
+        }
+        
+        return lista;
+    }
+    
+    public static List<Problematica> obtenerProblematicasPorTutoria(int idTutoria) throws SQLException {
+        List<Problematica> lista = new ArrayList<>();
+        Connection conexion = ConexionBaseDatos.abrirConexionBD();
+        
+        if (conexion != null) {
+            try {
+                String consulta = "SELECT titulo, descripcion FROM problematica WHERE idTutoria = ?";
+                PreparedStatement ps = conexion.prepareStatement(consulta);
+                ps.setInt(1, idTutoria);
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    Problematica p = new Problematica();
+                    p.setTitulo(rs.getString("titulo"));
+                    p.setDescripcion(rs.getString("descripcion"));
+                    lista.add(p);
+                }
+            } finally {
+                ConexionBaseDatos.cerrarConexionBD();
+            }
+        }
+        return lista;
     }
 }

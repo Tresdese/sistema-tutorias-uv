@@ -1,28 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 import java.time.LocalDate;
 
-/**
- *
- * @author HP
- */
 public class FechaTutoria {
     private int idFechaTutoria;
     private int idPeriodo;
     private int numeroSesion;
+    private String titulo;
+    private String descripcion;
     private LocalDate fecha;
 
     public FechaTutoria() {
     }
-
-    public FechaTutoria(int idFechaTutoria, int idPeriodo, int numeroSesion, LocalDate fecha) {
+    
+    public FechaTutoria(int idFechaTutoria, int idPeriodo, int numeroSesion, String titulo, String descripcion, LocalDate fecha) {
         this.idFechaTutoria = idFechaTutoria;
         this.idPeriodo = idPeriodo;
         this.numeroSesion = numeroSesion;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
         this.fecha = fecha;
     }
 
@@ -50,6 +46,22 @@ public class FechaTutoria {
         this.numeroSesion = numeroSesion;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public LocalDate getFecha() {
         return fecha;
     }
@@ -60,6 +72,6 @@ public class FechaTutoria {
     
     @Override
     public String toString() {
-        return "Sesión " + numeroSesion + " - " + fecha.toString();
+        return "Sesión " + numeroSesion + " (" + fecha + ")";
     }
 }

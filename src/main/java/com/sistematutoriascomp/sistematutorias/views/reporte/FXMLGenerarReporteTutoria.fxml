@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="550.0" prefWidth="850.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.reporte.FXMLGenerarReporteTutoriaController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.reporte.FXMLGenerarReporteTutoriaController">
 
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

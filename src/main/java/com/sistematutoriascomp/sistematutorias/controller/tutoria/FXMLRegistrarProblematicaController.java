@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
 import java.net.URL;
@@ -23,12 +19,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class FXMLRegistrarProblematicaController implements Initializable {
-    @FXML
-    private TextField tfTitulo;
-    @FXML
-    private TextArea taDescripcion;
-    @FXML
-    private Label lbNombreAlumno;
+    @FXML private TextField tfTitulo;
+    @FXML private TextArea taDescripcion;
+    @FXML private Label lbNombreAlumno;
 
     private int idTutoria;
     private int idTutorado;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller;
 
 import java.io.IOException;
@@ -25,23 +21,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author HP
- */
 public class FXMLInicioSesionController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLInicioSesionController.class);
 
-    @FXML
-    private TextField tfUsuario;
-    @FXML
-    private PasswordField pfContrasenia;
-    @FXML
-    private Label lbErrorUsuario;
-    @FXML
-    private Label lbErrorContrasenia;
+    @FXML private TextField tfUsuario;
+    @FXML private PasswordField pfContrasenia;
+    @FXML private Label lbErrorUsuario;
+    @FXML private Label lbErrorContrasenia;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

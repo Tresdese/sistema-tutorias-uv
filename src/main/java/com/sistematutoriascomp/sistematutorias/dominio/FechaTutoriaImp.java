@@ -1,0 +1,48 @@
+package com.sistematutoriascomp.sistematutorias.dominio;
+
+import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+public class FechaTutoriaImp {
+    public static HashMap<String, Object> registrarFechaTutoria(FechaTutoria fechaTutoria) {
+        HashMap<String, Object> respuesta = new HashMap<>();
+        respuesta.put("error", true);
+
+        try {
+            int idPeriodo = Sesion.getIdPeriodoActual();
+            if (idPeriodo <= 0) {
+                idPeriodo = FechaTutoriaDAO.obtenerIdPeriodoActual();
+            }
+            if (idPeriodo <= 0) {
+                respuesta.put("mensaje", "No se encontró un periodo escolar activo en el sistema. Contacte al administrador.");
+                return respuesta;
+            }
+            fechaTutoria.setIdPeriodo(idPeriodo);
+            
+            boolean yaExiste = FechaTutoriaDAO.validarFechaRegistrada(idPeriodo, fechaTutoria.getNumeroSesion());
+            if (yaExiste) {
+                respuesta.put("mensaje", "La Sesión número " + fechaTutoria.getNumeroSesion() + " ya se encuentra registrada en este periodo.");
+                return respuesta;
+            }
+
+            boolean resultado = FechaTutoriaDAO.registrarFechaTutoria(fechaTutoria);
+            if (resultado) {
+                respuesta.put("error", false);
+                respuesta.put("mensaje", "La fecha de tutoría se registró correctamente.");
+            } else {
+                respuesta.put("mensaje", "No se pudo registrar la información.");
+            }
+        } catch (SQLException e) {
+            respuesta.put("mensaje", "Error de conexión a la base de datos: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            respuesta.put("mensaje", "Error inesperado al registrar: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return respuesta;
+    }
+}

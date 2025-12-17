@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Connection;
@@ -15,7 +11,6 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class AsistenciaDAO {
-
     public static ArrayList<Tutoria> obtenerSesionesPorTutor(int idTutor, int idPeriodo) throws SQLException {
         ArrayList<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
@@ -47,19 +42,18 @@ public class AsistenciaDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT t.idTutorado, t.matricula, "
+                String consulta = "SELECT DISTINCT t.idTutorado, t.matricula, "
                         + "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, "
                         + "t.semestre, "
                         + "asi.asistio "
                         + "FROM tutorado t "
                         + "INNER JOIN asignaciontutor a ON t.idTutorado = a.idTutorado "
                         + "LEFT JOIN asistencia asi ON (asi.idTutorado = t.idTutorado AND asi.idTutoria = ?) "
-                        + "WHERE a.idTutor = ? AND a.idPeriodo = ?";
+                        + "WHERE a.idTutor = ? AND t.esActivo = 1";
 
                 PreparedStatement ps = conexion.prepareStatement(consulta);
                 ps.setInt(1, idTutoria);
                 ps.setInt(2, idTutor);
-                ps.setInt(3, idPeriodo);
 
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
@@ -116,5 +110,4 @@ public class AsistenciaDAO {
         }
         return existe;
     }
-
 }

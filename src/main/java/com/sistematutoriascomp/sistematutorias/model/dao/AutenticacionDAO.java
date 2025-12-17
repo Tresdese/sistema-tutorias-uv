@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Connection;
@@ -12,12 +8,7 @@ import java.sql.SQLException;
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
-/**
- *
- * @author HP
- */
 public class AutenticacionDAO {
-
     public static Tutor verificarSesionTutor(String numeroPersonal, String password) throws SQLException {
           Tutor tutor = null;
           Connection conexion = ConexionBaseDatos.abrirConexionBD();
@@ -41,7 +32,7 @@ public class AutenticacionDAO {
                          tutor.setCorreo(resultado.getString("correo"));
                          tutor.setPassword(resultado.getString("password"));
                          tutor.setIdRol(resultado.getInt("idRol"));
-                         tutor.setActivo(resultado.getBoolean("esActivo"));
+                         tutor.setEsActivo(resultado.getBoolean("esActivo"));
                          tutor.setIdCarrera(resultado.getInt("idCarrera"));
                      }
                 } catch (SQLException ex) {

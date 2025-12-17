@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Connection;
@@ -15,7 +11,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class TutoriaDAO {
-
     public static int registrarTutoria(Tutoria tutoria) throws SQLException {
         int resultado = 0;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
@@ -93,6 +88,26 @@ public class TutoriaDAO {
             }
         }
         return existe;
+    }
+    
+    public static byte[] obtenerEvidencia(int idTutoria) throws SQLException {
+        byte[] evidencia = null;
+        Connection conexion = ConexionBaseDatos.abrirConexionBD();
+        if (conexion != null) {
+            try {
+                String consulta = "SELECT evidencia FROM tutoria WHERE idTutoria = ?";
+                PreparedStatement ps = conexion.prepareStatement(consulta);
+                ps.setInt(1, idTutoria);
+                ResultSet rs = ps.executeQuery();
+                
+                if (rs.next()) {
+                    evidencia = rs.getBytes("evidencia");
+                }
+            } finally {
+                ConexionBaseDatos.cerrarConexionBD();
+            }
+        }
+        return evidencia;
     }
 }
 

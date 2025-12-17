@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller;
 
 import java.io.IOException;
@@ -18,40 +14,45 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-/**
- * FXML Controller class
- *
- * @author HP
- */
 public class FXMLMenuPrincipalController implements Initializable {
+    @FXML private Label lbNombreUsuario;
+    @FXML private Label lbRol;
+    @FXML private Button btnGestionarTutorias;
+    @FXML private Button btnGestionarReportes;
+    @FXML private Button btnGestionarUsuarios;
 
-    @FXML
-    private Button btnTutoria;
-    @FXML
-    private Button btnReporte;
-    @FXML
-    private Button btnPersonal;
-    @FXML
-    private Label lbInfoExtra;
-    @FXML
-    private Label lbNombreUsuario;
-    @FXML
-    private Button btnMenuEspecial;
-
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarPermisos();
         cargarDatosUsuario();
+    }
+    
+    private void configurarPermisos() {
+        String rol = Sesion.getRolActual();
+
+        btnGestionarTutorias.setVisible(false);
+        btnGestionarReportes.setVisible(false);
+        btnGestionarUsuarios.setVisible(false);
+
+        if ("ACADEMICO".equals(rol)) {
+            btnGestionarTutorias.setVisible(true);
+            btnGestionarReportes.setVisible(true);
+            btnGestionarUsuarios.setVisible(false);
+        } else if ("COORDINADOR".equals(rol)) {
+            btnGestionarTutorias.setVisible(true);
+            btnGestionarReportes.setVisible(true);
+            btnGestionarUsuarios.setVisible(false);
+        } else if ("ADMINISTRADOR".equals(rol)) {
+            btnGestionarTutorias.setVisible(true);
+            btnGestionarReportes.setVisible(true);
+            btnGestionarUsuarios.setVisible(true);
+        }
     }
 
     private void cargarDatosUsuario() {
         String rol = Sesion.getRolActual();
         String nombreCompleto = "";
 
-        // Verificamos el rol para saber de qué objeto sacar el nombre
         if ("ACADEMICO".equals(rol)) {
             Tutor tutor = Sesion.getTutorSesion();
             if (tutor != null) {
@@ -76,52 +77,22 @@ public class FXMLMenuPrincipalController implements Initializable {
         }
         
         lbNombreUsuario.setText(nombreCompleto);
+        lbRol.setText(rol);
     }
-
-    private void configurarPermisos() {
-        String rol = Sesion.getRolActual();
-
-        // Primero ocultamos todo por seguridad o lo dejamos visible y desactivamos
-        btnTutoria.setVisible(false);
-        btnReporte.setVisible(false);
-        btnPersonal.setVisible(false);
-
-        if ("ACADEMICO".equals(rol)) {
-            btnTutoria.setVisible(true);
-            btnReporte.setVisible(true);
-            btnPersonal.setVisible(false);
-            btnMenuEspecial.setVisible(false);
-        } else if ("COORDINADOR".equals(rol)) {
-            btnTutoria.setVisible(true);
-            btnReporte.setVisible(true);
-            btnPersonal.setVisible(false);
-            btnMenuEspecial.setVisible(true);
-        } else if ("ADMINISTRADOR".equals(rol)) {
-            btnTutoria.setVisible(false);
-            btnReporte.setVisible(false);
-            btnPersonal.setVisible(true);
-            btnMenuEspecial.setVisible(true);
-        }
+    
+    @FXML
+    private void clicGestionarTutorias(ActionEvent event) {
+        irPantalla("/FXMLMenuGestionarTutorias.fxml", "Menú Gestión de Tutorías", event);
     }
 
     @FXML
-    private void btnClicTutoria(ActionEvent event) {
-        irPantalla("/FXMLMenuTutoria.fxml", "Menú Tutoría", event);
+    private void clicGestionarReportes(ActionEvent event) {
+        irPantalla("/FXMLMenuGestionarReportes.fxml", "Menú Gestión de Reportes", event);
     }
-
+    
     @FXML
-    private void btnClicReporte(ActionEvent event) {
-        irPantalla("/FXMLMenuReporte.fxml", "Menú Reporte", event);
-    }
-
-    @FXML
-    private void btnClicPersonal(ActionEvent event) {
-        
-    }
-
-    @FXML
-    private void btnClicMenuEspecial(ActionEvent event) {
-        irPantalla("/FXMLMenuPersonal.fxml", "Menú Especial", event);
+    private void clicGestionarUsuarios(ActionEvent event) {
+        irPantalla("/FXMLMenuGestionarUsuarios.fxml", "Menú Gestión de Usuarios", event);
     }
 
     private void irPantalla(String ruta, String titulo, ActionEvent event) {
@@ -133,9 +104,9 @@ public class FXMLMenuPrincipalController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    
     @FXML
-    private void btnClicSalir(ActionEvent event) {
+    private void clicCerrarSesion(ActionEvent event) {
         Sesion.cerrarSesion(); 
         try {
             Utilidades.clicCerrarSesion(event);
@@ -145,5 +116,4 @@ public class FXMLMenuPrincipalController implements Initializable {
             e.printStackTrace();
         }
     }
-
 }

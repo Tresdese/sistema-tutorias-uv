@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.io.IOException;
@@ -38,57 +34,23 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class para el formulario de reporte general.
- */
 public class FXMLFormularioReporteGeneralController implements Initializable {
-
     private final static Logger LOGGER = LogManager.getLogger(FXMLFormularioReporteGeneralController.class);
 
-    @FXML
-    private Button btnVolver;
-
-    @FXML
-    private Button btnResponder;
-
-    @FXML
-    private TextField txtIdReporteGeneral;
-
-    @FXML
-    private TextField txtFechaGeneracion;
-
-    @FXML
-    private TextField txtTotalTutorados;
-
-    @FXML
-    private TextField txtTotalEstudiantesRiesgo;
-
-    @FXML
-    private TextField txtTotalTutores;
-
-    @FXML
-    private TextField txtPorcentajeAsistencia;
-
-    @FXML
-    private TextField txtTotalProblematicas;
-
-    @FXML
-    private Button btnCancelar;
-
-    @FXML
-    private Button btnGuardar;
-
-    @FXML
-    private Button btnEditar;
-
-    @FXML
-    private ComboBox cbEstado;
-
-    @FXML
-    private ComboBox cbPeriodo;
-
-    @FXML
-    private ComboBox cbCoordinador;
+    @FXML private Button btnVolver;
+    @FXML private Button btnResponder;
+    @FXML private Button btnCancelar;
+    @FXML private Button btnGuardar;
+    @FXML private Button btnEditar;
+    @FXML private TextField txtIdReporteGeneral;
+    @FXML private TextField txtFechaGeneracion;
+    @FXML private TextField txtTotalTutorados;
+    @FXML private TextField txtTotalTutores;
+    @FXML private TextField txtPorcentajeAsistencia;
+    @FXML private TextField txtTotalProblematicas;
+    @FXML private ComboBox cbEstado;
+    @FXML private ComboBox cbPeriodo;
+    @FXML private ComboBox cbCoordinador;
 
     private TutorDAO tutorDAO = new TutorDAO();
     private PeriodoDAO periodoDAO = new PeriodoDAO();
@@ -106,12 +68,12 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     private void onVolver(ActionEvent event) {
         cerrarVentana(event);
     }
-
+/*
     @FXML
     private void onResponder(ActionEvent event) {
         responderReporte();
     }
-
+*/
     @FXML
     private void onCancelar(ActionEvent event) {
         cerrarVentana(event);
@@ -157,7 +119,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
 
     private void habilitarEdicion(boolean habilitar) {
         txtTotalTutorados.setDisable(!habilitar);
-        txtTotalEstudiantesRiesgo.setDisable(!habilitar);
         txtTotalTutores.setDisable(!habilitar);
         txtPorcentajeAsistencia.setDisable(!habilitar);
         txtTotalProblematicas.setDisable(!habilitar);
@@ -194,7 +155,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         reporteGeneral.setFechaGeneracion(fechaGeneracion);
 
         reporteGeneral.setTotalTutorados(Integer.parseInt(txtTotalTutorados.getText().trim()));
-        reporteGeneral.setTotalEstudiantesRiesgo(Integer.parseInt(txtTotalEstudiantesRiesgo.getText().trim()));
         reporteGeneral.setTotalTutores(Integer.parseInt(txtTotalTutores.getText().trim()));
         reporteGeneral.setPorcentajeAsistencia(
                 BigDecimal.valueOf(Double.parseDouble(txtPorcentajeAsistencia.getText().trim())));
@@ -248,11 +208,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
                     Alert.AlertType.WARNING);
             respuesta = false;
         }
-        if (txtTotalEstudiantesRiesgo.getText().trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de estudiantes en riesgo es obligatorio",
-                    Alert.AlertType.WARNING);
-            respuesta = false;
-        }
         if (txtTotalTutores.getText().trim().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El total de tutores es obligatorio",
                     Alert.AlertType.WARNING);
@@ -270,7 +225,7 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         }
         return respuesta;
     }
-
+/*
     private void responderReporte() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(
@@ -303,7 +258,7 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
                     Alert.AlertType.ERROR);
         }
     }
-
+*/
     public void inicializarParaEdicion(ReporteGeneral reporte) {
         this.reporteEnEdicion = reporte;
 
@@ -318,7 +273,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         }
 
         txtTotalTutorados.setText(String.valueOf(reporte.getTotalTutorados()));
-        txtTotalEstudiantesRiesgo.setText(String.valueOf(reporte.getTotalEstudiantesRiesgo()));
         txtTotalTutores.setText(String.valueOf(reporte.getTotalTutores()));
         txtPorcentajeAsistencia.setText(
                 reporte.getPorcentajeAsistencia() != null ? reporte.getPorcentajeAsistencia().toPlainString() : "");

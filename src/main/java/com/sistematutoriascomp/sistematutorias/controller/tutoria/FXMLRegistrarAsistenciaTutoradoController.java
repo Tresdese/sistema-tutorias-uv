@@ -1,8 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
+
+import com.sistematutoriascomp.sistematutorias.dominio.AsistenciaImp;
+import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp;
+import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +15,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,38 +36,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import com.sistematutoriascomp.sistematutorias.dominio.AsistenciaImp;
-import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp;
-import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
-import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
-import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
-import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 public class FXMLRegistrarAsistenciaTutoradoController implements Initializable {
-
-    @FXML
-    private ComboBox<Tutoria> cbSesiones;
-    @FXML
-    private TableView<AsistenciaRow> tvAsistencia;
-    @FXML
-    private TableColumn<AsistenciaRow, String> colMatricula;
-    @FXML
-    private TableColumn<AsistenciaRow, String> colNombre;
-    @FXML
-    private TableColumn<AsistenciaRow, Integer> colSemestre;
-    @FXML
-    private TableColumn<AsistenciaRow, Boolean> colAsistio;
-    @FXML
-    private TableColumn<AsistenciaRow, Void> colAcciones;
-    @FXML
-    private Button btnRegistrar;
-    @FXML
-    private Button btnSubirEvidencia;
-    @FXML
-    private Label lbErrorSesion;
-    @FXML
-    private Label lbMensajeInfo;
+    @FXML private ComboBox<Tutoria> cbSesiones;
+    @FXML private TableView<AsistenciaRow> tvAsistencia;
+    @FXML private TableColumn<AsistenciaRow, String> colMatricula;
+    @FXML private TableColumn<AsistenciaRow, String> colNombre;
+    @FXML private TableColumn<AsistenciaRow, Integer> colSemestre;
+    @FXML private TableColumn<AsistenciaRow, Boolean> colAsistio;
+    @FXML private TableColumn<AsistenciaRow, Void> colAcciones;
+    @FXML private Button btnRegistrar;
+    @FXML private Button btnSubirEvidencia;
+    @FXML private Label lbErrorSesion;
+    @FXML private Label lbMensajeInfo;
 
     private ObservableList<AsistenciaRow> listaAlumnos;
 
@@ -425,7 +411,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             }
 
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/sistematutorias/vista/tutoria/FXMLRegistrarProblematica.fxml")
+                    getClass().getResource("/com/sistematutoriascomp/sistematutorias/views/tutoria/FXMLRegistrarProblematica.fxml")
             );
             Parent root = loader.load();
 
@@ -449,19 +435,12 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
     @FXML
     private void clicVolver(ActionEvent event) {
-        navegarAMenuTutoria(event);
-    }
-
-    private void navegarAMenuTutoria(ActionEvent event) {
         try {
-            Utilidades.goToWindow("/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
+            Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
             ex.printStackTrace();
-            Utilidades.mostrarAlertaSimple(
-                    "Error de navegación",
-                    "No se pudo cargar el menú principal.",
-                    Alert.AlertType.ERROR
-            );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

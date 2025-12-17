@@ -1,11 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.net.URL;
@@ -29,10 +21,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FXMLGenerarReporteTutoriaController implements Initializable {
-
     @FXML private ComboBox<Tutoria> cbSesiones;
     @FXML private Label lbTotalTutorados;
     @FXML private Label lbTotalAsistentes;
@@ -146,5 +139,13 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     private void cerrarVentana() {
         Stage stage = (Stage) btnGenerar.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    private void clicCerrarSesion(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicGuardar(ActionEvent event) {
     }
 }

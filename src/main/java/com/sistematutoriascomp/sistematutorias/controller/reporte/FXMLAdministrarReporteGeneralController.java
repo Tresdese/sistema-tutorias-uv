@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.io.IOException;
@@ -34,40 +30,22 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author super
- */
 public class FXMLAdministrarReporteGeneralController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLAdministrarReporteGeneralController.class);
 
-    @FXML
-    private Button btnVolver;
-    @FXML
-    private TextField txtBuscar;
-    @FXML
-    private Button btnRegistrar;
-    @FXML
-    private Button btnVerReporte;
-    @FXML
-    private TableView<ReporteGeneral> tblReportesGenerales;
-    @FXML
-    private TableColumn<?, ?> colIdReporteGeneral;
-    @FXML
-    private TableColumn<?, ?> colPeriodo;
-    @FXML
-    private TableColumn<?, ?> colFechaGeneracion;
-    @FXML
-    private TableColumn<?, ?> colEstado;
+    @FXML private Button btnVolver;
+    @FXML private Button btnRegistrar;
+    @FXML private Button btnVerReporte;
+    @FXML private TextField txtBuscar;
+    @FXML private TableView<ReporteGeneral> tblReportesGenerales;
+    @FXML private TableColumn<?, ?> colIdReporteGeneral;
+    @FXML private TableColumn<?, ?> colPeriodo;
+    @FXML private TableColumn<?, ?> colFechaGeneracion;
+    @FXML private TableColumn<?, ?> colEstado;
     
     private ReporteGeneralDAO reporteGeneralDAO;
     private ObservableList<ReporteGeneral> observableListReportesGenerales;
-    
-    /**
-     * Initializes the controller class.
-     */
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarDatosUsuario();
@@ -138,7 +116,13 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
     }
 
     private void irVolver(ActionEvent event) {
-        Utilidades.cerrarVentana(event);
+        try {
+            Utilidades.volverMenuGestionarReportes(event);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void abrirVentanaRegistrarReporteGeneral() {
@@ -182,7 +166,6 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
             escenario.initModality(Modality.APPLICATION_MODAL);
             escenario.showAndWait();
 
-            // Al cerrar el formulario de edición, recargar la tabla
             cargarInformacion();
         } catch (IOException e) {
             LOGGER.error("Error al abrir la ventana para editar un reporte general", e);

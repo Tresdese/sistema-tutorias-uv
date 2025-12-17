@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.reporte.FXMLAdministrarReporteGeneralController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.reporte.FXMLAdministrarReporteGeneralController">
 
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

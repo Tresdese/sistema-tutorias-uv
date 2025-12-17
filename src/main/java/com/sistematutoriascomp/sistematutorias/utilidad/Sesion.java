@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.utilidad;
 
 import java.sql.SQLException;
@@ -19,7 +15,6 @@ public class Sesion {
     private static RolDAO rolDAO = new RolDAO();
 
     private static Tutor tutorSesion;
-    // Aqui podrias agregar: private static Coordinador coordinadorSesion; para el futuro
     private static String rolActual; // "ACADEMICO", "COORDINADOR", "ADMINISTRADOR"
     private static int idPeriodoActual;
 
@@ -30,7 +25,6 @@ public class Sesion {
     public static void setTutorSesion(Tutor tutor) {
         tutorSesion = tutor;
 
-        // Si no hay tutor en sesión, limpiamos el rol y terminamos
         if (tutorSesion == null) {
             rolActual = null;
             return;
@@ -65,7 +59,6 @@ public class Sesion {
         idPeriodoActual = idPeriodo;
     }
     
-    // Método para limpiar al cerrar sesión
     public static void cerrarSesion() {
         tutorSesion = null;
         rolActual = null;

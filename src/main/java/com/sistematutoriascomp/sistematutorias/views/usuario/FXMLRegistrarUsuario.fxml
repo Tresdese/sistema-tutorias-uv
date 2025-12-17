@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="520.0" prefWidth="820.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.usuario.FXMLRegistrarAcademicoController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: linear-gradient(to bottom right, #F2F2F2, #E6E6E6);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sistematutoriascomp.sistematutorias.controller.usuario.FXMLRegistrarUsuarioController">
     <children>
         <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
@@ -14,7 +15,7 @@
                     <children>
                         <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Sistema de Tutorías" textFill="WHITE" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="btnVolver" onAction="#onVolver" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand; -fx-font-size: 13;" text="Volver" />
+                        <Button fx:id="btnVolver" onAction="#onVolver" style="-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 16; -fx-cursor: hand; -fx-font-size: 15;" text="Volver" />
                     </children>
                 </HBox>
             </top>
@@ -23,60 +24,60 @@
                     <children>
                         <VBox spacing="16.0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 18;">
                             <children>
-                                <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Registro de académico" textFill="#18529d" />
+                                <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Registro de académico" textFill="#18529d" />
                                 <Label style="-fx-font-size: 13px;" text="Capture los datos del académico para registrarlo en el sistema." textFill="#666666" />
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Número de personal:" />
+                                        <Label style="-fx-font-size: 13px;" text="Número de personal:" />
                                         <TextField fx:id="txtNumeroPersonal" prefWidth="300.0" promptText="Ej. A12345" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Nombre(s):" />
+                                        <Label style="-fx-font-size: 13px;" text="Nombre(s):" />
                                         <TextField fx:id="txtNombres" prefWidth="300.0" promptText="Ej. Juan Carlos" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Apellido paterno:" />
+                                        <Label style="-fx-font-size: 13px;" text="Apellido paterno:" />
                                         <TextField fx:id="txtApellidoPaterno" prefWidth="300.0" promptText="Ej. Hernández" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Apellido materno:" />
+                                        <Label style="-fx-font-size: 13px;" text="Apellido materno:" />
                                         <TextField fx:id="txtApellidoMaterno" prefWidth="300.0" promptText="Ej. García" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Contraseña:" />
+                                        <Label style="-fx-font-size: 13px;" text="Contraseña:" />
                                         <PasswordField fx:id="txtPassword" prefWidth="300.0" promptText="Ingrese contraseña" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Rol:" />
+                                        <Label style="-fx-font-size: 13px;" text="Rol:" />
                                         <ComboBox fx:id="cbRol" prefWidth="300.0" promptText="Seleccione un rol" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Correo institucional:" />
+                                        <Label style="-fx-font-size: 13px;" text="Correo institucional:" />
                                         <TextField fx:id="txtCorreoInstitucional" prefWidth="300.0" promptText="Ej. juan.hernandez@uv.mx" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label style="-fx-font-size: 14px;" text="Carrera:" />
+                                        <Label style="-fx-font-size: 13px;" text="Carrera:" />
                                         <ComboBox fx:id="cbCarrera" prefWidth="300.0" promptText="Seleccione una carrera" style="-fx-font-size: 13px;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                     <children>
-                                        <Button fx:id="btnCancelar" cancelButton="true" onAction="#onCancelar" style="-fx-background-color: transparent; -fx-border-color: #b0bec5; -fx-border-radius: 8; -fx-text-fill: #546e7a; -fx-padding: 6 16; -fx-cursor: hand; -fx-font-size: 13;" text="Cancelar" />
-                                        <Button fx:id="btnGuardar" defaultButton="true" onAction="#onGuardar" style="-fx-background-color: #18529d; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 6 20; -fx-cursor: hand; -fx-font-size: 13;" text="Guardar" />
+                                        <Button fx:id="btnCancelar" cancelButton="true" onAction="#onCancelar" style="-fx-background-color: transparent; -fx-border-color: #b0bec5; -fx-border-radius: 8; -fx-text-fill: #546e7a; -fx-padding: 6 16; -fx-cursor: hand; -fx-font-size: 15;" text="Cancelar" />
+                                        <Button fx:id="btnGuardar" defaultButton="true" onAction="#onGuardar" style="-fx-background-color: #18529d; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 6 20; -fx-cursor: hand; -fx-font-size: 15;" text="Guardar" />
                                     </children>
                                 </HBox>
                             </children>

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
 import java.io.IOException;
@@ -29,17 +25,11 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
 public class FXMLRegistrarHoraTutoriaController implements Initializable {
-
-    @FXML
-    private ComboBox<FechaTutoria> cbFechas;
-    @FXML
-    private Spinner<Integer> spHora;
-    @FXML
-    private Spinner<Integer> spMinuto;
-    @FXML
-    private Label lbErrorFecha;
-    @FXML
-    private Label lbErrorHora;
+    @FXML private ComboBox<FechaTutoria> cbFechas;
+    @FXML private Spinner<Integer> spHora;
+    @FXML private Spinner<Integer> spMinuto;
+    @FXML private Label lbErrorFecha;
+    @FXML private Label lbErrorHora;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,7 +63,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
         boolean valido = true;
         if (fechaSeleccionada == null) {
             lbErrorFecha.setText("Selecciona una fecha.");
-            lbErrorFecha.setVisible(true); // Asegurar visibilidad
+            lbErrorFecha.setVisible(true);
             valido = false;
         }
         if (hora == null || hora < 7 || hora > 20) {
@@ -120,16 +110,11 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
 
     private void irAtras(ActionEvent event) {
         try {
-            Utilidades.goToWindow("/FXMLMenuTutoria.fxml", event, "Menú Tutoría");
+            Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
             ex.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo volver al menú.", Alert.AlertType.ERROR);
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "Recurso no encontrado al volver al menú.", Alert.AlertType.ERROR);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            Utilidades.mostrarAlertaSimple("Error", "Error inesperado al volver al menú.", Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Sistematutorias extends Application {
-
     private static final Logger LOGGER = LogManager.getLogger(Sistematutorias.class);
 
     @Override
@@ -21,7 +20,7 @@ public class Sistematutorias extends Application {
         try {
             Parent vistaRaiz = Utilidades.loadFXML("/FXMLInicioSesion.fxml");
             Scene escena = new Scene(vistaRaiz);
-            primaryStage.setTitle("Iniciar Sesión");
+            primaryStage.setTitle("Iniciar sesión");
             primaryStage.setScene(escena);
             primaryStage.show();
         } catch (IOException e) {

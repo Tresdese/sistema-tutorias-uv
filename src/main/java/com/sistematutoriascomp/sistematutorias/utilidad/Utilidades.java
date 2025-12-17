@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.utilidad;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,15 +12,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- *
- * @author HP
- */
 public class Utilidades {
-
     private final static Logger LOGGER = LogManager.getLogger(Utilidades.class);
 
     private final static String RUTA_VISTAS = "/com/sistematutoriascomp/sistematutorias/views";
@@ -40,7 +33,6 @@ public class Utilidades {
         return FXMLLoader.load(Utilidades.class.getResource(RUTA_VISTAS + fxmlPath));
     }
 
-    // actualiza la ventana actual
     public static void goToWindow(String fxmlPath, ActionEvent event, String title) throws IOException, NullPointerException {
         Parent vista = loadFXML(fxmlPath);
         Scene escena = new Scene(vista);
@@ -51,7 +43,6 @@ public class Utilidades {
         escenario.show();
     }
 
-    // abre una nueva ventana modal
     public static void openModal(String fxmlPath, String title) throws IOException, NullPointerException {
         Parent vista = loadFXML(fxmlPath);
         Scene escena = new Scene(vista);
@@ -67,12 +58,29 @@ public class Utilidades {
         stage.close();
     }
 
-    public static void clicVolverMenuPrincipal(ActionEvent event) throws IOException {
+    public static void volverMenuPrincipal(ActionEvent event) throws IOException {
         goToWindow("/FXMLMenuPrincipal.fxml", event, "Menú Principal");
+    }
+    
+    public static void volverMenuGestionarReportes(ActionEvent event) throws IOException {
+        goToWindow("/FXMLMenuGestionarReportes.fxml", event, "Menú Reporte");
+    }
+    
+    public static void volverMenuGestionarTutorias(ActionEvent event) throws IOException {
+        goToWindow("/FXMLMenuGestionarTutorias.fxml", event, "Menú Gestión de Tutorías");
     }
 
     public static void clicCerrarSesion(ActionEvent event) throws IOException {
         goToWindow("/FXMLInicioSesion.fxml", event, "Iniciar Sesión");
     }
 
+    public static boolean mostrarAlertaConfirmacion(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        
+        return resultado.isPresent() && resultado.get() == ButtonType.OK;
+    }
 }

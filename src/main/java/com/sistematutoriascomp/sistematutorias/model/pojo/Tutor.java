@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
-/**
- *
- * @author HP
- */
 public class Tutor {
     private int idTutor;
     private String numeroDePersonal;
@@ -19,11 +11,12 @@ public class Tutor {
     private int idRol;
     private boolean esActivo;
     private int idCarrera;
+    private int cantidadTutorados;
 
     public Tutor() {
     }
 
-    public Tutor(int idTutor, String numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password, int idRol, boolean esActivo, int idCarrera) {
+    public Tutor(int idTutor, String numeroDePersonal, String nombre, String apellidoPaterno, String apellidoMaterno, String correo, String password, int idRol, boolean esActivo, int idCarrera, int cantidadTutorados) {
         this.idTutor = idTutor;
         this.numeroDePersonal = numeroDePersonal;
         this.nombre = nombre;
@@ -34,6 +27,7 @@ public class Tutor {
         this.idRol = idRol;
         this.esActivo = esActivo;
         this.idCarrera = idCarrera;
+        this.cantidadTutorados = cantidadTutorados;
     }
 
     public int getIdTutor() {
@@ -92,19 +86,19 @@ public class Tutor {
         this.password = password;
     }
 
-    public Integer getIdRol() {
+    public int getIdRol() {
         return idRol;
     }
 
-    public void setIdRol(Integer idRol) {
+    public void setIdRol(int idRol) {
         this.idRol = idRol;
     }
 
-    public boolean esActivo() {
+    public boolean isEsActivo() {
         return esActivo;
     }
 
-    public void setActivo(boolean esActivo) {
+    public void setEsActivo(boolean esActivo) {
         this.esActivo = esActivo;
     }
 
@@ -116,8 +110,16 @@ public class Tutor {
         this.idCarrera = idCarrera;
     }
 
+    public int getCantidadTutorados() {
+        return cantidadTutorados;
+    }
+
+    public void setCantidadTutorados(int cantidadTutorados) {
+        this.cantidadTutorados = cantidadTutorados;
+    }
+
     @Override
     public String toString() {
-        return "Tutor{" + "idTutor=" + idTutor + ", numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idRol=" + idRol + ", esActivo=" + esActivo + '}';
+        return "Tutor{" + "idTutor=" + idTutor + ", numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idRol=" + idRol + ", esActivo=" + esActivo + ", idCarrera=" + idCarrera + ", cantidadTutorados=" + cantidadTutorados + '}';
     }
 }

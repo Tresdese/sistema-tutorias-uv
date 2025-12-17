@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;
@@ -15,12 +11,13 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class TutoriaImp {
-
     public static HashMap<String, Object> obtenerFechasPeriodoActual() {
         HashMap<String, Object> respuesta = new HashMap<>();
+        
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
             ArrayList<FechaTutoria> fechas = FechaTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
+            
             if (!fechas.isEmpty()) {
                 respuesta.put("error", false);
                 respuesta.put("fechas", fechas);
@@ -42,14 +39,13 @@ public class TutoriaImp {
         respuesta.put("error", true);
 
         try {
-            // 1. Validar si ya registró esta fecha (Llamada limpia al DAO)
             if (TutoriaDAO.comprobarTutoriaRegistrada(tutoria.getIdTutor(), tutoria.getFecha())) {
                 respuesta.put("mensaje", "Ya has registrado un horario para esta fecha de tutoría.");
                 return respuesta;
             }
 
-            // 2. Insertar (Llamada limpia al DAO)
             int filas = TutoriaDAO.registrarTutoria(tutoria);
+            
             if (filas > 0) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "Horario registrado correctamente.");
@@ -66,6 +62,7 @@ public class TutoriaImp {
     public static HashMap<String, Object> subirEvidencia(int idTutoria, byte[] archivo) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
+        
         try {
             if (TutoriaDAO.subirEvidencia(idTutoria, archivo)) {
                 respuesta.put("error", false);

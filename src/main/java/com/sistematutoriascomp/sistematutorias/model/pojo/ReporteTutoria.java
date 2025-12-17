@@ -1,20 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 import java.time.LocalDateTime;
 
-/**
- *
- * @author HP
- */
 public class ReporteTutoria {
     private int idReporteTutoria;
     private int idTutoria;          
     private LocalDateTime fechaGeneracion;
     private String observaciones;
+    private String estatus;
+    private String respuesta;
+    private String nombreTutor;
 
     public ReporteTutoria() {
     }
@@ -57,5 +52,32 @@ public class ReporteTutoria {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
     
+    public String getFechaFormato() {
+        return fechaGeneracion != null ? fechaGeneracion.toString().replace("T", " ") : "";
+    }
+
+    public String getRespuesta() {
+        return respuesta;
+    }
+
+    public void setRespuesta(String respuesta) {
+        this.respuesta = respuesta;
+    }
+
+    public String getNombreTutor() {
+        return nombreTutor;
+    }
+
+    public void setNombreTutor(String nombreTutor) {
+        this.nombreTutor = nombreTutor;
+    }
 }

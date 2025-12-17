@@ -1,0 +1,298 @@
+package com.sistematutoriascomp.sistematutorias.controller.reporte;
+
+import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
+import com.sistematutoriascomp.sistematutorias.model.dao.ProblematicaDAO;
+import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
+import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
+
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class FXMLConsultarReporteTutoriaController implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(FXMLConsultarReporteTutoriaController.class);
+
+    @FXML private Label lbEstatus;
+    @FXML private Label lbFecha;
+    @FXML private Label lbTotalTutorados;
+    @FXML private Label lbTotalAsistentes;
+    @FXML private Label lbTotalInasistentes;
+    @FXML private Label lbTotalProblematicas;
+    @FXML private TextArea taObservaciones;
+    
+    @FXML private TableView<Problematica> tvProblematicas;
+    @FXML private TableColumn<Problematica, String> tcTitulo;
+    @FXML private TableColumn<Problematica, String> tcDescripcion;
+    @FXML private Button btnDescargarEvidencia;
+    
+    @FXML private VBox vbRespuesta;
+    @FXML private TextArea taRespuesta;
+    
+    @FXML private Button btnEnviar;
+    @FXML private Button btnResponder;
+    
+    private ReporteTutoria reporteActual;
+    private boolean esCoordinador = false;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        configurarTabla();
+    }    
+
+    private void configurarTabla() {
+        tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        
+        // --- CAMBIO IMPORTANTE: Usamos Label en lugar de Text ---
+        tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        
+        tcDescripcion.setCellFactory(param -> new TableCell<Problematica, String>() {
+            private final Label label = new Label();
+            
+            {
+                label.setWrapText(true); // Esto permite saltos de línea
+                // Vinculamos el ancho para que no se salga de la columna
+                label.prefWidthProperty().bind(tcDescripcion.widthProperty().subtract(10));
+                // Estilo para asegurar que se vea (Color negro, fuente correcta)
+                label.setStyle("-fx-text-fill: #333333; -fx-font-size: 14px; -fx-font-family: 'Segoe UI';");
+                label.setAlignment(Pos.TOP_LEFT); // Texto arriba a la izquierda
+            }
+            
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setTooltip(null);
+                } else {
+                    label.setText(item);
+                    setGraphic(label);
+                    
+                    // Tooltip por si el texto es excesivamente largo
+                    Tooltip tt = new Tooltip(item);
+                    tt.setMaxWidth(400);
+                    tt.setWrapText(true);
+                    setTooltip(tt);
+                }
+            }
+        });
+        
+        // Ajuste automático de altura de la tabla
+        tvProblematicas.prefHeightProperty().bind(
+            Bindings.size(tvProblematicas.getItems()).multiply(tvProblematicas.fixedCellSizeProperty()).add(30)
+        );
+    }
+
+    public void inicializarInformacion(ReporteTutoria reporte, boolean esCoordinador) {
+        this.reporteActual = reporte;
+        this.esCoordinador = esCoordinador;
+        cargarDatosUI();
+        cargarTotales(reporte.getIdTutoria());
+        cargarProblematicas(reporte.getIdTutoria());
+        configurarBotonEvidencia(reporte.getIdTutoria());
+    }
+    
+    private void cargarDatosUI() {
+        if (reporteActual != null) {
+            lbFecha.setText(reporteActual.getFechaFormato());
+            taObservaciones.setText(reporteActual.getObservaciones());
+            lbEstatus.setText(reporteActual.getEstatus());
+            
+            btnEnviar.setVisible(false);
+            btnEnviar.setManaged(false);
+            btnResponder.setVisible(false);
+            btnResponder.setManaged(false);
+
+            if (esCoordinador) {
+                if ("ENVIADO".equalsIgnoreCase(reporteActual.getEstatus())) {
+                    btnResponder.setVisible(true);
+                    btnResponder.setManaged(true);
+                    lbEstatus.setStyle("-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
+                } else if ("REVISADO".equalsIgnoreCase(reporteActual.getEstatus())) {
+                    lbEstatus.setStyle("-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
+                }
+            } else {
+                if ("BORRADOR".equalsIgnoreCase(reporteActual.getEstatus())) {
+                    btnEnviar.setVisible(true);
+                    btnEnviar.setManaged(true);
+                    lbEstatus.setStyle("-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
+                } else if ("REVISADO".equalsIgnoreCase(reporteActual.getEstatus())) {
+                    lbEstatus.setStyle("-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
+                } else {
+                    lbEstatus.setStyle("-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
+                }
+            }
+            
+            if (reporteActual.getRespuesta() != null && !reporteActual.getRespuesta().trim().isEmpty()) {
+                vbRespuesta.setVisible(true);
+                vbRespuesta.setManaged(true);
+                taRespuesta.setText(reporteActual.getRespuesta());
+            } else {
+                vbRespuesta.setVisible(false);
+                vbRespuesta.setManaged(false);
+            }
+        }
+    }
+
+    private void cargarTotales(int idTutoria) {
+        HashMap<String, Object> respuesta = ReporteTutoriaImp.cargarTotales(idTutoria);
+        if (!(boolean) respuesta.get("error")) {
+            HashMap<String, Integer> totales = (HashMap<String, Integer>) respuesta.get("totales");
+            lbTotalTutorados.setText(String.valueOf(totales.get("tutorados")));
+            lbTotalAsistentes.setText(String.valueOf(totales.get("asistentes")));
+            lbTotalInasistentes.setText(String.valueOf(totales.get("faltantes")));
+            lbTotalProblematicas.setText(String.valueOf(totales.get("problematicas")));
+        }
+    }
+    
+    private void cargarProblematicas(int idTutoria) {
+        try {
+            List<Problematica> lista = ProblematicaDAO.obtenerProblematicasPorTutoria(idTutoria);
+            tvProblematicas.setItems(FXCollections.observableArrayList(lista));
+        } catch (SQLException e) {
+            LOGGER.error("Error al cargar problemáticas del reporte", e);
+            Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar las problemáticas.", Alert.AlertType.ERROR);
+        }
+    }
+    
+    private void configurarBotonEvidencia(int idTutoria) {
+        try {
+            byte[] evidencia = TutoriaDAO.obtenerEvidencia(idTutoria);
+            if (evidencia != null && evidencia.length > 0) {
+                btnDescargarEvidencia.setDisable(false);
+                // --- CAMBIO: Agregamos el ojito aquí también ---
+                btnDescargarEvidencia.setText("Ver Evidencia");
+            } else {
+                btnDescargarEvidencia.setDisable(true);
+                btnDescargarEvidencia.setText("Sin Evidencia Adjunta");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            btnDescargarEvidencia.setDisable(true);
+        }
+    }
+    
+    @FXML
+    private void clicVerEvidencia(ActionEvent event) {
+        try {
+            byte[] evidencia = TutoriaDAO.obtenerEvidencia(reporteActual.getIdTutoria());
+            if (evidencia != null) {
+                File archivoTemporal = File.createTempFile("Evidencia_Reporte_" + reporteActual.getIdReporteTutoria() + "_", ".pdf");
+                archivoTemporal.deleteOnExit();
+                
+                try (FileOutputStream fos = new FileOutputStream(archivoTemporal)) {
+                    fos.write(evidencia);
+                }
+                
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(archivoTemporal);
+                } else {
+                    Utilidades.mostrarAlertaSimple("Error", "El sistema no soporta la apertura automática de archivos.", Alert.AlertType.ERROR);
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error al visualizar evidencia", e);
+            Utilidades.mostrarAlertaSimple("Error", "Ocurrió un error al intentar abrir el archivo de evidencia.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void clicEnviar(ActionEvent event) {
+        boolean confirmar = Utilidades.mostrarAlertaConfirmacion("Confirmar Envío", 
+                "No podrás hacer cambios después. ¿Continuar con el envío?");
+        if (confirmar) {
+            enviarReporte();
+        }
+    }
+    
+    private void enviarReporte() {
+        HashMap<String, Object> respuesta = ReporteTutoriaImp.enviarReporte(reporteActual.getIdReporteTutoria());
+        if (!(boolean) respuesta.get("error")) {
+            Utilidades.mostrarAlertaSimple("Reporte enviado correctamente", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
+            reporteActual.setEstatus("ENVIADO");
+            cargarDatosUI();
+        } else {
+            Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void clicResponder(ActionEvent event) {
+        abrirVentanaRespuesta();
+    }
+    
+    private void abrirVentanaRespuesta() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLResponderReporteTutoria.fxml"));
+            Parent root = loader.load();
+            FXMLResponderReporteTutoriaController controlador = loader.getController();
+            controlador.inicializarReporte(reporteActual);
+            
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Responder Reporte");
+            stage.setScene(scene);
+            stage.showAndWait();
+            
+            if (controlador.isRespuestaGuardada()) {
+                reporteActual.setEstatus("REVISADO");
+                reporteActual.setRespuesta(controlador.getRespuestaTexto());
+                cargarDatosUI(); 
+            }
+            
+        } catch (IOException ex) {
+            LOGGER.error("Error al abrir ventana de respuesta", ex);
+        }
+    }
+
+    @FXML
+    private void clicVolver(ActionEvent event) {
+        Utilidades.cerrarVentana(event);
+    }
+    
+    @FXML
+    private void clicCerrarSesion(ActionEvent event) {
+        Sesion.cerrarSesion(); 
+        try {
+            Utilidades.clicCerrarSesion(event);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

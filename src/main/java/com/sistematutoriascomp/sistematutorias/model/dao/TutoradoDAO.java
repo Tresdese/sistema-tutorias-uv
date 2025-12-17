@@ -1,21 +1,22 @@
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
+import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
-
 public class TutoradoDAO {
-
     private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, password, idCarrera, semestre, esActivo, idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idCarrera = ?, semestre = ?, esActivo = ?, idTutor = ? WHERE matricula = ?";
+    private static final String SQL_UPDATE_ASIGNAR_TUTOR = "UPDATE tutorado SET idTutor = ? WHERE idTutorado = ?";
     private static final String SQL_DELETE = "DELETE FROM tutorado WHERE idTutorado = ?";
     private static final String SQL_SELECT_BY_MATRICULA = "SELECT * FROM tutorado WHERE matricula = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM tutorado";
+    private static final String SQL_SELECT_ALL_POR_ASIGNAR = "SELECT * FROM tutorado WHERE idTutor IS NULL AND esActivo = 1";
 
     public boolean insertarTutorado(Tutorado tutorado) throws SQLException {
         boolean resultado = false;
@@ -115,5 +116,35 @@ public class TutoradoDAO {
         tutorado.setActivo(resultSet.getBoolean("esActivo"));
         tutorado.setIdTutor(resultSet.getInt("idTutor"));
         return tutorado;
+    }
+    
+    public List<Tutorado> obtenerTutoradosSinTutor() throws SQLException {
+        List<Tutorado> tutorados = new ArrayList<>();
+        
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                var statement = connection.prepareStatement(SQL_SELECT_ALL_POR_ASIGNAR);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    Tutorado tutorado = mapResultSetToTutorado(resultSet);
+                    tutorados.add(tutorado);
+                }
+            }
+        }
+        return tutorados;
+    }
+
+    public boolean asignarTutor(int idTutorado, int idTutor) throws SQLException {
+        boolean resultado = false;
+        
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                var statement = connection.prepareStatement(SQL_UPDATE_ASIGNAR_TUTOR);
+                statement.setInt(1, idTutor);
+                statement.setInt(2, idTutorado);
+                resultado = statement.executeUpdate() > 0;
+            }
+        }
+        return resultado;
     }
 }

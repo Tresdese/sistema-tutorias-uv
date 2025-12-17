@@ -1,4 +1,4 @@
-package com.sistematutoriascomp.sistematutorias.controller.usuario;
+package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -26,27 +26,20 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class FXMLRegistrarTutoradoController implements Initializable {
-
     private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarTutoradoController.class);
 
     @FXML private TextField txtMatricula;
     @FXML private TextField txtNombres;
     @FXML private TextField txtApellidoPaterno;
     @FXML private TextField txtApellidoMaterno;
+    @FXML private TextField txtCorreo;
+    @FXML private TextField txtSemestre;
     @FXML private ComboBox<String> cbProgramaEducativo;
+    @FXML private ComboBox<String> cbTutor;
     @FXML private Button btnVolver;
-    @FXML
-    private TextField txtCorreo;
-    @FXML
-    private PasswordField txtPassword;
-    @FXML
-    private TextField txtSemestre;
-    @FXML
-    private ComboBox<String> cbTutor;
-    @FXML
-    private Button btnCancelar;
-    @FXML
-    private Button btnGuardar;
+    @FXML private Button btnCancelar;
+    @FXML private Button btnGuardar;
+    @FXML private PasswordField txtPassword;
 
     private TutorDAO tutorDAO = new TutorDAO();
     private CarreraDAO carreraDAO = new CarreraDAO();

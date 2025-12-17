@@ -25,27 +25,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class FXMLRegistrarAcademicoController implements Initializable {
-
-    @FXML
-    private Button btnVolver;
+public class FXMLRegistrarUsuarioController implements Initializable {
+    private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarUsuarioController.class);
     
-    @FXML
-    private Button btnCancelar;
-
-    @FXML
-    private Button btnGuardar;
-
-
-    private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarAcademicoController.class);
-
+    @FXML private Button btnVolver;
+    @FXML private Button btnCancelar;
+    @FXML private Button btnGuardar;
     @FXML private TextField txtNumeroPersonal;
     @FXML private TextField txtNombres;
     @FXML private TextField txtApellidoPaterno;
     @FXML private TextField txtApellidoMaterno;
     @FXML private TextField txtCorreoInstitucional;
     @FXML private PasswordField txtPassword;
-
     @FXML private ComboBox<String> cbRol;
     @FXML private ComboBox<String> cbCarrera;
 
