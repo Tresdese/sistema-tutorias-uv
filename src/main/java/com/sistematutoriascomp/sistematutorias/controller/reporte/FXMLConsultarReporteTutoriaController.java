@@ -17,14 +17,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-import javafx.beans.binding.Bindings;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -34,9 +32,9 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -75,45 +73,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
 
     private void configurarTabla() {
         tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
-        
-        // --- CAMBIO IMPORTANTE: Usamos Label en lugar de Text ---
         tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        
-        tcDescripcion.setCellFactory(param -> new TableCell<Problematica, String>() {
-            private final Label label = new Label();
-            
-            {
-                label.setWrapText(true); // Esto permite saltos de línea
-                // Vinculamos el ancho para que no se salga de la columna
-                label.prefWidthProperty().bind(tcDescripcion.widthProperty().subtract(10));
-                // Estilo para asegurar que se vea (Color negro, fuente correcta)
-                label.setStyle("-fx-text-fill: #333333; -fx-font-size: 14px; -fx-font-family: 'Segoe UI';");
-                label.setAlignment(Pos.TOP_LEFT); // Texto arriba a la izquierda
-            }
-            
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                    setTooltip(null);
-                } else {
-                    label.setText(item);
-                    setGraphic(label);
-                    
-                    // Tooltip por si el texto es excesivamente largo
-                    Tooltip tt = new Tooltip(item);
-                    tt.setMaxWidth(400);
-                    tt.setWrapText(true);
-                    setTooltip(tt);
-                }
-            }
-        });
-        
-        // Ajuste automático de altura de la tabla
-        tvProblematicas.prefHeightProperty().bind(
-            Bindings.size(tvProblematicas.getItems()).multiply(tvProblematicas.fixedCellSizeProperty()).add(30)
-        );
     }
 
     public void inicializarInformacion(ReporteTutoria reporte, boolean esCoordinador) {
@@ -193,7 +153,6 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             byte[] evidencia = TutoriaDAO.obtenerEvidencia(idTutoria);
             if (evidencia != null && evidencia.length > 0) {
                 btnDescargarEvidencia.setDisable(false);
-                // --- CAMBIO: Agregamos el ojito aquí también ---
                 btnDescargarEvidencia.setText("Ver Evidencia");
             } else {
                 btnDescargarEvidencia.setDisable(true);

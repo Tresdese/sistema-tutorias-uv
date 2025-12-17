@@ -127,7 +127,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
             tutorado.setSemestre(Integer.parseInt(txtSemestre.getText()));
             tutorado.setIdCarrera(cbProgramaEducativo.getSelectionModel().getSelectedIndex() + 1);
             tutorado.setActivo(true);
-            tutorado.setIdTutor(cbTutor.getSelectionModel().getSelectedIndex() + 1);
     
             boolean registrado = tutoradoDAO.insertarTutorado(tutorado);
             if (registrado) {
@@ -203,6 +202,5 @@ public class FXMLRegistrarTutoradoController implements Initializable {
         txtCorreo.clear();
         txtSemestre.clear();
         cbProgramaEducativo.getSelectionModel().clearSelection();
-        cbTutor.getSelectionModel().clearSelection();
     }
 }

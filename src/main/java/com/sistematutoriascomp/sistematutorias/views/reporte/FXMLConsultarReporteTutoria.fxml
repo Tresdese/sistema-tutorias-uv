@@ -127,15 +127,17 @@
                                        </children>
                                     </HBox>
                                     
-                                    <TableView fx:id="tvProblematicas" fixedCellSize="110.0" prefHeight="150.0" style="-fx-font-size: 14; -fx-background-color: white; -fx-control-inner-background: white; -fx-table-cell-border-color: transparent;">
-                                        <columns>
-                                            <TableColumn fx:id="tcTitulo" prefWidth="200.0" text="Tipo / Título" />
-                                            <TableColumn fx:id="tcDescripcion" prefWidth="550.0" text="Descripción Detallada" />
-                                        </columns>
-                                        <columnResizePolicy>
-                                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                        </columnResizePolicy>
-                                    </TableView>
+                                    <TableView fx:id="tvProblematicas" 
+           prefHeight="200.0" 
+           style="-fx-font-size: 13px;">
+   <columns>
+      <TableColumn fx:id="tcTitulo" prefWidth="200.0" text="Tipo / Título" />
+      <TableColumn fx:id="tcDescripcion" prefWidth="550.0" text="Descripción Detallada" />
+   </columns>
+   <columnResizePolicy>
+      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+   </columnResizePolicy>
+</TableView>
                                  </children>
                               </VBox>
 
