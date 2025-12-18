@@ -3,7 +3,9 @@ package com.sistematutoriascomp.sistematutorias.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
@@ -15,8 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 public class FXMLMenuGestionarUsuariosController implements Initializable {
-
-    private static final Logger LOGGER = Logger.getLogger(FXMLMenuGestionarUsuariosController.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(FXMLMenuGestionarUsuariosController.class);
 
     @FXML
     private Button btnRegistrarUsuario;
@@ -42,11 +43,11 @@ public class FXMLMenuGestionarUsuariosController implements Initializable {
         try {
             Utilidades.openModal("/usuario/FXMLRegistrarUsuario.fxml", "Registrar Académico");
         } catch (IOException e) {
-            LOGGER.severe("Error al cambiar a la ventana de registro de usuario: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error al cambiar a la ventana de registro de usuario", e);
+            System.err.println("Error al cambiar a la ventana de registro de usuario: " + e.getMessage());
         } catch (Exception ex) {
-            LOGGER.severe("Error inesperado al cambiar a la ventana de registro de usuario: " + ex.getMessage());
-            ex.printStackTrace();
+            LOGGER.error("Error inesperado al cambiar a la ventana de registro de usuario", ex);
+            System.err.println("Error inesperado al cambiar a la ventana de registro de usuario: " + ex.getMessage());
         }
     }
 
@@ -55,9 +56,11 @@ public class FXMLMenuGestionarUsuariosController implements Initializable {
         try {
             Utilidades.volverMenuPrincipal(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú principal", ex);
+            System.err.println("Error al volver al menú principal: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú principal", e);
+            System.err.println("Error inesperado al volver al menú principal: " + e.getMessage());
         }
     }
 
@@ -67,9 +70,11 @@ public class FXMLMenuGestionarUsuariosController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

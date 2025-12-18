@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
@@ -15,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class FXMLMenuPrincipalController implements Initializable {
+
+    private static final Logger LOGGER = LogManager.getLogger(FXMLMenuPrincipalController.class);
 
     @FXML
     private Label lbNombreUsuario;
@@ -105,9 +110,11 @@ public class FXMLMenuPrincipalController implements Initializable {
         try {
             Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cambiar de ventana hacia {}", ruta, ex);
+            System.err.println("Error al cambiar de ventana: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cambiar de ventana hacia {}", ruta, e);
+            System.err.println("Error inesperado al cambiar de ventana: " + e.getMessage());
         }
     }
 
@@ -117,9 +124,11 @@ public class FXMLMenuPrincipalController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

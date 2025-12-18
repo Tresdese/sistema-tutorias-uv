@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,6 +41,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class FXMLRegistrarAsistenciaTutoradoController implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarAsistenciaTutoradoController.class);
 
     @FXML
     private ComboBox<Tutoria> cbSesiones;
@@ -201,7 +205,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 ocultarMensajeInfo();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error al configurar estado de los botones para la sesión {}", idTutoria, e);
+            System.err.println("Error al configurar estado de botones: " + e.getMessage());
         }
     }
 
@@ -295,7 +300,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error al habilitar subida de evidencia para la sesión {}", idTutoria, e);
+            System.err.println("Error al habilitar subida de evidencia: " + e.getMessage());
         }
     }
 
@@ -343,7 +349,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 return true;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error al verificar evidencia existente para la sesión {}", sesion.getIdTutoria(), e);
+            System.err.println("Error al verificar evidencia: " + e.getMessage());
         }
         return false;
     }
@@ -395,6 +402,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                     "Error al validar el archivo: " + e.getMessage(),
                     Alert.AlertType.ERROR
             );
+            LOGGER.error("Error al validar archivo PDF", e);
+            System.err.println("Error al validar archivo: " + e.getMessage());
             return false;
         }
 
@@ -428,6 +437,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                     "Error al leer el archivo: " + ex.getMessage(),
                     Alert.AlertType.ERROR
             );
+            LOGGER.error("Error al subir evidencia para la sesión {}", sesion.getIdTutoria(), ex);
+            System.err.println("Error al subir evidencia: " + ex.getMessage());
         }
     }
 
@@ -457,7 +468,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             escenario.showAndWait();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al abrir ventana de problemática para el alumno {}", nombreAlumno, ex);
+            System.err.println("Error al abrir ventana de problemática: " + ex.getMessage());
         }
     }
 
@@ -466,9 +478,11 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú de tutorías", ex);
+            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
+            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
         }
     }
 

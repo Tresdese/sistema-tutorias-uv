@@ -73,7 +73,7 @@ public class FXMLMenuGestionarReportesController implements Initializable {
             Utilidades.openModal("/reporte/FXMLGenerarReporteTutoria.fxml", "Generar Reporte de Tutoría");
         } catch (IOException ex) {
             LOGGER.error("Error al abrir la ventana para generar el reporte de tutoría", ex);
-            ex.printStackTrace();
+            System.err.println("Error al abrir la ventana para generar el reporte de tutoría: " + ex.getMessage());
             Utilidades.mostrarAlertaSimple(
                     "Error",
                     "No se pudo abrir la ventana para generar el reporte de tutoría.",
@@ -81,7 +81,7 @@ public class FXMLMenuGestionarReportesController implements Initializable {
             );
         } catch (Exception e) {
             LOGGER.error("Error inesperado al abrir la ventana para generar el reporte de tutoría", e);
-            e.printStackTrace();
+            System.err.println("Error inesperado al abrir la ventana para generar el reporte de tutoría: " + e.getMessage());
         }
     }
 
@@ -110,9 +110,11 @@ public class FXMLMenuGestionarReportesController implements Initializable {
         try {
             Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cambiar de ventana hacia {}", ruta, ex);
+            System.err.println("Error al cambiar de ventana: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cambiar de ventana hacia {}", ruta, e);
+            System.err.println("Error inesperado al cambiar de ventana: " + e.getMessage());
         }
     }
 
@@ -121,9 +123,11 @@ public class FXMLMenuGestionarReportesController implements Initializable {
         try {
             Utilidades.volverMenuPrincipal(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú principal", ex);
+            System.err.println("Error al volver al menú principal: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú principal", e);
+            System.err.println("Error inesperado al volver al menú principal: " + e.getMessage());
         }
     }
 
@@ -133,9 +137,11 @@ public class FXMLMenuGestionarReportesController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

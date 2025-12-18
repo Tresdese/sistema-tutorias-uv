@@ -99,6 +99,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             idTutorReporte = TutoriaDAO.obtenerIdTutorPorTutoria(reporte.getIdTutoria());
         } catch (SQLException e) {
             LOGGER.error("No se pudo obtener el tutor propietario de la tutoría {}", reporte.getIdTutoria(), e);
+            System.err.println("No se pudo obtener el tutor propietario de la tutoría: " + e.getMessage());
             idTutorReporte = null;
         }
         cargarDatosUI();
@@ -185,6 +186,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             }
         } catch (SQLException e) {
             LOGGER.error("Error al cargar problemáticas del reporte", e);
+            System.err.println("Error al cargar problemáticas del reporte: " + e.getMessage());
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar las problemáticas.", Alert.AlertType.ERROR);
         }
     }
@@ -200,7 +202,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                 btnDescargarEvidencia.setText("Sin Evidencia Adjunta");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al obtener evidencia para la tutoría {}", idTutoria, e);
+            System.err.println("Error al obtener evidencia: " + e.getMessage());
             btnDescargarEvidencia.setDisable(true);
         }
     }
@@ -225,6 +228,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             }
         } catch (Exception e) {
             LOGGER.error("Error al visualizar evidencia", e);
+            System.err.println("Error al visualizar evidencia: " + e.getMessage());
             Utilidades.mostrarAlertaSimple("Error", "Ocurrió un error al intentar abrir el archivo de evidencia.", Alert.AlertType.ERROR);
         }
     }
@@ -276,6 +280,10 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
 
         } catch (IOException ex) {
             LOGGER.error("Error al abrir ventana de respuesta", ex);
+            System.err.println("Error al abrir ventana de respuesta: " + ex.getMessage());
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al abrir ventana de respuesta", e);
+            System.err.println("Error inesperado al abrir ventana de respuesta: " + e.getMessage());
         }
     }
 
@@ -290,9 +298,11 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

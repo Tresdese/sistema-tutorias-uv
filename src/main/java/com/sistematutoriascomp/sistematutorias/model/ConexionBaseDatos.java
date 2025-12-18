@@ -7,17 +7,22 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class ConexionBaseDatos {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static Connection CONEXION = null;
+    private static final Logger LOGGER = LogManager.getLogger(ConexionBaseDatos.class);
 
     private static Properties cargarPropiedades() {
         Properties properties = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream("config.properties")) {
             properties.load(fileInputStream);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al cargar archivo de propiedades de BD", e);
+            System.err.println("Error al cargar propiedades de BD: " + e.getMessage());
         }
 
         String urlSistema = System.getProperty("db.url");
@@ -67,9 +72,11 @@ public class ConexionBaseDatos {
                 CONEXION = DriverManager.getConnection(URL_CONEXION, USUARIO, CONTRASENIA);
             }
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("Driver JDBC no encontrado: {}", DRIVER_CONFIG, e);
+            System.err.println("Driver JDBC no encontrado: " + e.getMessage());
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al abrir conexión a BD", e);
+            System.err.println("Error al abrir conexión a BD: " + e.getMessage());
         }
 
         return CONEXION;
@@ -81,7 +88,8 @@ public class ConexionBaseDatos {
                 CONEXION.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("Error al cerrar conexión a BD", e);
+            System.err.println("Error al cerrar conexión a BD: " + e.getMessage());
         } finally {
             CONEXION = null;
         }

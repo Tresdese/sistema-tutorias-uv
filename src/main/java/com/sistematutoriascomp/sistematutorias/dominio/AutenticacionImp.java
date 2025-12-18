@@ -29,13 +29,14 @@ public class AutenticacionImp {
                         System.out.println("ADVERTENCIA: No se encontró un periodo activo en la BD.");
                     }
                 } catch (SQLException exPeriodo) {
+                    LOGGER.error("Error al obtener el periodo actual: ", exPeriodo);
                     System.err.println("Error al obtener periodo: " + exPeriodo.getMessage());
                 }
                 respuesta = true;
             }
         } catch (SQLException ex) {
             LOGGER.error("Error al iniciar sesión del tutor: ", ex);
-            ex.printStackTrace();
+            System.err.println("Error al iniciar sesión del tutor: " + ex.getMessage());
         }
         return respuesta;
     }

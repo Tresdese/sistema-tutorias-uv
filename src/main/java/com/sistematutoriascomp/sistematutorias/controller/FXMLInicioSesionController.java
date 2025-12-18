@@ -121,7 +121,7 @@ public class FXMLInicioSesionController implements Initializable {
             escenario.show();
         } catch (IOException ex) {
             LOGGER.error("Error al abrir el menú principal", ex);
-            ex.printStackTrace();
+            System.err.println("Error al abrir el menú principal: " + ex.getMessage());
             Utilidades.mostrarAlertaSimple(
                     "Error",
                     "No se pudo abrir el menú principal.",

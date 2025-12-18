@@ -1,5 +1,12 @@
 package com.sistematutoriascomp.sistematutorias.dominio;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.dao.AsignacionTutorDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.TutorDAO;
@@ -8,13 +15,9 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
-import java.sql.SQLException;
-
-import java.util.HashMap;
-import java.util.List;
-
 public class AsignacionTutorImp {
-
+    private static final Logger LOGGER = LogManager.getLogger(AsignacionTutorImp.class);
+    
     public static HashMap<String, Object> obtenerListasParaAsignacion() {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
@@ -32,10 +35,12 @@ public class AsignacionTutorImp {
 
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión al cargar las listas: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error de base de datos al obtener listas para asignación", e);
+            System.err.println("Error de base de datos al obtener listas: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al obtener listas para asignación", e);
+            System.err.println("Error inesperado al obtener listas: " + e.getMessage());
         }
 
         return respuesta;
@@ -77,7 +82,8 @@ public class AsignacionTutorImp {
 
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de base de datos al asignar: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error de base de datos al asignar tutor {} a tutorado {}", tutor.getIdTutor(), tutorado.getIdTutorado(), e);
+            System.err.println("Error al asignar tutor: " + e.getMessage());
         }
 
         return respuesta;

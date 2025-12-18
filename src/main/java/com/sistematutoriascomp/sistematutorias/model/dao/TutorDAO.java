@@ -1,15 +1,14 @@
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
-import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class TutorDAO {
 

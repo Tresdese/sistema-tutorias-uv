@@ -42,7 +42,7 @@ class TutorDAOTest extends BaseDaoTest {
         tutor.setCorreo("juan@example.com");
         tutor.setPassword("pwd");
         tutor.setIdRol(1);
-        tutor.setActivo(true);
+        tutor.setEsActivo(true);
         tutor.setIdCarrera(2);
         return tutor;
     }

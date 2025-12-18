@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
@@ -19,6 +22,7 @@ public class TutoriaDAO {
     private static final String SQL_COMPROBAR_EXISTENCIA_EVIDENCIA = "SELECT idTutoria FROM tutoria WHERE idTutoria = ? AND evidencia IS NOT NULL";
     private static final String SQL_OBTENER_ID_TUTOR = "SELECT idTutor FROM tutoria WHERE idTutoria = ?";
     private static final String SQL_OBTENER_EVIDENCIA_POR_TUTORIA = "SELECT evidencia FROM tutoria WHERE idTutoria = ?";
+    private static final Logger LOGGER = LogManager.getLogger(TutoriaDAO.class);
 
     public static int registrarTutoria(Tutoria tutoria) throws SQLException {
         int resultado = 0;
@@ -32,7 +36,8 @@ public class TutoriaDAO {
                 sentencia.setTime(4, Time.valueOf(tutoria.getHoraInicio()));
                 resultado = sentencia.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Error al registrar tutoría", e);
+                System.err.println("Error al registrar tutoría: " + e.getMessage());
                 throw e;
             } finally {
                 ConexionBaseDatos.cerrarConexionBD();
@@ -52,8 +57,13 @@ public class TutoriaDAO {
                 ResultSet resultado = sentencia.executeQuery();
                 registrada = resultado.next();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Error al comprobar tutoría registrada para tutor {} en fecha {}", idTutor, fecha, e);
+                System.err.println("Error al comprobar tutoría registrada: " + e.getMessage());
                 throw e;
+            } catch (Exception e) {
+                LOGGER.error("Error inesperado al comprobar tutoría registrada para tutor {} en fecha {}", idTutor, fecha, e);
+                System.err.println("Error inesperado al comprobar tutoría registrada: " + e.getMessage());
+                throw new SQLException("Error inesperado al comprobar tutoría registrada", e);
             } finally {
                 ConexionBaseDatos.cerrarConexionBD();
             }

@@ -1,11 +1,5 @@
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
-import com.sistematutoriascomp.sistematutorias.dominio.AsignacionTutorImp;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
-import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
-import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -14,6 +8,12 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.sistematutoriascomp.sistematutorias.dominio.AsignacionTutorImp;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class FXMLAsignarTutoradoController implements Initializable {
 
     private static final Logger LOGGER = LogManager.getLogger(FXMLAsignarTutoradoController.class);
+    
     @FXML
     private TableView<Tutorado> tvTutorados;
     @FXML
@@ -89,6 +90,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
             }
         } catch (Exception e) {
             LOGGER.error("Error al cargar tablas de asignación", e);
+            System.err.println("Error al cargar tablas de asignación: " + e.getMessage());
             Utilidades.mostrarAlertaSimple("Error", "Ocurrió un error al cargar la información.", Alert.AlertType.ERROR);
         }
     }
@@ -137,9 +139,11 @@ public class FXMLAsignarTutoradoController implements Initializable {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú de tutorías", ex);
+            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
+            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
         }
     }
 
@@ -149,9 +153,11 @@ public class FXMLAsignarTutoradoController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

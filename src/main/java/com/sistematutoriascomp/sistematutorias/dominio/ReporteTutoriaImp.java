@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.dao.ReporteTutoriaDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class ReporteTutoriaImp {
+    private static final Logger LOGGER = LogManager.getLogger(ReporteTutoriaImp.class);
 
     public static HashMap<String, Object> obtenerSesionesPendientes(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -27,6 +31,8 @@ public class ReporteTutoriaImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
+            LOGGER.error("Error al obtener sesiones pendientes para el tutor {}", idTutor, ex);
+            System.err.println("Error al obtener sesiones pendientes: " + ex.getMessage());
         }
         return respuesta;
     }
@@ -40,6 +46,8 @@ public class ReporteTutoriaImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al calcular totales.");
+            LOGGER.error("Error al cargar totales para la tutoría {}", idTutoria, ex);
+            System.err.println("Error al cargar totales: " + ex.getMessage());
         }
         return respuesta;
     }
@@ -57,6 +65,8 @@ public class ReporteTutoriaImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
+            LOGGER.error("Error al guardar reporte de tutoría", ex);
+            System.err.println("Error al guardar reporte: " + ex.getMessage());
         }
 
         return respuesta;
@@ -72,10 +82,12 @@ public class ReporteTutoriaImp {
             respuesta.put("reportes", listaReportes);
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error en base de datos al cargar lista: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error al obtener reportes por tutor {}", idTutor, e);
+            System.err.println("Error al obtener reportes por tutor: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al obtener reportes por tutor {}", idTutor, e);
+            System.err.println("Error inesperado al obtener reportes por tutor: " + e.getMessage());
         }
 
         return respuesta;
@@ -96,7 +108,8 @@ public class ReporteTutoriaImp {
             }
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error al enviar reporte {}", idReporte, e);
+            System.err.println("Error al enviar reporte: " + e.getMessage());
         }
 
         return respuesta;
@@ -114,7 +127,8 @@ public class ReporteTutoriaImp {
 
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error al obtener reportes por periodo {}", idPeriodo, e);
+            System.err.println("Error al obtener reportes por periodo: " + e.getMessage());
         }
         return respuesta;
     }
@@ -135,7 +149,8 @@ public class ReporteTutoriaImp {
 
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error al responder reporte {}", idReporte, e);
+            System.err.println("Error al responder reporte: " + e.getMessage());
         }
         return respuesta;
     }
@@ -150,10 +165,12 @@ public class ReporteTutoriaImp {
             respuesta.put("reportes", listaReportes);
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error en base de datos al cargar lista filtrada: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error al obtener reportes por tutor {} y periodo {}", idTutor, idPeriodo, e);
+            System.err.println("Error al obtener reportes por tutor y periodo: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al obtener reportes por tutor {} y periodo {}", idTutor, idPeriodo, e);
+            System.err.println("Error inesperado al obtener reportes por tutor y periodo: " + e.getMessage());
         }
 
         return respuesta;

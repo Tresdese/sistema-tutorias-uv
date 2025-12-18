@@ -1,12 +1,17 @@
 package com.sistematutoriascomp.sistematutorias.dominio;
 
-import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
-import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
-import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+
 public class FechaTutoriaImp {
+    private static final Logger LOGGER = LogManager.getLogger(FechaTutoriaImp.class);
 
     public static HashMap<String, Object> registrarFechaTutoria(FechaTutoria fechaTutoria) {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -38,10 +43,12 @@ public class FechaTutoriaImp {
             }
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión a la base de datos: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error de base de datos al registrar fecha de tutoría", e);
+            System.err.println("Error de base de datos al registrar fecha: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado al registrar: " + e.getMessage());
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al registrar fecha de tutoría", e);
+            System.err.println("Error inesperado al registrar fecha: " + e.getMessage());
         }
 
         return respuesta;

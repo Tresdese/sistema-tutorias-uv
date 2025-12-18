@@ -25,13 +25,13 @@ public class Sistematutorias extends Application {
             primaryStage.show();
         } catch (IOException e) {
             LOGGER.error("Error al iniciar la aplicación", e);
-            e.printStackTrace();
+            System.err.println("Error al iniciar la aplicación: " + e.getMessage());
         } catch (NullPointerException ex) {
             LOGGER.error("Recurso no encontrado al iniciar la aplicación", ex);
-            ex.printStackTrace();
+            System.err.println("Recurso no encontrado al iniciar la aplicación: " + ex.getMessage());
         } catch (Exception ex) {
             LOGGER.error("Error inesperado al iniciar la aplicación", ex);
-            ex.printStackTrace();
+            System.err.println("Error inesperado al iniciar la aplicación: " + ex.getMessage());
         }
     }
 

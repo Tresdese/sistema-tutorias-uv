@@ -1,5 +1,12 @@
 package com.sistematutoriascomp.sistematutorias.dominio;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.ProblematicaDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.ReporteGeneralDAO;
@@ -8,11 +15,8 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteGeneral;
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-
 public class ReporteGeneralImp {
+    private static final Logger LOGGER = LogManager.getLogger(ReporteGeneralImp.class);
 
     public static HashMap<String, Object> obtenerSesionesPorPeriodo(int idPeriodo) {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -24,6 +28,8 @@ public class ReporteGeneralImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al cargar sesiones: " + ex.getMessage());
+            LOGGER.error("Error al obtener sesiones por periodo {}", idPeriodo, ex);
+            System.err.println("Error al obtener sesiones por periodo: " + ex.getMessage());
         }
 
         return respuesta;
@@ -48,7 +54,8 @@ public class ReporteGeneralImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al calcular datos: " + ex.getMessage());
-            ex.printStackTrace();
+            LOGGER.error("Error al calcular datos de reporte general (periodo {}, fecha {})", idPeriodo, idFechaTutoria, ex);
+            System.err.println("Error al calcular datos de reporte general: " + ex.getMessage());
         }
         return respuesta;
     }
@@ -69,7 +76,8 @@ public class ReporteGeneralImp {
         } catch (SQLException ex) {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
-            ex.printStackTrace();
+            LOGGER.error("Error al guardar reporte general", ex);
+            System.err.println("Error al guardar reporte general: " + ex.getMessage());
         }
         return respuesta;
     }

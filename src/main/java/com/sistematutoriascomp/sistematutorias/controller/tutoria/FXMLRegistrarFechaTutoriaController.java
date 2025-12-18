@@ -1,11 +1,5 @@
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
-import com.sistematutoriascomp.sistematutorias.dominio.FechaTutoriaImp;
-import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
-import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
-import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
-import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -15,6 +9,12 @@ import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.sistematutoriascomp.sistematutorias.dominio.FechaTutoriaImp;
+import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,6 +92,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             LOGGER.error("Error al calcular la siguiente sesión", ex);
             tfNumeroSesion.setText("Error");
             Utilidades.mostrarAlertaSimple("Error de Conexión", "No se pudo calcular el número de sesión.", Alert.AlertType.ERROR);
+            System.err.println("Error al calcular la siguiente sesión: " + ex.getMessage());
         }
     }
 
@@ -113,6 +114,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         } catch (Exception ex) {
             LOGGER.error("Error inesperado al intentar registrar fecha de tutoría", ex);
             Utilidades.mostrarAlertaSimple("Error inesperado", "Ocurrió un error al procesar el registro.", Alert.AlertType.ERROR);
+            System.err.println("Error inesperado al registrar fecha de tutoría: " + ex.getMessage());
         }
     }
 
@@ -146,6 +148,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Registro exitoso", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             limpiarCampos();
         } else {
+            LOGGER.error("Error al registrar fecha de tutoría: {}", respuesta.get("mensaje"));
             Utilidades.mostrarAlertaSimple("Error al registrar", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
         }
     }
@@ -167,9 +170,11 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú de tutorías", ex);
+            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
+            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
         }
     }
 
@@ -179,9 +184,11 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

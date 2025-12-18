@@ -1,17 +1,20 @@
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ResourceBundle;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
 import com.sistematutoriascomp.sistematutorias.model.dao.PeriodoDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Periodo;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,9 +31,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class FXMLListadoReportesTutoriaController implements Initializable {
 
@@ -80,6 +80,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
             }
         } catch (Exception e) {
             LOGGER.error("Error al cargar periodos", e);
+            System.err.println("Error al cargar periodos: " + e.getMessage());
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar los periodos escolares.", Alert.AlertType.ERROR);
         }
     }
@@ -112,6 +113,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
             }
         } catch (Exception e) {
             LOGGER.error("Error al cargar la lista de reportes", e);
+            System.err.println("Error al cargar la lista de reportes: " + e.getMessage());
             Utilidades.mostrarAlertaSimple("Error", "Error al cargar la información.", Alert.AlertType.ERROR);
         }
     }
@@ -145,6 +147,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
 
         } catch (IOException ex) {
             LOGGER.error("Error al abrir detalles", ex);
+            System.err.println("Error al abrir detalles del reporte: " + ex.getMessage());
             Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de detalles.", Alert.AlertType.ERROR);
         }
     }
@@ -154,9 +157,11 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
         try {
             Utilidades.volverMenuGestionarReportes(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú de reportes", ex);
+            System.err.println("Error al volver al menú de reportes: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú de reportes", e);
+            System.err.println("Error inesperado al volver al menú de reportes: " + e.getMessage());
         }
     }
 
@@ -166,9 +171,11 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

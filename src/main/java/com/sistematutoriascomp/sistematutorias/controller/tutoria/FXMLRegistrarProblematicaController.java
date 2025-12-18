@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.dominio.ProblematicaImp;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
@@ -19,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class FXMLRegistrarProblematicaController implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarProblematicaController.class);
 
     @FXML
     private TextField tfTitulo;
@@ -84,6 +88,7 @@ public class FXMLRegistrarProblematicaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Éxito", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
+            LOGGER.error("Error al registrar problemática: " + respuesta.get("mensaje"));
             Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
         }
     }

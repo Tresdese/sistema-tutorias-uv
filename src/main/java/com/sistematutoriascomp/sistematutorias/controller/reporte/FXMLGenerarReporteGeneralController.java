@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,40 +37,25 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 public class FXMLGenerarReporteGeneralController implements Initializable {
+    private final static Logger LOGGER = LogManager.getLogger(FXMLGenerarReporteGeneralController.class);
 
-    @FXML
-    private ComboBox<Periodo> cbPeriodo;
-    @FXML
-    private ComboBox<FechaTutoria> cbNumeroSesion;
-    @FXML
-    private Button btnGenerar;
-    @FXML
-    private Button btnVolver;
-    @FXML
-    private Button btnCancelar;
-    @FXML
-    private Button btnFinalizar;
-    @FXML
-    private HBox hbBotonesEdicion;
-    @FXML
-    private VBox vbDatosReporte;
-    @FXML
-    private Label lbTotalTutorados;
-    @FXML
-    private Label lbTotalAsistentes;
-    @FXML
-    private Label lbTotalInasistentes;
-    @FXML
-    private Label lbTotalProblematicas;
-    @FXML
-    private TableView<Problematica> tvProblematicas;
-    @FXML
-    private TableColumn<Problematica, String> tcTitulo;
-    @FXML
-    private TableColumn<Problematica, String> tcDescripcion;
-    @FXML
-    private TextArea taComentariosGenerales;
-
+    @FXML private ComboBox<Periodo> cbPeriodo;
+    @FXML private ComboBox<FechaTutoria> cbNumeroSesion;
+    @FXML private Button btnGenerar;
+    @FXML private Button btnVolver;
+    @FXML private Button btnCancelar;
+    @FXML private Button btnFinalizar;
+    @FXML private HBox hbBotonesEdicion;
+    @FXML private VBox vbDatosReporte;
+    @FXML private Label lbTotalTutorados;
+    @FXML private Label lbTotalAsistentes;
+    @FXML private Label lbTotalInasistentes;
+    @FXML private Label lbTotalProblematicas;
+    @FXML private TableView<Problematica> tvProblematicas;
+    @FXML private TableColumn<Problematica, String> tcTitulo;
+    @FXML private TableColumn<Problematica, String> tcDescripcion;
+    @FXML private TextArea taComentariosGenerales;
+    
     private ReporteGeneral reporteCalculado;
 
     @Override
@@ -127,8 +115,9 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
             List<Periodo> lista = PeriodoDAO.obtenerTodosPeriodos();
             cbPeriodo.setItems(FXCollections.observableArrayList(lista));
         } catch (SQLException e) {
+            LOGGER.error("Error al cargar periodos.", e);
             Utilidades.mostrarAlertaSimple("Error", "Error al cargar periodos.", Alert.AlertType.ERROR);
-            e.printStackTrace();
+            System.err.println("Error al cargar periodos: " + e.getMessage());
         }
     }
 
@@ -228,9 +217,11 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
         try {
             Utilidades.volverMenuGestionarReportes(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú de reportes.", ex);
+            System.err.println("Error al volver al menú de reportes: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú de reportes.", e);
+            System.err.println("Error inesperado al volver al menú de reportes: " + e.getMessage());
         }
     }
 
@@ -240,9 +231,11 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al cerrar sesión.", ex);
+            System.err.println("Error al cerrar sesión: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al cerrar sesión.", e);
+            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
         }
     }
 }

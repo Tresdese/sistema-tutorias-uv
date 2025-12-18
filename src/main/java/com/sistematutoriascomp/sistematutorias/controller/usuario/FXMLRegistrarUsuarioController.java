@@ -111,14 +111,16 @@ public class FXMLRegistrarUsuarioController implements Initializable {
             }
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener roles de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "Error al cargar roles: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos", 
+                "Error al cargar roles: " + ex.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error al obtener roles: " + ex.getMessage());
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener roles de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado", 
+                "Ocurrió un error inesperado: " + e.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error inesperado al obtener roles: " + e.getMessage());
         }
     }
 
@@ -131,14 +133,16 @@ public class FXMLRegistrarUsuarioController implements Initializable {
             }
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener carreras de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "Error al cargar carreras: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos", 
+                "Error al cargar carreras: " + ex.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error al obtener carreras: " + ex.getMessage());
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener carreras de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado", 
+                "Ocurrió un error inesperado: " + e.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error inesperado al obtener carreras: " + e.getMessage());
         }
     }
 
@@ -200,16 +204,16 @@ public class FXMLRegistrarUsuarioController implements Initializable {
             }
         } catch (SQLException ex) {
             LOGGER.error("Error al registrar tutor en la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "Error al registrar tutor: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
-            ex.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error de base de datos", 
+                "Error al registrar tutor: " + ex.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error al registrar tutor: " + ex.getMessage());
         } catch (Exception e) {
             LOGGER.error("Error inesperado al registrar tutor", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-            e.printStackTrace();
+            Utilidades.mostrarAlertaSimple("Error inesperado", 
+                "Ocurrió un error inesperado: " + e.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error inesperado al registrar tutor: " + e.getMessage());
         }
     }
 }

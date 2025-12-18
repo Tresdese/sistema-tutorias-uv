@@ -93,14 +93,16 @@ public class FXMLRegistrarTutoradoController implements Initializable {
             }
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener carreras de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "Error al cargar carreras: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos", 
+                "Error al cargar carreras: " + ex.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error al obtener carreras: " + ex.getMessage());
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener carreras de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado", 
+                "Ocurrió un error inesperado: " + e.getMessage(), 
+                Alert.AlertType.ERROR);
+            System.err.println("Error inesperado al obtener carreras: " + e.getMessage());
         }
     }
 
@@ -134,13 +136,13 @@ public class FXMLRegistrarTutoradoController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error de base de datos",
                     "Error al registrar tutorado: " + ex.getMessage(),
                     Alert.AlertType.ERROR);
-            ex.printStackTrace();
+            System.err.println("Error al registrar tutorado: " + ex.getMessage());
         } catch (Exception e) {
             LOGGER.error("Error inesperado al registrar tutorado", e);
             Utilidades.mostrarAlertaSimple("Error inesperado",
                     "Ocurrió un error inesperado: " + e.getMessage(),
                     Alert.AlertType.ERROR);
-            e.printStackTrace();
+            System.err.println("Error inesperado al registrar tutorado: " + e.getMessage());
         }
 
     }

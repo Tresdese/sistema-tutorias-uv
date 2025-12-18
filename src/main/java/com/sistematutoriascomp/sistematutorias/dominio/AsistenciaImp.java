@@ -4,12 +4,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.dao.AsistenciaDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class AsistenciaImp {
+    private final static Logger LOGGER = LogManager.getLogger(AsistenciaImp.class);
 
     public static HashMap<String, Object> obtenerSesionesTutor(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -17,13 +21,16 @@ public class AsistenciaImp {
             int idPeriodo = Sesion.getIdPeriodoActual();
             ArrayList<Tutoria> lista = AsistenciaDAO.obtenerSesionesPorTutor(idTutor, idPeriodo);
             if (lista.isEmpty()) {
+                LOGGER.info("No se encontraron sesiones para el tutor con ID: {}", idTutor);
                 respuesta.put("error", true);
                 respuesta.put("mensaje", "No tienes sesiones registradas para el periodo actual.");
             } else {
+                LOGGER.info("Sesiones obtenidas para tutor ID " + idTutor + ": " + lista.size());
                 respuesta.put("error", false);
                 respuesta.put("sesiones", lista);
             }
         } catch (SQLException ex) {
+            LOGGER.error("Error al obtener sesiones para tutor: " + ex.getMessage());
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
         }
@@ -38,6 +45,7 @@ public class AsistenciaImp {
             respuesta.put("error", false);
             respuesta.put("tutorados", lista);
         } catch (SQLException ex) {
+            LOGGER.error("Error al obtener lista de asistencia: " + ex.getMessage());
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
         }
@@ -53,6 +61,7 @@ public class AsistenciaImp {
             }
             respuesta.put("mensaje", "Asistencia registrada correctamente.");
         } catch (SQLException ex) {
+            LOGGER.error("Error al guardar lista de asistencia: " + ex.getMessage());
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al guardar: " + ex.getMessage());
         }
@@ -63,6 +72,7 @@ public class AsistenciaImp {
         try {
             return AsistenciaDAO.existeAsistenciaParaTutoria(idTutoria);
         } catch (SQLException ex) {
+            LOGGER.error("Error al verificar asistencia: " + ex.getMessage());
             System.err.println("Error al verificar asistencia: " + ex.getMessage());
             return false;
         }

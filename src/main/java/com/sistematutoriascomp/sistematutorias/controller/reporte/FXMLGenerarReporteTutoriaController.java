@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
@@ -24,21 +27,15 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class FXMLGenerarReporteTutoriaController implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(FXMLGenerarReporteTutoriaController.class);
 
-    @FXML
-    private ComboBox<Tutoria> cbSesiones;
-    @FXML
-    private Label lbTotalTutorados;
-    @FXML
-    private Label lbTotalAsistentes;
-    @FXML
-    private Label lbTotalInasistentes;
-    @FXML
-    private Label lbTotalProblematicas;
-    @FXML
-    private TextArea taObservaciones;
-    @FXML
-    private Button btnGenerar;
+    @FXML private ComboBox<Tutoria> cbSesiones;
+    @FXML private Label lbTotalTutorados;
+    @FXML private Label lbTotalAsistentes;
+    @FXML private Label lbTotalInasistentes;
+    @FXML private Label lbTotalProblematicas;
+    @FXML private TextArea taObservaciones;
+    @FXML private Button btnGenerar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -91,6 +88,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             lbTotalInasistentes.setText(String.valueOf(totales.get("faltantes")));
             lbTotalProblematicas.setText(String.valueOf(totales.get("problematicas")));
         } else {
+            LOGGER.error("No se pudieron calcular los totales para la tutoría con ID {}", idTutoria);
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron calcular los totales.", Alert.AlertType.ERROR);
         }
     }
@@ -128,6 +126,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Reporte Generado", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
+            LOGGER.error("Error al guardar reporte: {}", respuesta.get("mensaje"));
             Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
         }
     }

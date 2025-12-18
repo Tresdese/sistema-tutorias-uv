@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
@@ -25,6 +28,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
 public class FXMLRegistrarHoraTutoriaController implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarHoraTutoriaController.class);
 
     @FXML
     private ComboBox<FechaTutoria> cbFechas;
@@ -124,9 +128,11 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOGGER.error("Error al volver al menú de tutorías", ex);
+            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
+            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
         }
     }
 }

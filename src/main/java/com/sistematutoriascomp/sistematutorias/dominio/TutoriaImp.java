@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.sistematutoriascomp.sistematutorias.model.dao.FechaTutoriaDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
@@ -11,6 +14,7 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class TutoriaImp {
+    private final static Logger LOGGER = LogManager.getLogger(TutoriaImp.class);
 
     public static HashMap<String, Object> obtenerFechasPeriodoActual() {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -27,8 +31,13 @@ public class TutoriaImp {
                 respuesta.put("mensaje", "No hay fechas de tutoría definidas por el coordinador para este periodo.");
             }
         } catch (SQLException ex) {
+            LOGGER.error("Error al consultar fechas de tutoría", ex);
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al consultar fechas: " + ex.getMessage());
+        } catch (Exception ex) {
+            LOGGER.error("Error inesperado al consultar fechas de tutoría", ex);
+            respuesta.put("error", true);
+            respuesta.put("mensaje", "Error inesperado: " + ex.getMessage());
         }
 
         return respuesta;
@@ -53,7 +62,11 @@ public class TutoriaImp {
                 respuesta.put("mensaje", "No se pudo registrar el horario.");
             }
         } catch (SQLException ex) {
+            LOGGER.error("Error al registrar horario de tutoría", ex);
             respuesta.put("mensaje", "Error de base de datos: " + ex.getMessage());
+        } catch (Exception ex) {
+            LOGGER.error("Error inesperado al registrar horario de tutoría", ex);
+            respuesta.put("mensaje", "Error inesperado: " + ex.getMessage());
         }
 
         return respuesta;
@@ -71,8 +84,13 @@ public class TutoriaImp {
                 respuesta.put("mensaje", "No se pudo guardar la evidencia.");
             }
         } catch (SQLException ex) {
+            LOGGER.error("Error al subir evidencia de tutoría", ex);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
+        } catch (Exception ex) {
+            LOGGER.error("Error inesperado al subir evidencia de tutoría", ex);
+            respuesta.put("mensaje", "Error inesperado: " + ex.getMessage());
         }
+
         return respuesta;
     }
 }

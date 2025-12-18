@@ -16,11 +16,11 @@ public abstract class BaseDaoTest {
 
     @BeforeAll
     static void setupProperties() {
-        System.setProperty("db.url", "jdbc:mysql://localhost:3306/tutoriatestbd");
-        System.setProperty("db.user", "root");
-        System.setProperty("db.password", "admin");
-        System.setProperty("db.driver", "com.mysql.cj.jdbc.Driver");
-        System.setProperty("db.options", "useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+        System.setProperty("db.url", "jdbc:h2:mem:tutoriatestbd;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1");
+        System.setProperty("db.user", "sa");
+        System.setProperty("db.password", "");
+        System.setProperty("db.driver", "org.h2.Driver");
+        System.setProperty("db.options", "");
     }
 
     @BeforeEach
