@@ -15,6 +15,7 @@ public class TutoriaDAO {
     private static final String SQL_COMPROBAR_TUTORIA_REGISTRADA = "SELECT idTutoria FROM tutoria WHERE idTutor = ? AND fecha = ?";
     private static final String SQL_SUBIR_EVIDENCIA = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
     private static final String SQL_COMPROBAR_EXISTENCIA_EVIDENCIA = "SELECT idTutoria FROM tutoria WHERE idTutoria = ? AND evidencia IS NOT NULL";
+    private static final String SQL_OBTENER_ID_TUTOR = "SELECT idTutor FROM tutoria WHERE idTutoria = ?";
 
     public static int registrarTutoria(Tutoria tutoria) throws SQLException {
         int resultado = 0;
@@ -109,5 +110,23 @@ public class TutoriaDAO {
             }
         }
         return evidencia;
+    }
+
+    public static Integer obtenerIdTutorPorTutoria(int idTutoria) throws SQLException {
+        Integer idTutor = null;
+        Connection conexion = ConexionBaseDatos.abrirConexionBD();
+        if (conexion != null) {
+            try {
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_ID_TUTOR);
+                ps.setInt(1, idTutoria);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    idTutor = rs.getInt("idTutor");
+                }
+            } finally {
+                ConexionBaseDatos.cerrarConexionBD();
+            }
+        }
+        return idTutor;
     }
 }

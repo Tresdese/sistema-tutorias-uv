@@ -1,13 +1,5 @@
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
-import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
-import com.sistematutoriascomp.sistematutorias.model.dao.ProblematicaDAO;
-import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
-import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
-import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
-import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
-import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -18,11 +10,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
+import com.sistematutoriascomp.sistematutorias.model.dao.ProblematicaDAO;
+import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
+import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
+import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
+
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -32,14 +37,11 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class FXMLConsultarReporteTutoriaController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLConsultarReporteTutoriaController.class);
@@ -65,6 +67,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     
     private ReporteTutoria reporteActual;
     private boolean esCoordinador = false;
+    private Integer idTutorReporte = null;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -73,12 +76,53 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
 
     private void configurarTabla() {
         tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        
         tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        
+        tcDescripcion.setCellFactory(param -> new TableCell<Problematica, String>() {
+            private final Label label = new Label();
+            
+            {
+                label.setWrapText(true); 
+
+                label.prefWidthProperty().bind(tcDescripcion.widthProperty().subtract(10));
+                // Estilo para asegurar que se vea (Color negro, fuente correcta)
+                label.setStyle("-fx-text-fill: #333333; -fx-font-size: 14px; -fx-font-family: 'Segoe UI';");
+                label.setAlignment(Pos.TOP_LEFT);
+            }
+            
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setTooltip(null);
+                } else {
+                    label.setText(item);
+                    setGraphic(label);
+                    
+                    Tooltip tt = new Tooltip(item);
+                    tt.setMaxWidth(400);
+                    tt.setWrapText(true);
+                    setTooltip(tt);
+                }
+            }
+        });
+        
+        tvProblematicas.prefHeightProperty().bind(
+            Bindings.size(tvProblematicas.getItems()).multiply(tvProblematicas.fixedCellSizeProperty()).add(30)
+        );
     }
 
     public void inicializarInformacion(ReporteTutoria reporte, boolean esCoordinador) {
         this.reporteActual = reporte;
         this.esCoordinador = esCoordinador;
+        try {
+            idTutorReporte = TutoriaDAO.obtenerIdTutorPorTutoria(reporte.getIdTutoria());
+        } catch (SQLException e) {
+            LOGGER.error("No se pudo obtener el tutor propietario de la tutoría {}", reporte.getIdTutoria(), e);
+            idTutorReporte = null;
+        }
         cargarDatosUI();
         cargarTotales(reporte.getIdTutoria());
         cargarProblematicas(reporte.getIdTutoria());
@@ -96,7 +140,18 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             btnResponder.setVisible(false);
             btnResponder.setManaged(false);
 
+            boolean esDelTutorSesion = false;
+            if (Sesion.getTutorSesion() != null && idTutorReporte != null) {
+                esDelTutorSesion = Sesion.getTutorSesion().getIdTutor() == idTutorReporte;
+            }
+
             if (esCoordinador) {
+                if ("BORRADOR".equalsIgnoreCase(reporteActual.getEstatus()) && esDelTutorSesion) {
+                    btnEnviar.setVisible(true);
+                    btnEnviar.setManaged(true);
+                    lbEstatus.setStyle("-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
+                }
+
                 if ("ENVIADO".equalsIgnoreCase(reporteActual.getEstatus())) {
                     btnResponder.setVisible(true);
                     btnResponder.setManaged(true);
@@ -105,7 +160,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                     lbEstatus.setStyle("-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
                 }
             } else {
-                if ("BORRADOR".equalsIgnoreCase(reporteActual.getEstatus())) {
+                if ("BORRADOR".equalsIgnoreCase(reporteActual.getEstatus()) && esDelTutorSesion) {
                     btnEnviar.setVisible(true);
                     btnEnviar.setManaged(true);
                     lbEstatus.setStyle("-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
