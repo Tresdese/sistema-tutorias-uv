@@ -21,23 +21,19 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -76,42 +72,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
 
     private void configurarTabla() {
         tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
-        
         tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        
-        tcDescripcion.setCellFactory(param -> new TableCell<Problematica, String>() {
-            private final Label label = new Label();
-            
-            {
-                label.setWrapText(true); 
-
-                label.prefWidthProperty().bind(tcDescripcion.widthProperty().subtract(10));
-                // Estilo para asegurar que se vea (Color negro, fuente correcta)
-                label.setStyle("-fx-text-fill: #333333; -fx-font-size: 14px; -fx-font-family: 'Segoe UI';");
-                label.setAlignment(Pos.TOP_LEFT);
-            }
-            
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
-                    setTooltip(null);
-                } else {
-                    label.setText(item);
-                    setGraphic(label);
-                    
-                    Tooltip tt = new Tooltip(item);
-                    tt.setMaxWidth(400);
-                    tt.setWrapText(true);
-                    setTooltip(tt);
-                }
-            }
-        });
-        
-        tvProblematicas.prefHeightProperty().bind(
-            Bindings.size(tvProblematicas.getItems()).multiply(tvProblematicas.fixedCellSizeProperty()).add(30)
-        );
+        tvProblematicas.setPlaceholder(new Label("Sin problemáticas para mostrar"));
     }
 
     public void inicializarInformacion(ReporteTutoria reporte, boolean esCoordinador) {
@@ -197,6 +159,14 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
         try {
             List<Problematica> lista = ProblematicaDAO.obtenerProblematicasPorTutoria(idTutoria);
             tvProblematicas.setItems(FXCollections.observableArrayList(lista));
+            tvProblematicas.refresh();
+            LOGGER.info("Problemáticas cargadas para tutoria {}: {} registros", idTutoria, lista.size());
+
+            if (lista.isEmpty()) {
+                Utilidades.mostrarAlertaSimple("Sin problemáticas",
+                        "No hay problemáticas registradas para esta tutoría.",
+                        Alert.AlertType.INFORMATION);
+            }
         } catch (SQLException e) {
             LOGGER.error("Error al cargar problemáticas del reporte", e);
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar las problemáticas.", Alert.AlertType.ERROR);
