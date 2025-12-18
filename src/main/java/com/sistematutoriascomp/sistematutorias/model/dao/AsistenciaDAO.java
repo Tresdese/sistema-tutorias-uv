@@ -13,7 +13,7 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 public class AsistenciaDAO {
     private static final String SQL_OBTENER_SESIONES_POR_TUTOR = "SELECT idTutoria, fecha, hora_inicio FROM tutoria WHERE idTutor = ? AND idPeriodo = ? ORDER BY fecha DESC";
     
-    private static final String SQL_OBTENER_TUTORADOS_POR_TUTOR_LEGACY = "SELECT t.idTutorado, t.matricula, "
+    private static final String SQL_OBTENER_TUTORADOS_POR_TUTOR = "SELECT DISTINCT t.idTutorado, t.matricula, "
         + "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, "
         + "t.semestre, "
         + "asi.asistio "
@@ -56,18 +56,10 @@ public class AsistenciaDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT DISTINCT t.idTutorado, t.matricula, "
-                        + "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, "
-                        + "t.semestre, "
-                        + "asi.asistio "
-                        + "FROM tutorado t "
-                        + "INNER JOIN asignaciontutor a ON t.idTutorado = a.idTutorado "
-                        + "LEFT JOIN asistencia asi ON (asi.idTutorado = t.idTutorado AND asi.idTutoria = ?) "
-                        + "WHERE a.idTutor = ? AND t.esActivo = 1";
-
-                PreparedStatement ps = conexion.prepareStatement(consulta);
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_TUTORADOS_POR_TUTOR);
                 ps.setInt(1, idTutoria);
                 ps.setInt(2, idTutor);
+                ps.setInt(3, idPeriodo);
 
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {

@@ -13,6 +13,7 @@ public class ReporteGeneral {
     private LocalDateTime fechaGeneracion;
     private String estado;    
     private int totalTutorados;
+    private int totalEstudiantesRiesgo;
     private int totalTutores;
     private int totalProblematicas;
     private int totalAsistentes;
@@ -24,7 +25,7 @@ public class ReporteGeneral {
     public ReporteGeneral() {
     }
 
-    public ReporteGeneral(int idReporteGeneral, int idPeriodo, String nombrePeriodo, int numeroSesion, int idCoordinador, LocalDateTime fechaGeneracion, String estado, int totalTutorados, int totalTutores, int totalProblematicas, int totalAsistentes, int totalFaltantes, BigDecimal porcentajeAsistencia, String observaciones, List<ReporteTutoria> detallesReportes) {
+    public ReporteGeneral(int idReporteGeneral, int idPeriodo, String nombrePeriodo, int numeroSesion, int idCoordinador, LocalDateTime fechaGeneracion, String estado, int totalTutorados, int totalEstudiantesRiesgo, int totalTutores, int totalProblematicas, int totalAsistentes, int totalFaltantes, BigDecimal porcentajeAsistencia, String observaciones, List<ReporteTutoria> detallesReportes) {
         this.idReporteGeneral = idReporteGeneral;
         this.idPeriodo = idPeriodo;
         this.nombrePeriodo = nombrePeriodo;
@@ -33,6 +34,7 @@ public class ReporteGeneral {
         this.fechaGeneracion = fechaGeneracion;
         this.estado = estado;
         this.totalTutorados = totalTutorados;
+        this.totalEstudiantesRiesgo = totalEstudiantesRiesgo;
         this.totalTutores = totalTutores;
         this.totalProblematicas = totalProblematicas;
         this.totalAsistentes = totalAsistentes;
@@ -104,6 +106,14 @@ public class ReporteGeneral {
     
     public void setTotalTutorados(int totalTutorados) { 
         this.totalTutorados = totalTutorados; 
+    }
+
+    public int getTotalEstudiantesRiesgo() {
+        return totalEstudiantesRiesgo;
+    }
+    
+    public void setTotalEstudiantesRiesgo(int totalEstudiantesRiesgo) {
+        this.totalEstudiantesRiesgo = totalEstudiantesRiesgo;
     }
     
     public int getTotalTutores() { 

@@ -16,12 +16,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ReporteGeneralDAO {
-    private static final String SQL_INSERT = "INSERT INTO reportegeneral (idPeriodo, idCoordinador, fechaGeneracion, estado, " +
-            "totalTutorados, totalTutores, porcentajeAsistencia, " +
-            "totalProblematicas, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        private static final String SQL_INSERT = "INSERT INTO reportegeneral (idPeriodo, idCoordinador, fechaGeneracion, estado, " +
+            "totalTutorados, totalEstudiantesRiesgo, totalTutores, porcentajeAsistencia, " +
+            "totalProblematicas, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             
-    private static final String SQL_UPDATE = "UPDATE reportegeneral SET idPeriodo = ?, idCoordinador = ?, fechaGeneracion = ?, " +
-            "estado = ?, totalTutorados = ?, totalTutores = ?, " +
+        private static final String SQL_UPDATE = "UPDATE reportegeneral SET idPeriodo = ?, idCoordinador = ?, fechaGeneracion = ?, " +
+            "estado = ?, totalTutorados = ?, totalEstudiantesRiesgo = ?, totalTutores = ?, " +
             "porcentajeAsistencia = ?, totalProblematicas = ?, observaciones = ? " +
             "WHERE idReporteGeneral = ?";
             
@@ -61,10 +61,11 @@ public class ReporteGeneralDAO {
                     Timestamp.valueOf(reporteGeneral.getFechaGeneracion()) : null);
                 statement.setString(4, reporteGeneral.getEstado());
                 statement.setInt(5, reporteGeneral.getTotalTutorados());
-                statement.setInt(6, reporteGeneral.getTotalTutores());
-                statement.setBigDecimal(7, reporteGeneral.getPorcentajeAsistencia());
-                statement.setInt(8, reporteGeneral.getTotalProblematicas());
-                statement.setString(9, reporteGeneral.getObservaciones());
+                statement.setInt(6, reporteGeneral.getTotalEstudiantesRiesgo());
+                statement.setInt(7, reporteGeneral.getTotalTutores());
+                statement.setBigDecimal(8, reporteGeneral.getPorcentajeAsistencia());
+                statement.setInt(9, reporteGeneral.getTotalProblematicas());
+                statement.setString(10, reporteGeneral.getObservaciones());
                 
                 int affectedRows = statement.executeUpdate();
                 if (affectedRows > 0) {
@@ -93,11 +94,12 @@ public class ReporteGeneralDAO {
                     Timestamp.valueOf(reporteGeneral.getFechaGeneracion()) : null);
                 statement.setString(4, reporteGeneral.getEstado());
                 statement.setInt(5, reporteGeneral.getTotalTutorados());
-                statement.setInt(6, reporteGeneral.getTotalTutores());
-                statement.setBigDecimal(7, reporteGeneral.getPorcentajeAsistencia());
-                statement.setInt(8, reporteGeneral.getTotalProblematicas());
-                statement.setString(9, reporteGeneral.getObservaciones());
-                statement.setInt(10, reporteGeneral.getIdReporteGeneral());
+                statement.setInt(6, reporteGeneral.getTotalEstudiantesRiesgo());
+                statement.setInt(7, reporteGeneral.getTotalTutores());
+                statement.setBigDecimal(8, reporteGeneral.getPorcentajeAsistencia());
+                statement.setInt(9, reporteGeneral.getTotalProblematicas());
+                statement.setString(10, reporteGeneral.getObservaciones());
+                statement.setInt(11, reporteGeneral.getIdReporteGeneral());
                 
                 resultado = statement.executeUpdate() > 0;
             }
@@ -218,6 +220,7 @@ public class ReporteGeneralDAO {
         }
         reporte.setEstado(resultSet.getString("estado"));
         reporte.setTotalTutorados(resultSet.getInt("totalTutorados"));
+        reporte.setTotalEstudiantesRiesgo(resultSet.getInt("totalEstudiantesRiesgo"));
         reporte.setTotalTutores(resultSet.getInt("totalTutores"));
         reporte.setPorcentajeAsistencia(resultSet.getBigDecimal("porcentajeAsistencia"));
         reporte.setTotalProblematicas(resultSet.getInt("totalProblematicas"));

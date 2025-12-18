@@ -32,6 +32,39 @@ public class ReporteTutoriaDAO {
     private static final String SQL_REGISTRAR_REPORTE = "INSERT INTO reportetutoria (idTutoria, fechaGeneracion, observaciones, estatus) "
          + "VALUES (?, NOW(), ?, ?)";
 
+        private static final String SQL_OBTENER_REPORTES_POR_TUTOR = "SELECT r.*, t.idPeriodo, t.fecha, p.nombre as nombrePeriodo "
+            + "FROM reportetutoria r "
+            + "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria "
+            + "INNER JOIN periodo p ON t.idPeriodo = p.idPeriodo "
+            + "WHERE t.idTutor = ?";
+
+        private static final String SQL_ENVIAR_REPORTE = "UPDATE reportetutoria SET estatus = 'ENVIADO' WHERE idReporteTutoria = ?";
+
+        private static final String SQL_OBTENER_REPORTES_POR_PERIODO = "SELECT r.*, t.idPeriodo, t.fecha, tu.nombre, tu.apellidoPaterno, tu.apellidoMaterno "
+            + "FROM reportetutoria r "
+            + "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria "
+            + "INNER JOIN tutor tu ON t.idTutor = tu.idTutor "
+            + "WHERE t.idPeriodo = ? "
+            + "ORDER BY r.estatus ASC, t.fecha DESC";
+
+        private static final String SQL_REGISTRAR_RESPUESTA = "UPDATE reportetutoria SET respuesta = ?, estatus = 'REVISADO' WHERE idReporteTutoria = ?";
+
+        private static final String SQL_OBTENER_REPORTES_POR_TUTOR_Y_PERIODO = "SELECT r.*, t.fecha "
+            + "FROM reportetutoria r "
+            + "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria "
+            + "WHERE t.idTutor = ? AND t.idPeriodo = ? "
+            + "ORDER BY t.fecha DESC";
+
+        private static final String SQL_OBTENER_DATOS_REPORTE_GENERAL = "SELECT "
+            + "COUNT(DISTINCT rt.idReporteTutoria) as totalTutores, "
+            + "COUNT(a.idAsistencia) as totalTutorados, "
+            + "SUM(CASE WHEN a.asistio = 1 THEN 1 ELSE 0 END) as totalAsistentes, "
+            + "SUM(CASE WHEN a.asistio = 0 THEN 1 ELSE 0 END) as totalFaltantes "
+            + "FROM reportetutoria rt "
+            + "INNER JOIN tutoria t ON rt.idTutoria = t.idTutoria "
+            + "INNER JOIN asistencia a ON rt.idTutoria = a.idTutoria "
+            + "WHERE t.fecha = (SELECT fecha FROM fechatutoria WHERE idFechaTutoria = ?)";
+
     public static ArrayList<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
           ArrayList<Tutoria> sesiones = new ArrayList<>();
           Connection conexion = ConexionBaseDatos.abrirConexionBD();
@@ -106,15 +139,10 @@ public class ReporteTutoriaDAO {
      
     public static List<ReporteTutoria> obtenerReportesPorTutor(int idTutor) throws SQLException {
         List<ReporteTutoria> reportes = new ArrayList<>();
-        String sql = "SELECT r.*, t.idPeriodo, t.fecha, p.nombre as nombrePeriodo " +
-                     "FROM reportetutoria r " +
-                     "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria " +
-                     "INNER JOIN periodo p ON t.idPeriodo = p.idPeriodo " +
-                     "WHERE t.idTutor = ?";
        
         try (Connection conexion = ConexionBaseDatos.abrirConexionBD()) {
             if (conexion != null) {
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_REPORTES_POR_TUTOR);
                 ps.setInt(1, idTutor);
                 ResultSet rs = ps.executeQuery();
                 
@@ -140,11 +168,10 @@ public class ReporteTutoriaDAO {
 
     public static boolean enviarReporte(int idReporte) throws SQLException {
         boolean resultado = false;
-        String sql = "UPDATE reportetutoria SET estatus = 'ENVIADO' WHERE idReporteTutoria = ?";
         
         try (Connection conexion = ConexionBaseDatos.abrirConexionBD()) {
             if (conexion != null) {
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(SQL_ENVIAR_REPORTE);
                 ps.setInt(1, idReporte);
                 resultado = ps.executeUpdate() > 0;
             }
@@ -154,16 +181,10 @@ public class ReporteTutoriaDAO {
     
     public static List<ReporteTutoria> obtenerReportesPorPeriodo(int idPeriodo) throws SQLException {
         List<ReporteTutoria> reportes = new ArrayList<>();
-        String sql = "SELECT r.*, t.idPeriodo, t.fecha, tu.nombre, tu.apellidoPaterno, tu.apellidoMaterno " +
-                     "FROM reportetutoria r " +
-                     "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria " +
-                     "INNER JOIN tutor tu ON t.idTutor = tu.idTutor " +
-                     "WHERE t.idPeriodo = ? " +
-                     "ORDER BY r.estatus ASC, t.fecha DESC";
        
         try (Connection conexion = ConexionBaseDatos.abrirConexionBD()) {
             if (conexion != null) {
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_REPORTES_POR_PERIODO);
                 ps.setInt(1, idPeriodo);
                 ResultSet rs = ps.executeQuery();
                 
@@ -195,11 +216,10 @@ public class ReporteTutoriaDAO {
 
     public static boolean registrarRespuesta(int idReporte, String respuesta) throws SQLException {
         boolean resultado = false;
-        String sql = "UPDATE reportetutoria SET respuesta = ?, estatus = 'REVISADO' WHERE idReporteTutoria = ?";
         
         try (Connection conexion = ConexionBaseDatos.abrirConexionBD()) {
             if (conexion != null) {
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(SQL_REGISTRAR_RESPUESTA);
                 ps.setString(1, respuesta);
                 ps.setInt(2, idReporte);
                 resultado = ps.executeUpdate() > 0;
@@ -210,15 +230,10 @@ public class ReporteTutoriaDAO {
 
     public static List<ReporteTutoria> obtenerReportesPorTutorYPeriodo(int idTutor, int idPeriodo) throws SQLException {
         List<ReporteTutoria> reportes = new ArrayList<>();
-        String sql = "SELECT r.*, t.fecha " +
-                     "FROM reportetutoria r " +
-                     "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria " +
-                     "WHERE t.idTutor = ? AND t.idPeriodo = ? " +
-                     "ORDER BY t.fecha DESC";
         
         try (Connection conexion = ConexionBaseDatos.abrirConexionBD()) {
             if (conexion != null) {
-                PreparedStatement ps = conexion.prepareStatement(sql);
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_REPORTES_POR_TUTOR_Y_PERIODO);
                 ps.setInt(1, idTutor);
                 ps.setInt(2, idPeriodo);
                 ResultSet rs = ps.executeQuery();
@@ -250,17 +265,7 @@ public class ReporteTutoriaDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT " +
-                        "COUNT(DISTINCT rt.idReporteTutoria) as totalTutores, " +
-                        "COUNT(a.idAsistencia) as totalTutorados, " +
-                        "SUM(CASE WHEN a.asistio = 1 THEN 1 ELSE 0 END) as totalAsistentes, " +
-                        "SUM(CASE WHEN a.asistio = 0 THEN 1 ELSE 0 END) as totalFaltantes " +
-                        "FROM reportetutoria rt " +
-                        "INNER JOIN tutoria t ON rt.idTutoria = t.idTutoria " +
-                        "INNER JOIN asistencia a ON rt.idTutoria = a.idTutoria " +
-                        "WHERE t.fecha = (SELECT fecha FROM fechatutoria WHERE idFechaTutoria = ?)";
-
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_OBTENER_DATOS_REPORTE_GENERAL);
                 sentencia.setInt(1, idFechaTutoria);
                 
                 ResultSet resultado = sentencia.executeQuery();

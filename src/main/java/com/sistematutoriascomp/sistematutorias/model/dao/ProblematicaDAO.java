@@ -15,6 +15,11 @@ public class ProblematicaDAO {
 
     private static final String SQL_INSERT_PROBLEMATICA = "INSERT INTO problematica (idTutorado, idTutoria, titulo, descripcion, fecha, estatus) "
             + "VALUES (?, ?, ?, ?, ?, ?)";
+        private static final String SQL_SELECT_PROBLEMATICAS_POR_FECHA = "SELECT p.titulo, p.descripcion "
+            + "FROM problematica p "
+            + "INNER JOIN tutoria t ON p.idTutoria = t.idTutoria "
+            + "WHERE t.fecha = (SELECT fecha FROM fechatutoria WHERE idFechaTutoria = ?)";
+        private static final String SQL_SELECT_PROBLEMATICAS_POR_TUTORIA = "SELECT titulo, descripcion FROM problematica WHERE idTutoria = ?";
     
     public static boolean registrarProblematica(Problematica problematica) throws SQLException {
         boolean resultado = false;
@@ -43,12 +48,7 @@ public class ProblematicaDAO {
 
         if (conexion != null) {
             try {
-                String consulta = "SELECT p.titulo, p.descripcion " +
-                                  "FROM problematica p " +
-                                  "INNER JOIN tutoria t ON p.idTutoria = t.idTutoria " +
-                                  "WHERE t.fecha = (SELECT fecha FROM fechatutoria WHERE idFechaTutoria = ?)";
-                
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_SELECT_PROBLEMATICAS_POR_FECHA);
                 sentencia.setInt(1, idFechaTutoria);
                 ResultSet resultado = sentencia.executeQuery();
                 
@@ -71,8 +71,7 @@ public class ProblematicaDAO {
         
         if (conexion != null) {
             try {
-                String consulta = "SELECT titulo, descripcion FROM problematica WHERE idTutoria = ?";
-                PreparedStatement ps = conexion.prepareStatement(consulta);
+                PreparedStatement ps = conexion.prepareStatement(SQL_SELECT_PROBLEMATICAS_POR_TUTORIA);
                 ps.setInt(1, idTutoria);
                 ResultSet rs = ps.executeQuery();
                 

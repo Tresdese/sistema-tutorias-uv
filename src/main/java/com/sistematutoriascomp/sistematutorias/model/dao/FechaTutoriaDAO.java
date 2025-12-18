@@ -1,18 +1,21 @@
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.sql.Date;
 
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
 
 public class FechaTutoriaDAO {
-    private static final String SQL_OBTENER_FECHAS_POR_PERIODO = "SELECT idFechaTutoria, idPeriodo, numeroSesion, fecha, titulo, descripcion "
-            + "FROM fechatutoria WHERE idPeriodo = ? ORDER BY numeroSesion ASC";
+    private static final String SQL_OBTENER_FECHAS_POR_PERIODO = "SELECT * FROM fechatutoria WHERE idPeriodo = ? ORDER BY numeroSesion ASC";
+    private static final String SQL_VALIDAR_FECHA_REGISTRADA = "SELECT count(*) FROM fechatutoria WHERE idPeriodo = ? AND numeroSesion = ?";
+    private static final String SQL_INSERT_FECHA_TUTORIA = "INSERT INTO fechatutoria (idPeriodo, numeroSesion, fecha, titulo, descripcion) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_OBTENER_PERIODO_ACTUAL = "SELECT idPeriodo FROM periodo WHERE esActual = 1 LIMIT 1";
+    private static final String SQL_MAX_NUMERO_SESION = "SELECT MAX(numeroSesion) FROM fechatutoria WHERE idPeriodo = ?";
 
     public static ArrayList<FechaTutoria> obtenerFechasPorPeriodo(int idPeriodo) throws SQLException {
         ArrayList<FechaTutoria> fechas = new ArrayList<>();
@@ -30,8 +33,12 @@ public class FechaTutoriaDAO {
                     fechaT.setIdPeriodo(resultado.getInt("idPeriodo"));
                     fechaT.setNumeroSesion(resultado.getInt("numeroSesion"));
                     fechaT.setFecha(resultado.getDate("fecha").toLocalDate());
-                    fechaT.setTitulo(resultado.getString("titulo"));
-                    fechaT.setDescripcion(resultado.getString("descripcion"));
+                    if (hasColumn(resultado, "titulo")) {
+                        fechaT.setTitulo(resultado.getString("titulo"));
+                    }
+                    if (hasColumn(resultado, "descripcion")) {
+                        fechaT.setDescripcion(resultado.getString("descripcion"));
+                    }
                     fechas.add(fechaT);
                 }
             } finally {
@@ -41,14 +48,22 @@ public class FechaTutoriaDAO {
         return fechas;
     }
 
+    private static boolean hasColumn(ResultSet rs, String columnLabel) {
+        try {
+            rs.findColumn(columnLabel);
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
+    }
+
     public static boolean validarFechaRegistrada(int idPeriodo, int numeroSesion) throws SQLException {
         boolean existe = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         
         if (conexion != null) {
             try {
-                String consulta = "SELECT count(*) FROM fechatutoria WHERE idPeriodo = ? AND numeroSesion = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_VALIDAR_FECHA_REGISTRADA);
                 sentencia.setInt(1, idPeriodo);
                 sentencia.setInt(2, numeroSesion);
                 ResultSet resultado = sentencia.executeQuery();
@@ -69,8 +84,7 @@ public class FechaTutoriaDAO {
         
         if (conexion != null) {
             try {
-                String insercion = "INSERT INTO fechatutoria (idPeriodo, numeroSesion, fecha, titulo, descripcion) VALUES (?, ?, ?, ?, ?)";
-                PreparedStatement sentencia = conexion.prepareStatement(insercion);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_INSERT_FECHA_TUTORIA);
                 sentencia.setInt(1, fechaTutoria.getIdPeriodo());
                 sentencia.setInt(2, fechaTutoria.getNumeroSesion());
                 sentencia.setDate(3, Date.valueOf(fechaTutoria.getFecha()));
@@ -91,8 +105,7 @@ public class FechaTutoriaDAO {
         
         if (conexion != null) {
             try {
-                String consulta = "SELECT idPeriodo FROM periodo WHERE esActual = 1 LIMIT 1";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_OBTENER_PERIODO_ACTUAL);
                 ResultSet resultado = sentencia.executeQuery();
                 if (resultado.next()) {
                     idPeriodo = resultado.getInt("idPeriodo");
@@ -110,8 +123,7 @@ public class FechaTutoriaDAO {
         
         if (conexion != null) {
             try {
-                String consulta = "SELECT MAX(numeroSesion) FROM fechatutoria WHERE idPeriodo = ?";
-                PreparedStatement sentencia = conexion.prepareStatement(consulta);
+                PreparedStatement sentencia = conexion.prepareStatement(SQL_MAX_NUMERO_SESION);
                 sentencia.setInt(1, idPeriodo);
                 ResultSet resultado = sentencia.executeQuery();
                 

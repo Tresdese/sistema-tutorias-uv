@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
 
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
@@ -16,6 +17,7 @@ public class TutoriaDAO {
     private static final String SQL_SUBIR_EVIDENCIA = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
     private static final String SQL_COMPROBAR_EXISTENCIA_EVIDENCIA = "SELECT idTutoria FROM tutoria WHERE idTutoria = ? AND evidencia IS NOT NULL";
     private static final String SQL_OBTENER_ID_TUTOR = "SELECT idTutor FROM tutoria WHERE idTutoria = ?";
+    private static final String SQL_OBTENER_EVIDENCIA_POR_TUTORIA = "SELECT evidencia FROM tutoria WHERE idTutoria = ?";
 
     public static int registrarTutoria(Tutoria tutoria) throws SQLException {
         int resultado = 0;
@@ -38,7 +40,7 @@ public class TutoriaDAO {
         return resultado;
     }
 
-    public static boolean comprobarTutoriaRegistrada(int idTutor, java.time.LocalDate fecha) throws SQLException {
+    public static boolean comprobarTutoriaRegistrada(int idTutor, LocalDate fecha) throws SQLException {
         boolean registrada = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
@@ -97,8 +99,7 @@ public class TutoriaDAO {
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
-                String consulta = "SELECT evidencia FROM tutoria WHERE idTutoria = ?";
-                PreparedStatement ps = conexion.prepareStatement(consulta);
+                PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_EVIDENCIA_POR_TUTORIA);
                 ps.setInt(1, idTutoria);
                 ResultSet rs = ps.executeQuery();
                 

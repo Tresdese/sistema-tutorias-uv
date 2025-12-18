@@ -10,8 +10,8 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
 
 public class TutoradoDAO {
-    private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, idCarrera, semestre, esActivo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, idCarrera = ?, semestre = ?, esActivo = ? WHERE matricula = ?";
+    private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, idCarrera, semestre, esActivo, idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, idCarrera = ?, semestre = ?, esActivo = ?, idTutor = ? WHERE matricula = ?";
     private static final String SQL_UPDATE_ASIGNAR_TUTOR = "UPDATE tutorado SET idTutor = ? WHERE idTutorado = ?";
     private static final String SQL_DELETE = "DELETE FROM tutorado WHERE idTutorado = ?";
     private static final String SQL_SELECT_BY_MATRICULA = "SELECT * FROM tutorado WHERE matricula = ?";
@@ -31,11 +31,7 @@ public class TutoradoDAO {
                 statement.setInt(6, tutorado.getIdCarrera());
                 statement.setInt(7, tutorado.getSemestre());
                 statement.setBoolean(8, tutorado.isActivo());
-                if (tutorado.getIdTutor() > 0) {
-                    statement.setInt(9, tutorado.getIdTutor());
-                } else {
-                    statement.setNull(9, java.sql.Types.INTEGER);
-                }
+                statement.setInt(9, tutorado.getIdTutor());
                 resultado = statement.executeUpdate() > 0;
             }
         }
@@ -54,12 +50,7 @@ public class TutoradoDAO {
                 statement.setInt(5, tutorado.getIdCarrera());
                 statement.setInt(6, tutorado.getSemestre());
                 statement.setBoolean(7, tutorado.isActivo());
-                statement.setString(8, tutorado.getMatricula());
-                if (tutorado.getIdTutor() > 0) {
-                    statement.setInt(8, tutorado.getIdTutor());
-                } else {
-                    statement.setNull(8, java.sql.Types.INTEGER);
-                }
+                statement.setInt(8, tutorado.getIdTutor());
                 statement.setString(9, tutorado.getMatricula());
                 resultado = statement.executeUpdate() > 0;
             }
@@ -120,7 +111,7 @@ public class TutoradoDAO {
         tutorado.setIdCarrera(resultSet.getInt("idCarrera"));
         tutorado.setSemestre(resultSet.getInt("semestre"));
         tutorado.setActivo(resultSet.getBoolean("esActivo"));
-        tutorado.setIdTutor(0);
+        tutorado.setIdTutor(resultSet.getInt("idTutor"));
         return tutorado;
     }
     
