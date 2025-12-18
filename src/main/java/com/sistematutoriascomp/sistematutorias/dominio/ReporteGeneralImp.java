@@ -13,9 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ReporteGeneralImp {
+
     public static HashMap<String, Object> obtenerSesionesPorPeriodo(int idPeriodo) {
         HashMap<String, Object> respuesta = new HashMap<>();
-        
+
         try {
             List<FechaTutoria> lista = FechaTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
             respuesta.put("error", false);
@@ -24,22 +25,22 @@ public class ReporteGeneralImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al cargar sesiones: " + ex.getMessage());
         }
-        
+
         return respuesta;
     }
 
     public static HashMap<String, Object> calcularDatosReporte(int idPeriodo, int idFechaTutoria) {
         HashMap<String, Object> respuesta = new HashMap<>();
-        
+
         try {
             ReporteGeneral reporte = ReporteTutoriaDAO.obtenerDatosReporteGeneral(idPeriodo, idFechaTutoria);
             List<Problematica> listaProblematicas = ProblematicaDAO.obtenerProblematicasPorFecha(idFechaTutoria);
-            
+
             if (reporte != null) {
                 reporte.setTotalProblematicas(listaProblematicas.size());
                 respuesta.put("error", false);
                 respuesta.put("reporte", reporte);
-                respuesta.put("listaProblematicas", listaProblematicas); 
+                respuesta.put("listaProblematicas", listaProblematicas);
             } else {
                 respuesta.put("error", true);
                 respuesta.put("mensaje", "No se encontraron datos para generar el reporte.");
@@ -54,10 +55,10 @@ public class ReporteGeneralImp {
 
     public static HashMap<String, Object> guardarReporteGeneral(ReporteGeneral reporte) {
         HashMap<String, Object> respuesta = new HashMap<>();
-        
+
         try {
             ReporteGeneralDAO reporteGeneralDAO = new ReporteGeneralDAO();
-            
+
             if (reporteGeneralDAO.insertar(reporte)) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "Reporte General guardado exitosamente.");

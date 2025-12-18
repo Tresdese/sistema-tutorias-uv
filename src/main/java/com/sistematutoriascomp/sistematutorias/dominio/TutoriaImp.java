@@ -11,13 +11,14 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class TutoriaImp {
+
     public static HashMap<String, Object> obtenerFechasPeriodoActual() {
         HashMap<String, Object> respuesta = new HashMap<>();
-        
+
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
             ArrayList<FechaTutoria> fechas = FechaTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
-            
+
             if (!fechas.isEmpty()) {
                 respuesta.put("error", false);
                 respuesta.put("fechas", fechas);
@@ -44,7 +45,7 @@ public class TutoriaImp {
             }
 
             int filas = TutoriaDAO.registrarTutoria(tutoria);
-            
+
             if (filas > 0) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "Horario registrado correctamente.");
@@ -61,7 +62,7 @@ public class TutoriaImp {
     public static HashMap<String, Object> subirEvidencia(int idTutoria, byte[] archivo) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
-        
+
         try {
             if (TutoriaDAO.subirEvidencia(idTutoria, archivo)) {
                 respuesta.put("error", false);

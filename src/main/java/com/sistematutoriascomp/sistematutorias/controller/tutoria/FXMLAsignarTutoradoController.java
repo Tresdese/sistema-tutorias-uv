@@ -27,18 +27,29 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FXMLAsignarTutoradoController implements Initializable {
+
     private static final Logger LOGGER = LogManager.getLogger(FXMLAsignarTutoradoController.class);
-    @FXML private TableView<Tutorado> tvTutorados;
-    @FXML private TableColumn<Tutorado, String> tcMatricula;
-    @FXML private TableColumn<Tutorado, String> tcNombresTutorado;
-    @FXML private TableColumn<Tutorado, String> tcApellidosTutorado;
-    @FXML private TableView<Tutor> tvTutores;
-    @FXML private TableColumn<Tutor, String> tcNombresTutor;
-    @FXML private TableColumn<Tutor, String> tcApellidosTutor;
-    @FXML private TableColumn<Tutor, Integer> tcCantidadTutorados;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnAsignar;
-    
+    @FXML
+    private TableView<Tutorado> tvTutorados;
+    @FXML
+    private TableColumn<Tutorado, String> tcMatricula;
+    @FXML
+    private TableColumn<Tutorado, String> tcNombresTutorado;
+    @FXML
+    private TableColumn<Tutorado, String> tcApellidosTutorado;
+    @FXML
+    private TableView<Tutor> tvTutores;
+    @FXML
+    private TableColumn<Tutor, String> tcNombresTutor;
+    @FXML
+    private TableColumn<Tutor, String> tcApellidosTutor;
+    @FXML
+    private TableColumn<Tutor, Integer> tcCantidadTutorados;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnAsignar;
+
     private ObservableList<Tutorado> listaTutorados;
     private ObservableList<Tutor> listaTutores;
 
@@ -46,7 +57,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColumnas();
         cargarDatosTablas();
-    }    
+    }
 
     private void configurarColumnas() {
         tcMatricula.setCellValueFactory(new PropertyValueFactory<>("matricula"));
@@ -69,7 +80,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
                 listaTutores = FXCollections.observableArrayList(listaP);
                 tvTutorados.setItems(listaTutorados);
                 tvTutores.setItems(listaTutores);
-                
+
                 if (listaTutorados.isEmpty()) {
                     Utilidades.mostrarAlertaSimple("Sin pendientes", "Actualmente no hay Tutorados por asignar.", Alert.AlertType.INFORMATION);
                 }
@@ -91,15 +102,15 @@ public class FXMLAsignarTutoradoController implements Initializable {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione un Estudiante de la lista izquierda.", Alert.AlertType.WARNING);
             return;
         }
-        
+
         if (tutorSeleccionado == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione un Tutor de la lista derecha.", Alert.AlertType.WARNING);
             return;
         }
 
-        boolean confirmar = Utilidades.mostrarAlertaConfirmacion("Confirmar Asignación", 
-                "¿Desea asignar al estudiante " + tutoradoSeleccionado.getNombre() + 
-                " con el tutor " + tutorSeleccionado.getNombre() + "?");
+        boolean confirmar = Utilidades.mostrarAlertaConfirmacion("Confirmar Asignación",
+                "¿Desea asignar al estudiante " + tutoradoSeleccionado.getNombre()
+                + " con el tutor " + tutorSeleccionado.getNombre() + "?");
 
         if (confirmar) {
             realizarAsignacion(tutoradoSeleccionado, tutorSeleccionado);
@@ -121,7 +132,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
     private void clicCancelar(ActionEvent event) {
         irAtras(event);
     }
-    
+
     private void irAtras(ActionEvent event) {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
@@ -131,10 +142,10 @@ public class FXMLAsignarTutoradoController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

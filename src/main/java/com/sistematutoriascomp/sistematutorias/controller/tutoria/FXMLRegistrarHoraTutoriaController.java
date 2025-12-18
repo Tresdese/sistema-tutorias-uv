@@ -25,11 +25,17 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 
 public class FXMLRegistrarHoraTutoriaController implements Initializable {
-    @FXML private ComboBox<FechaTutoria> cbFechas;
-    @FXML private Spinner<Integer> spHora;
-    @FXML private Spinner<Integer> spMinuto;
-    @FXML private Label lbErrorFecha;
-    @FXML private Label lbErrorHora;
+
+    @FXML
+    private ComboBox<FechaTutoria> cbFechas;
+    @FXML
+    private Spinner<Integer> spHora;
+    @FXML
+    private Spinner<Integer> spMinuto;
+    @FXML
+    private Label lbErrorFecha;
+    @FXML
+    private Label lbErrorHora;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

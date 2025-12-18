@@ -15,18 +15,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class FXMLMenuPrincipalController implements Initializable {
-    @FXML private Label lbNombreUsuario;
-    @FXML private Label lbRol;
-    @FXML private Button btnGestionarTutorias;
-    @FXML private Button btnGestionarReportes;
-    @FXML private Button btnGestionarUsuarios;
+
+    @FXML
+    private Label lbNombreUsuario;
+    @FXML
+    private Label lbRol;
+    @FXML
+    private Button btnGestionarTutorias;
+    @FXML
+    private Button btnGestionarReportes;
+    @FXML
+    private Button btnGestionarUsuarios;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarPermisos();
         cargarDatosUsuario();
     }
-    
+
     private void configurarPermisos() {
         String rol = Sesion.getRolActual();
 
@@ -71,15 +77,15 @@ public class FXMLMenuPrincipalController implements Initializable {
             Tutor tutor = Sesion.getTutorSesion();
             if (tutor != null) {
                 nombreCompleto = tutor.getNombre() + " "
-                + tutor.getApellidoPaterno() + " "
-                + tutor.getApellidoMaterno();
+                        + tutor.getApellidoPaterno() + " "
+                        + tutor.getApellidoMaterno();
             }
         }
-        
+
         lbNombreUsuario.setText(nombreCompleto);
         lbRol.setText(rol);
     }
-    
+
     @FXML
     private void clicGestionarTutorias(ActionEvent event) {
         irPantalla("/FXMLMenuGestionarTutorias.fxml", "Menú Gestión de Tutorías", event);
@@ -89,7 +95,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     private void clicGestionarReportes(ActionEvent event) {
         irPantalla("/FXMLMenuGestionarReportes.fxml", "Menú Gestión de Reportes", event);
     }
-    
+
     @FXML
     private void clicGestionarUsuarios(ActionEvent event) {
         irPantalla("/FXMLMenuGestionarUsuarios.fxml", "Menú Gestión de Usuarios", event);
@@ -104,10 +110,10 @@ public class FXMLMenuPrincipalController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

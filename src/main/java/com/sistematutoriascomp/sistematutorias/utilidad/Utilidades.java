@@ -17,10 +17,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Utilidades {
+
     private final static Logger LOGGER = LogManager.getLogger(Utilidades.class);
 
     private final static String RUTA_VISTAS = "/com/sistematutoriascomp/sistematutorias/views";
-    
+
     public static void mostrarAlertaSimple(String titulo, String contenido, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -61,11 +62,11 @@ public class Utilidades {
     public static void volverMenuPrincipal(ActionEvent event) throws IOException {
         goToWindow("/FXMLMenuPrincipal.fxml", event, "Menú Principal");
     }
-    
+
     public static void volverMenuGestionarReportes(ActionEvent event) throws IOException {
         goToWindow("/FXMLMenuGestionarReportes.fxml", event, "Menú Reporte");
     }
-    
+
     public static void volverMenuGestionarTutorias(ActionEvent event) throws IOException {
         goToWindow("/FXMLMenuGestionarTutorias.fxml", event, "Menú Gestión de Tutorías");
     }
@@ -80,7 +81,7 @@ public class Utilidades {
         alerta.setHeaderText(null);
         alerta.setContentText(mensaje);
         Optional<ButtonType> resultado = alerta.showAndWait();
-        
+
         return resultado.isPresent() && resultado.get() == ButtonType.OK;
     }
 }

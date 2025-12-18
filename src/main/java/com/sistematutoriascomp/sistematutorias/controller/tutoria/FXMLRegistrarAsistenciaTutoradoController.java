@@ -38,17 +38,29 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 public class FXMLRegistrarAsistenciaTutoradoController implements Initializable {
-    @FXML private ComboBox<Tutoria> cbSesiones;
-    @FXML private TableView<AsistenciaRow> tvAsistencia;
-    @FXML private TableColumn<AsistenciaRow, String> colMatricula;
-    @FXML private TableColumn<AsistenciaRow, String> colNombre;
-    @FXML private TableColumn<AsistenciaRow, Integer> colSemestre;
-    @FXML private TableColumn<AsistenciaRow, Boolean> colAsistio;
-    @FXML private TableColumn<AsistenciaRow, Void> colAcciones;
-    @FXML private Button btnRegistrar;
-    @FXML private Button btnSubirEvidencia;
-    @FXML private Label lbErrorSesion;
-    @FXML private Label lbMensajeInfo;
+
+    @FXML
+    private ComboBox<Tutoria> cbSesiones;
+    @FXML
+    private TableView<AsistenciaRow> tvAsistencia;
+    @FXML
+    private TableColumn<AsistenciaRow, String> colMatricula;
+    @FXML
+    private TableColumn<AsistenciaRow, String> colNombre;
+    @FXML
+    private TableColumn<AsistenciaRow, Integer> colSemestre;
+    @FXML
+    private TableColumn<AsistenciaRow, Boolean> colAsistio;
+    @FXML
+    private TableColumn<AsistenciaRow, Void> colAcciones;
+    @FXML
+    private Button btnRegistrar;
+    @FXML
+    private Button btnSubirEvidencia;
+    @FXML
+    private Label lbErrorSesion;
+    @FXML
+    private Label lbMensajeInfo;
 
     private ObservableList<AsistenciaRow> listaAlumnos;
 
@@ -97,7 +109,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
                     private void manejarClickProblematica() {
                         AsistenciaRow data = getTableView().getItems().get(getIndex());
-                        Tutoria sesionActual = cbSesiones.getValue(); 
+                        Tutoria sesionActual = cbSesiones.getValue();
 
                         if (data == null || sesionActual == null) {
                             return;
@@ -193,11 +205,6 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         }
     }
 
-    private void configurarEstadoBotonRegistrar(int idTutoria) {
-        boolean yaTieneAsistencia = AsistenciaImp.yaTieneAsistenciaRegistrada(idTutoria);
-        btnRegistrar.setDisable(yaTieneAsistencia);
-    }
-
     private void cargarAlumnos() {
         Tutoria sesion = cbSesiones.getValue();
         if (sesion == null) {
@@ -286,21 +293,6 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             } else {
                 btnSubirEvidencia.setDisable(true);
                 mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void cargarEstadoEvidencia(int idTutoria) {
-        try {
-            boolean tieneEvidencia = TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
-            if (tieneEvidencia) {
-                btnSubirEvidencia.setDisable(true);
-                mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
-            } else {
-                btnSubirEvidencia.setDisable(true);
-                ocultarMensajeInfo();
             }
         } catch (Exception e) {
             e.printStackTrace();

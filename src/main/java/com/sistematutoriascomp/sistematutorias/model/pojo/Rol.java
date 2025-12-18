@@ -1,6 +1,7 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Rol {
+
     private int idRol;
     private String nombreRol;
 

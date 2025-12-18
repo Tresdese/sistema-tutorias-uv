@@ -11,6 +11,7 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Carrera;
 
 public class CarreraDAO {
+
     private static final String SQL_SELECT_ALL = "SELECT * FROM carrera";
 
     public List<Carrera> obtenerTodasCarreras() throws SQLException {

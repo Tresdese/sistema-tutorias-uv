@@ -4,6 +4,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class AsistenciaRow {
+
     private int idTutorado;
     private String matricula;
     private String nombreCompleto;

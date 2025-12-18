@@ -3,6 +3,7 @@ package com.sistematutoriascomp.sistematutorias.model.pojo;
 import java.time.LocalDate;
 
 public class FechaTutoria {
+
     private int idFechaTutoria;
     private int idPeriodo;
     private int numeroSesion;
@@ -12,7 +13,7 @@ public class FechaTutoria {
 
     public FechaTutoria() {
     }
-    
+
     public FechaTutoria(int idFechaTutoria, int idPeriodo, int numeroSesion, String titulo, String descripcion, LocalDate fecha) {
         this.idFechaTutoria = idFechaTutoria;
         this.idPeriodo = idPeriodo;
@@ -69,7 +70,7 @@ public class FechaTutoria {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-    
+
     @Override
     public String toString() {
         return "Sesión " + numeroSesion + " (" + fecha + ")";

@@ -13,7 +13,7 @@ import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 public class AutenticacionImp {
 
     private static final Logger LOGGER = LogManager.getLogger(AutenticacionImp.class);
-    
+
     public static boolean iniciarSesionTutor(String numeroPersonal, String password) {
         boolean respuesta = false;
         try {

@@ -35,22 +35,37 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLFormularioReporteGeneralController implements Initializable {
+
     private final static Logger LOGGER = LogManager.getLogger(FXMLFormularioReporteGeneralController.class);
 
-    @FXML private Button btnVolver;
-    @FXML private Button btnResponder;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnGuardar;
-    @FXML private Button btnEditar;
-    @FXML private TextField txtIdReporteGeneral;
-    @FXML private TextField txtFechaGeneracion;
-    @FXML private TextField txtTotalTutorados;
-    @FXML private TextField txtTotalTutores;
-    @FXML private TextField txtPorcentajeAsistencia;
-    @FXML private TextField txtTotalProblematicas;
-    @FXML private ComboBox cbEstado;
-    @FXML private ComboBox cbPeriodo;
-    @FXML private ComboBox cbCoordinador;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnResponder;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnGuardar;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private TextField txtIdReporteGeneral;
+    @FXML
+    private TextField txtFechaGeneracion;
+    @FXML
+    private TextField txtTotalTutorados;
+    @FXML
+    private TextField txtTotalTutores;
+    @FXML
+    private TextField txtPorcentajeAsistencia;
+    @FXML
+    private TextField txtTotalProblematicas;
+    @FXML
+    private ComboBox cbEstado;
+    @FXML
+    private ComboBox cbPeriodo;
+    @FXML
+    private ComboBox cbCoordinador;
 
     private TutorDAO tutorDAO = new TutorDAO();
     private PeriodoDAO periodoDAO = new PeriodoDAO();
@@ -73,6 +88,7 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     private void onResponder(ActionEvent event) {
         responderReporte();
     }
+
     @FXML
     private void onCancelar(ActionEvent event) {
         cerrarVentana(event);
@@ -267,6 +283,7 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         }
         return respuesta;
     }
+
     public void inicializarParaEdicion(ReporteGeneral reporte) {
         this.reporteEnEdicion = reporte;
 

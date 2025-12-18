@@ -10,6 +10,7 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
 
 public class TutoradoDAO {
+
     private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, idCarrera, semestre, esActivo, idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, idCarrera = ?, semestre = ?, esActivo = ?, idTutor = ? WHERE matricula = ?";
     private static final String SQL_UPDATE_ASIGNAR_TUTOR = "UPDATE tutorado SET idTutor = ? WHERE idTutorado = ?";
@@ -114,10 +115,10 @@ public class TutoradoDAO {
         tutorado.setIdTutor(resultSet.getInt("idTutor"));
         return tutorado;
     }
-    
+
     public List<Tutorado> obtenerTutoradosSinTutor() throws SQLException {
         List<Tutorado> tutorados = new ArrayList<>();
-        
+
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 var statement = connection.prepareStatement(SQL_SELECT_ALL_POR_ASIGNAR);
@@ -133,7 +134,7 @@ public class TutoradoDAO {
 
     public boolean asignarTutor(int idTutorado, int idTutor) throws SQLException {
         boolean resultado = false;
-        
+
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 var statement = connection.prepareStatement(SQL_UPDATE_ASIGNAR_TUTOR);

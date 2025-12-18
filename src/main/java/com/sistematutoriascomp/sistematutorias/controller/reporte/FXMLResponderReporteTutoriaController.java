@@ -14,16 +14,18 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class FXMLResponderReporteTutoriaController implements Initializable {
-    @FXML private TextArea taRespuesta;
-    
+
+    @FXML
+    private TextArea taRespuesta;
+
     private ReporteTutoria reporte;
     private boolean respuestaGuardada = false;
     private String respuestaTexto = "";
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    }    
-    
+    }
+
     public void inicializarReporte(ReporteTutoria reporte) {
         this.reporte = reporte;
     }
@@ -31,14 +33,14 @@ public class FXMLResponderReporteTutoriaController implements Initializable {
     @FXML
     private void clicEnviar(ActionEvent event) {
         String texto = taRespuesta.getText().trim();
-        
+
         if (texto.isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campo vacío", "No se puede enviar una respuesta vacía.", Alert.AlertType.WARNING);
             return;
         }
-        
+
         HashMap<String, Object> resultado = ReporteTutoriaImp.responderReporte(reporte.getIdReporteTutoria(), texto);
-        
+
         if (!(boolean) resultado.get("error")) {
             Utilidades.mostrarAlertaSimple("Éxito", "Respuesta enviada correctamente.", Alert.AlertType.INFORMATION);
             respuestaGuardada = true;
@@ -53,16 +55,16 @@ public class FXMLResponderReporteTutoriaController implements Initializable {
     private void clicCancelar(ActionEvent event) {
         cerrarVentana();
     }
-    
+
     private void cerrarVentana() {
         Stage stage = (Stage) taRespuesta.getScene().getWindow();
         stage.close();
     }
-    
+
     public boolean isRespuestaGuardada() {
         return respuestaGuardada;
     }
-    
+
     public String getRespuestaTexto() {
         return respuestaTexto;
     }

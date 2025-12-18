@@ -7,11 +7,11 @@ import com.sistematutoriascomp.sistematutorias.model.dao.ProblematicaDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 public class ProblematicaImp {
-    
+
     public static HashMap<String, Object> registrarProblematica(Problematica problematica) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
-        
+
         try {
             boolean exito = ProblematicaDAO.registrarProblematica(problematica);
             if (exito) {
@@ -24,7 +24,7 @@ public class ProblematicaImp {
             respuesta.put("mensaje", "Error de base de datos: " + ex.getMessage());
             ex.printStackTrace();
         }
-        
+
         return respuesta;
     }
 }

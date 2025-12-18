@@ -15,7 +15,7 @@ public class Sesion {
     private static RolDAO rolDAO = new RolDAO();
 
     private static Tutor tutorSesion;
-    private static String rolActual; // "ACADEMICO", "COORDINADOR", "ADMINISTRADOR"
+    private static String rolActual;
     private static int idPeriodoActual;
 
     public static Tutor getTutorSesion() {
@@ -50,7 +50,7 @@ public class Sesion {
     public static String getRolActual() {
         return rolActual;
     }
-    
+
     public static int getIdPeriodoActual() {
         return idPeriodoActual;
     }
@@ -58,7 +58,7 @@ public class Sesion {
     public static void setIdPeriodoActual(int idPeriodo) {
         idPeriodoActual = idPeriodo;
     }
-    
+
     public static void cerrarSesion() {
         tutorSesion = null;
         rolActual = null;

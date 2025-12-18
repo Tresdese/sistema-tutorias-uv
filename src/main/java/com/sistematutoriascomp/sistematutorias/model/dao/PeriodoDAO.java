@@ -18,7 +18,7 @@ public class PeriodoDAO {
     private static final String SQL_SELECT_TODOS = "SELECT idPeriodo, nombre, esActual FROM periodo";
 
     public static int obtenerIdPeriodoActual() throws SQLException {
-        int idPeriodo = -1; 
+        int idPeriodo = -1;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
 
         if (conexion != null) {
@@ -60,7 +60,7 @@ public class PeriodoDAO {
     }
 
     public static int obtenerIdPorNombre(String nombrePeriodo) throws SQLException {
-        int idPeriodo = -1; 
+        int idPeriodo = -1;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
 
         if (conexion != null) {

@@ -12,18 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TutorDAO {
-    private static final String SQL_INSERT = "INSERT INTO tutor (numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correo, password, idRol, esActivo, idCarrera) " + 
-                                                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE tutor SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idRol = ?, esActivo = ?, idCarrera = ? " + 
-                                                    "WHERE numeroDePersonal = ?";
+
+    private static final String SQL_INSERT = "INSERT INTO tutor (numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correo, password, idRol, esActivo, idCarrera) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String SQL_UPDATE = "UPDATE tutor SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idRol = ?, esActivo = ?, idCarrera = ? "
+            + "WHERE numeroDePersonal = ?";
     private static final String SQL_DELETE = "DELETE FROM tutor WHERE idTutor = ?";
     private static final String SQL_SELECT_BY_STAFF_NUMBER = "SELECT * FROM tutor WHERE numeroDePersonal = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM tutor";
-    private static final String SQL_SELECT_ALL_TUTORES_DISPONIBLES = "SELECT t.*, COUNT(tu.idTutorado) AS totalAlumnos FROM tutor t LEFT JOIN tutorado tu ON t.idTutor = tu.idTutor " +
-                                                                                    "WHERE t.esActivo = 1 " +
-                                                                                    "GROUP BY t.idTutor, t.nombre, t.apellidoPaterno";                                          
+    private static final String SQL_SELECT_ALL_TUTORES_DISPONIBLES = "SELECT t.*, COUNT(tu.idTutorado) AS totalAlumnos FROM tutor t LEFT JOIN tutorado tu ON t.idTutor = tu.idTutor "
+            + "WHERE t.esActivo = 1 "
+            + "GROUP BY t.idTutor, t.nombre, t.apellidoPaterno";
     private static final String SQL_SELECT_ID_POR_NOMBRE = "SELECT idTutor FROM tutor WHERE nombre = ?";
-
 
     public boolean insertarTutor(Tutor tutor) throws SQLException {
         boolean resultado = false;
@@ -93,7 +93,7 @@ public class TutorDAO {
     }
 
     public int obtenerIdPorNombre(String nombreTutor) throws SQLException {
-        int idTutor = -1; 
+        int idTutor = -1;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
 
         if (conexion != null) {
@@ -141,10 +141,10 @@ public class TutorDAO {
         tutor.setIdCarrera(resultSet.getInt("idCarrera"));
         return tutor;
     }
-        
+
     public List<Tutor> obtenerTutoresDisponibles() throws SQLException {
         List<Tutor> tutores = new ArrayList<>();
-        
+
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_TUTORES_DISPONIBLES);

@@ -22,12 +22,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class FXMLInicioSesionController implements Initializable {
+
     private static final Logger LOGGER = LogManager.getLogger(FXMLInicioSesionController.class);
 
-    @FXML private TextField tfUsuario;
-    @FXML private PasswordField pfContrasenia;
-    @FXML private Label lbErrorUsuario;
-    @FXML private Label lbErrorContrasenia;
+    @FXML
+    private TextField tfUsuario;
+    @FXML
+    private PasswordField pfContrasenia;
+    @FXML
+    private Label lbErrorUsuario;
+    @FXML
+    private Label lbErrorContrasenia;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

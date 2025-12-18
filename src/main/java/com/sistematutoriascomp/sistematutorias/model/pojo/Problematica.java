@@ -3,13 +3,14 @@ package com.sistematutoriascomp.sistematutorias.model.pojo;
 import java.time.LocalDate;
 
 public class Problematica {
+
     private int idProblematica;
-    private int idTutorado;   
-    private int idTutoria;    
+    private int idTutorado;
+    private int idTutoria;
     private String titulo;
     private LocalDate fecha;
     private String descripcion;
-    private String estatus;  
+    private String estatus;
 
     public Problematica() {
     }

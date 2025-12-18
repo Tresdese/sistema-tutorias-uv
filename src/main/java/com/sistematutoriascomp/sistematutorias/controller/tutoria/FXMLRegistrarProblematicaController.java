@@ -19,9 +19,13 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class FXMLRegistrarProblematicaController implements Initializable {
-    @FXML private TextField tfTitulo;
-    @FXML private TextArea taDescripcion;
-    @FXML private Label lbNombreAlumno;
+
+    @FXML
+    private TextField tfTitulo;
+    @FXML
+    private TextArea taDescripcion;
+    @FXML
+    private Label lbNombreAlumno;
 
     private int idTutoria;
     private int idTutorado;
@@ -49,20 +53,20 @@ public class FXMLRegistrarProblematicaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "Por favor llena todos los campos.", Alert.AlertType.WARNING);
             return;
         } else if (titulo.length() > 120) {
-            Utilidades.mostrarAlertaSimple("Título demasiado largo", 
-                "El título no puede exceder los 120 caracteres. Actualmente tiene " + titulo.length() + ".", 
-                Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Título demasiado largo",
+                    "El título no puede exceder los 120 caracteres. Actualmente tiene " + titulo.length() + ".",
+                    Alert.AlertType.WARNING);
             return;
         } else if (descripcion.length() > 500) {
-            Utilidades.mostrarAlertaSimple("Descripción demasiado larga", 
-                "La descripción no puede exceder los 500 caracteres. Actualmente tiene " + descripcion.length() + ".", 
-                Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Descripción demasiado larga",
+                    "La descripción no puede exceder los 500 caracteres. Actualmente tiene " + descripcion.length() + ".",
+                    Alert.AlertType.WARNING);
             return;
         }
         Problematica nuevaProblematica = prepararProblematica(titulo, descripcion);
         enviarAlDominio(nuevaProblematica);
     }
-    
+
     private Problematica prepararProblematica(String titulo, String descripcion) {
         Problematica p = new Problematica();
         p.setIdTutoria(this.idTutoria);
@@ -75,7 +79,7 @@ public class FXMLRegistrarProblematicaController implements Initializable {
 
     private void enviarAlDominio(Problematica problematica) {
         HashMap<String, Object> respuesta = ProblematicaImp.registrarProblematica(problematica);
-        
+
         if (!(boolean) respuesta.get("error")) {
             Utilidades.mostrarAlertaSimple("Éxito", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             cerrarVentana();

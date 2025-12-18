@@ -13,13 +13,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 public class FXMLMenuGestionarUsuariosController implements Initializable {
+
     private static final Logger LOGGER = Logger.getLogger(FXMLMenuGestionarUsuariosController.class.getName());
 
-    @FXML private Button btnRegistrarUsuario;
-    
+    @FXML
+    private Button btnRegistrarUsuario;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarDatosUsuario();
@@ -59,10 +60,10 @@ public class FXMLMenuGestionarUsuariosController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

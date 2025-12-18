@@ -1,7 +1,7 @@
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import com.sistematutoriascomp.sistematutorias.dominio.ReporteTutoriaImp;
-import com.sistematutoriascomp.sistematutorias.model.dao.PeriodoDAO; 
+import com.sistematutoriascomp.sistematutorias.model.dao.PeriodoDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Periodo;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
@@ -33,15 +33,22 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class FXMLListadoReportesCoordinadorController implements Initializable {
+
     private static final Logger LOGGER = LogManager.getLogger(FXMLListadoReportesCoordinadorController.class);
 
-    @FXML private TableView<ReporteTutoria> tvReportes;
-    @FXML private TableColumn<ReporteTutoria, String> tcTutor;
-    @FXML private TableColumn<ReporteTutoria, String> tcFecha;
-    @FXML private TableColumn<ReporteTutoria, String> tcEstatus;
-    @FXML private TableColumn<ReporteTutoria, String> tcObservaciones;
-    @FXML private ComboBox<Periodo> cbPeriodos;
-    
+    @FXML
+    private TableView<ReporteTutoria> tvReportes;
+    @FXML
+    private TableColumn<ReporteTutoria, String> tcTutor;
+    @FXML
+    private TableColumn<ReporteTutoria, String> tcFecha;
+    @FXML
+    private TableColumn<ReporteTutoria, String> tcEstatus;
+    @FXML
+    private TableColumn<ReporteTutoria, String> tcObservaciones;
+    @FXML
+    private ComboBox<Periodo> cbPeriodos;
+
     private ObservableList<ReporteTutoria> listaReportes;
     private ObservableList<Periodo> listaPeriodos;
 
@@ -49,7 +56,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarPeriodos();
-    }    
+    }
 
     private void configurarTabla() {
         tcTutor.setCellValueFactory(new PropertyValueFactory<>("nombreTutor"));
@@ -63,7 +70,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
             List<Periodo> resultado = PeriodoDAO.obtenerTodosPeriodos();
             listaPeriodos = FXCollections.observableArrayList(resultado);
             cbPeriodos.setItems(listaPeriodos);
-            
+
             int idActual = Sesion.getIdPeriodoActual();
             if (idActual > 0) {
                 for (Periodo p : listaPeriodos) {
@@ -79,7 +86,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar los periodos escolares.", Alert.AlertType.ERROR);
         }
     }
-    
+
     @FXML
     private void clicBuscar(ActionEvent event) {
         Periodo periodoSeleccionado = cbPeriodos.getValue();
@@ -93,12 +100,12 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
     private void cargarInformacion(int idPeriodo) {
         try {
             HashMap<String, Object> respuesta = ReporteTutoriaImp.obtenerReportesPorPeriodo(idPeriodo);
-            
+
             if (!(boolean) respuesta.get("error")) {
                 List<ReporteTutoria> reportes = (List<ReporteTutoria>) respuesta.get("reportes");
                 listaReportes = FXCollections.observableArrayList(reportes);
                 tvReportes.setItems(listaReportes);
-                
+
                 if (listaReportes.isEmpty()) {
                     Utilidades.mostrarAlertaSimple("Sin reportes", "No hay reportes registrados en el periodo seleccionado.", Alert.AlertType.INFORMATION);
                 }
@@ -114,30 +121,30 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
     @FXML
     private void clicConsultar(ActionEvent event) {
         ReporteTutoria reporteSeleccionado = tvReportes.getSelectionModel().getSelectedItem();
-        
+
         if (reporteSeleccionado == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor selecciona un reporte de la lista para responder.", Alert.AlertType.WARNING);
             return;
         }
-        
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLConsultarReporteTutoria.fxml"));
             Parent root = loader.load();
             FXMLConsultarReporteTutoriaController controlador = loader.getController();
             controlador.inicializarInformacion(reporteSeleccionado, true);
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Detalles del Reporte");
             stage.setScene(scene);
             stage.showAndWait();
-            
+
             Periodo p = cbPeriodos.getValue();
             if (p != null) {
                 cargarInformacion(p.getIdPeriodo());
             }
-            
+
         } catch (IOException ex) {
             LOGGER.error("Error al abrir detalles", ex);
             Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de detalles.", Alert.AlertType.ERROR);
@@ -157,7 +164,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
 
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

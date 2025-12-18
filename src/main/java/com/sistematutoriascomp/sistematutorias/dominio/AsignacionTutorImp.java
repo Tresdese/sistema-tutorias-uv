@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class AsignacionTutorImp {
+
     public static HashMap<String, Object> obtenerListasParaAsignacion() {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
@@ -36,7 +37,7 @@ public class AsignacionTutorImp {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return respuesta;
     }
 
@@ -46,11 +47,11 @@ public class AsignacionTutorImp {
 
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
-            
+
             if (idPeriodo <= 0) {
                 idPeriodo = FechaTutoriaDAO.obtenerIdPeriodoActual();
             }
-            
+
             if (idPeriodo <= 0) {
                 respuesta.put("mensaje", "No se encontró un periodo escolar activo.");
                 return respuesta;
@@ -67,7 +68,7 @@ public class AsignacionTutorImp {
                     respuesta.put("error", false);
                     respuesta.put("mensaje", "La asignación se realizó correctamente.");
                 } else {
-                    respuesta.put("error", false); 
+                    respuesta.put("error", false);
                     respuesta.put("mensaje", "Se asignó el tutor, pero hubo una advertencia al guardar el historial.");
                 }
             } else {
@@ -78,7 +79,7 @@ public class AsignacionTutorImp {
             respuesta.put("mensaje", "Error de base de datos al asignar: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return respuesta;
     }
 }

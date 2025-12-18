@@ -1,6 +1,7 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Tutor {
+
     private int idTutor;
     private String numeroDePersonal;
     private String nombre;

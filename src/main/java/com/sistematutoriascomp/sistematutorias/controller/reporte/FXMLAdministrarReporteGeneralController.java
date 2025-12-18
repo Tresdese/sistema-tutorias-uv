@@ -31,18 +31,28 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLAdministrarReporteGeneralController implements Initializable {
+
     private static final Logger LOGGER = LogManager.getLogger(FXMLAdministrarReporteGeneralController.class);
 
-    @FXML private Button btnVolver;
-    @FXML private Button btnRegistrar;
-    @FXML private Button btnVerReporte;
-    @FXML private TextField txtBuscar;
-    @FXML private TableView<ReporteGeneral> tblReportesGenerales;
-    @FXML private TableColumn<?, ?> colIdReporteGeneral;
-    @FXML private TableColumn<?, ?> colPeriodo;
-    @FXML private TableColumn<?, ?> colFechaGeneracion;
-    @FXML private TableColumn<?, ?> colEstado;
-    
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnRegistrar;
+    @FXML
+    private Button btnVerReporte;
+    @FXML
+    private TextField txtBuscar;
+    @FXML
+    private TableView<ReporteGeneral> tblReportesGenerales;
+    @FXML
+    private TableColumn<?, ?> colIdReporteGeneral;
+    @FXML
+    private TableColumn<?, ?> colPeriodo;
+    @FXML
+    private TableColumn<?, ?> colFechaGeneracion;
+    @FXML
+    private TableColumn<?, ?> colEstado;
+
     private ReporteGeneralDAO reporteGeneralDAO;
     private ObservableList<ReporteGeneral> observableListReportesGenerales;
 
@@ -52,7 +62,7 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
         reporteGeneralDAO = new ReporteGeneralDAO();
         llenarTabla();
         cargarInformacion();
-    }    
+    }
 
     @FXML
     private void onVolver(ActionEvent event) {
@@ -87,8 +97,8 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
     private void cargarInformacion() {
         try {
             observableListReportesGenerales = reporteGeneralDAO.obtenerTodos();
-            
-            if(observableListReportesGenerales != null) {
+
+            if (observableListReportesGenerales != null) {
                 tblReportesGenerales.setItems(observableListReportesGenerales);
                 configurarBusqueda();
             } else {
@@ -104,7 +114,7 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     private void configurarBusqueda() {
     }
 
@@ -136,7 +146,7 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
             LOGGER.error("Recurso no encontrado al abrir la ventana para registrar un reporte general", e);
             e.printStackTrace();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error("Error inesperado al abrir la ventana para registrar un reporte general", e);
             e.printStackTrace();
         }

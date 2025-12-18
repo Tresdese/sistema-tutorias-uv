@@ -40,27 +40,43 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLConsultarReporteTutoriaController implements Initializable {
+
     private static final Logger LOGGER = LogManager.getLogger(FXMLConsultarReporteTutoriaController.class);
 
-    @FXML private Label lbEstatus;
-    @FXML private Label lbFecha;
-    @FXML private Label lbTotalTutorados;
-    @FXML private Label lbTotalAsistentes;
-    @FXML private Label lbTotalInasistentes;
-    @FXML private Label lbTotalProblematicas;
-    @FXML private TextArea taObservaciones;
-    
-    @FXML private TableView<Problematica> tvProblematicas;
-    @FXML private TableColumn<Problematica, String> tcTitulo;
-    @FXML private TableColumn<Problematica, String> tcDescripcion;
-    @FXML private Button btnDescargarEvidencia;
-    
-    @FXML private VBox vbRespuesta;
-    @FXML private TextArea taRespuesta;
-    
-    @FXML private Button btnEnviar;
-    @FXML private Button btnResponder;
-    
+    @FXML
+    private Label lbEstatus;
+    @FXML
+    private Label lbFecha;
+    @FXML
+    private Label lbTotalTutorados;
+    @FXML
+    private Label lbTotalAsistentes;
+    @FXML
+    private Label lbTotalInasistentes;
+    @FXML
+    private Label lbTotalProblematicas;
+    @FXML
+    private TextArea taObservaciones;
+
+    @FXML
+    private TableView<Problematica> tvProblematicas;
+    @FXML
+    private TableColumn<Problematica, String> tcTitulo;
+    @FXML
+    private TableColumn<Problematica, String> tcDescripcion;
+    @FXML
+    private Button btnDescargarEvidencia;
+
+    @FXML
+    private VBox vbRespuesta;
+    @FXML
+    private TextArea taRespuesta;
+
+    @FXML
+    private Button btnEnviar;
+    @FXML
+    private Button btnResponder;
+
     private ReporteTutoria reporteActual;
     private boolean esCoordinador = false;
     private Integer idTutorReporte = null;
@@ -68,7 +84,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
-    }    
+    }
 
     private void configurarTabla() {
         tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
@@ -90,13 +106,13 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
         cargarProblematicas(reporte.getIdTutoria());
         configurarBotonEvidencia(reporte.getIdTutoria());
     }
-    
+
     private void cargarDatosUI() {
         if (reporteActual != null) {
             lbFecha.setText(reporteActual.getFechaFormato());
             taObservaciones.setText(reporteActual.getObservaciones());
             lbEstatus.setText(reporteActual.getEstatus());
-            
+
             btnEnviar.setVisible(false);
             btnEnviar.setManaged(false);
             btnResponder.setVisible(false);
@@ -132,7 +148,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                     lbEstatus.setStyle("-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
                 }
             }
-            
+
             if (reporteActual.getRespuesta() != null && !reporteActual.getRespuesta().trim().isEmpty()) {
                 vbRespuesta.setVisible(true);
                 vbRespuesta.setManaged(true);
@@ -154,7 +170,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             lbTotalProblematicas.setText(String.valueOf(totales.get("problematicas")));
         }
     }
-    
+
     private void cargarProblematicas(int idTutoria) {
         try {
             List<Problematica> lista = ProblematicaDAO.obtenerProblematicasPorTutoria(idTutoria);
@@ -172,7 +188,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar las problemáticas.", Alert.AlertType.ERROR);
         }
     }
-    
+
     private void configurarBotonEvidencia(int idTutoria) {
         try {
             byte[] evidencia = TutoriaDAO.obtenerEvidencia(idTutoria);
@@ -188,7 +204,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             btnDescargarEvidencia.setDisable(true);
         }
     }
-    
+
     @FXML
     private void clicVerEvidencia(ActionEvent event) {
         try {
@@ -196,11 +212,11 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             if (evidencia != null) {
                 File archivoTemporal = File.createTempFile("Evidencia_Reporte_" + reporteActual.getIdReporteTutoria() + "_", ".pdf");
                 archivoTemporal.deleteOnExit();
-                
+
                 try (FileOutputStream fos = new FileOutputStream(archivoTemporal)) {
                     fos.write(evidencia);
                 }
-                
+
                 if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().open(archivoTemporal);
                 } else {
@@ -215,13 +231,13 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
 
     @FXML
     private void clicEnviar(ActionEvent event) {
-        boolean confirmar = Utilidades.mostrarAlertaConfirmacion("Confirmar Envío", 
+        boolean confirmar = Utilidades.mostrarAlertaConfirmacion("Confirmar Envío",
                 "No podrás hacer cambios después. ¿Continuar con el envío?");
         if (confirmar) {
             enviarReporte();
         }
     }
-    
+
     private void enviarReporte() {
         HashMap<String, Object> respuesta = ReporteTutoriaImp.enviarReporte(reporteActual.getIdReporteTutoria());
         if (!(boolean) respuesta.get("error")) {
@@ -237,27 +253,27 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private void clicResponder(ActionEvent event) {
         abrirVentanaRespuesta();
     }
-    
+
     private void abrirVentanaRespuesta() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLResponderReporteTutoria.fxml"));
             Parent root = loader.load();
             FXMLResponderReporteTutoriaController controlador = loader.getController();
             controlador.inicializarReporte(reporteActual);
-            
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Responder Reporte");
             stage.setScene(scene);
             stage.showAndWait();
-            
+
             if (controlador.isRespuestaGuardada()) {
                 reporteActual.setEstatus("REVISADO");
                 reporteActual.setRespuesta(controlador.getRespuestaTexto());
-                cargarDatosUI(); 
+                cargarDatosUI();
             }
-            
+
         } catch (IOException ex) {
             LOGGER.error("Error al abrir ventana de respuesta", ex);
         }
@@ -267,10 +283,10 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private void clicVolver(ActionEvent event) {
         Utilidades.cerrarVentana(event);
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

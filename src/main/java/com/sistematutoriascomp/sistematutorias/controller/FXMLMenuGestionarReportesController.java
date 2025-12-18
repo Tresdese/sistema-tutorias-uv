@@ -20,18 +20,23 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 public class FXMLMenuGestionarReportesController implements Initializable {
+
     private final Logger LOGGER = LogManager.getLogger(FXMLMenuGestionarReportesController.class);
-    
-    @FXML private Button btnGenerarReporteTutoria;
-    @FXML private Button btnConsultarReportesTutoria;
-    @FXML private Button btnGenerarReporteGeneral;
-    @FXML private Button btnConsultarReportesGenerales;
+
+    @FXML
+    private Button btnGenerarReporteTutoria;
+    @FXML
+    private Button btnConsultarReportesTutoria;
+    @FXML
+    private Button btnGenerarReporteGeneral;
+    @FXML
+    private Button btnConsultarReportesGenerales;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarDatosUsuario();
     }
-    
+
     private void cargarDatosUsuario() {
         Tutor tutor = Sesion.getTutorSesion();
         String rol = Sesion.getRolActual();
@@ -79,28 +84,28 @@ public class FXMLMenuGestionarReportesController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicConsultarReportesTutoria(ActionEvent event) {
         String rol = Sesion.getRolActual();
-        
+
         if (rol.equals("ACADEMICO")) {
             irPantalla("/reporte/FXMLListadoReportesTutoria.fxml", "Lista de Reportes de Tutoría", event);
         } else if (rol.equals("COORDINADOR") || rol.equals("ADMINISTRADOR")) {
             irPantalla("/reporte/FXMLListadoReportesCoordinador.fxml", "Lista de Reportes de Tutoría", event);
         }
     }
-    
+
     @FXML
     private void clicGenerarReporteGeneral(ActionEvent event) {
         irPantalla("/reporte/FXMLGenerarReporteGeneral.fxml", "Generar Reporte General de Tutoría", event);
     }
-    
+
     @FXML
     private void clicConsultarReportesGenerales(ActionEvent event) {
         irPantalla("/reporte/FXMLAdministrarReporteGeneral.fxml", "Consultar lista de Reportes Generales de Tutoria", event);
     }
-    
+
     private void irPantalla(String ruta, String titulo, ActionEvent event) {
         try {
             Utilidades.goToWindow(ruta, event, titulo);
@@ -110,7 +115,7 @@ public class FXMLMenuGestionarReportesController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicVolverMenuPrincipal(ActionEvent event) {
         try {
@@ -121,10 +126,10 @@ public class FXMLMenuGestionarReportesController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

@@ -11,6 +11,7 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Rol;
 
 public class RolDAO {
+
     private static final String SQL_SELECT_ALL = "SELECT * FROM rol";
     private static final String SQL_SELECT_ROLENAME_BY_ID = "SELECT nombre FROM rol WHERE idRol = ?";
 

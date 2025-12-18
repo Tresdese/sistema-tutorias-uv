@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConexionBaseDatos {
+
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static Connection CONEXION = null;
 
@@ -86,4 +87,3 @@ public class ConexionBaseDatos {
         }
     }
 }
-

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Tutoria {
+
     private int idTutoria;
     private int idTutor;
     private LocalDate fecha;

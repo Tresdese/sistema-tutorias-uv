@@ -24,27 +24,38 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class FXMLRegistrarTutoradoController implements Initializable {
+
     private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarTutoradoController.class);
 
-    @FXML private TextField txtMatricula;
-    @FXML private TextField txtNombres;
-    @FXML private TextField txtApellidoPaterno;
-    @FXML private TextField txtApellidoMaterno;
-    @FXML private TextField txtCorreo;
-    @FXML private TextField txtSemestre;
-    @FXML private ComboBox<String> cbProgramaEducativo;
-    @FXML private Button btnVolver;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnGuardar;
+    @FXML
+    private TextField txtMatricula;
+    @FXML
+    private TextField txtNombres;
+    @FXML
+    private TextField txtApellidoPaterno;
+    @FXML
+    private TextField txtApellidoMaterno;
+    @FXML
+    private TextField txtCorreo;
+    @FXML
+    private TextField txtSemestre;
+    @FXML
+    private ComboBox<String> cbProgramaEducativo;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnGuardar;
 
     private TutorDAO tutorDAO = new TutorDAO();
     private CarreraDAO carreraDAO = new CarreraDAO();
     private TutoradoDAO tutoradoDAO = new TutoradoDAO();
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         llenarCombos();
-    }    
+    }
 
     @FXML
     private void onGuardar(ActionEvent event) {
@@ -77,19 +88,19 @@ public class FXMLRegistrarTutoradoController implements Initializable {
         List<Carrera> carreras;
         try {
             carreras = carreraDAO.obtenerTodasCarreras();
-                for (Carrera carrera : carreras) {
-                    cbProgramaEducativo.getItems().add(carrera.getNombre());
-                }
+            for (Carrera carrera : carreras) {
+                cbProgramaEducativo.getItems().add(carrera.getNombre());
+            }
         } catch (SQLException ex) {
             LOGGER.error("Error al obtener carreras de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar carreras: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al cargar carreras: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
         } catch (Exception e) {
             LOGGER.error("Error inesperado al obtener carreras de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
         }
     }
 
@@ -104,31 +115,31 @@ public class FXMLRegistrarTutoradoController implements Initializable {
             tutorado.setSemestre(Integer.parseInt(txtSemestre.getText()));
             tutorado.setIdCarrera(cbProgramaEducativo.getSelectionModel().getSelectedIndex() + 1);
             tutorado.setActivo(true);
-    
+
             boolean registrado = tutoradoDAO.insertarTutorado(tutorado);
             if (registrado) {
-                    LOGGER.info("Tutorado registrado exitosamente: {}", tutorado.getMatricula());
-                    Utilidades.mostrarAlertaSimple("Registro exitoso", 
-                        "El tutorado ha sido registrado correctamente", 
+                LOGGER.info("Tutorado registrado exitosamente: {}", tutorado.getMatricula());
+                Utilidades.mostrarAlertaSimple("Registro exitoso",
+                        "El tutorado ha sido registrado correctamente",
                         Alert.AlertType.INFORMATION);
-                    limpiarCampos();
+                limpiarCampos();
             } else {
                 LOGGER.error("Error al registrar el tutorado: {}", tutorado.getMatricula());
-                Utilidades.mostrarAlertaSimple("Error de registro", 
-                    "No se pudo registrar al tutorado", 
-                    Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error de registro",
+                        "No se pudo registrar al tutorado",
+                        Alert.AlertType.ERROR);
             }
         } catch (SQLException ex) {
             LOGGER.error("Error al registrar tutorado en la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al registrar tutorado: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al registrar tutorado: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
             ex.printStackTrace();
         } catch (Exception e) {
             LOGGER.error("Error inesperado al registrar tutorado", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
             e.printStackTrace();
         }
 
@@ -166,7 +177,7 @@ public class FXMLRegistrarTutoradoController implements Initializable {
         }
         return respuesta;
     }
-    
+
     private void limpiarCampos() {
         txtMatricula.clear();
         txtNombres.clear();

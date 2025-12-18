@@ -11,19 +11,20 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class AsistenciaDAO {
+
     private static final String SQL_OBTENER_SESIONES_POR_TUTOR = "SELECT idTutoria, fecha, hora_inicio FROM tutoria WHERE idTutor = ? AND idPeriodo = ? ORDER BY fecha DESC";
-    
+
     private static final String SQL_OBTENER_TUTORADOS_POR_TUTOR = "SELECT DISTINCT t.idTutorado, t.matricula, "
-        + "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, "
-        + "t.semestre, "
-        + "asi.asistio "
-        + "FROM tutorado t "
-        + "INNER JOIN asignaciontutor a ON t.idTutorado = a.idTutorado "
-        + "LEFT JOIN asistencia asi ON (asi.idTutorado = t.idTutorado AND asi.idTutoria = ?) "
-        + "WHERE a.idTutor = ? AND a.idPeriodo = ?";
-        
+            + "CONCAT(t.nombre, ' ', t.apellidoPaterno, ' ', t.apellidoMaterno) as nombreC, "
+            + "t.semestre, "
+            + "asi.asistio "
+            + "FROM tutorado t "
+            + "INNER JOIN asignaciontutor a ON t.idTutorado = a.idTutorado "
+            + "LEFT JOIN asistencia asi ON (asi.idTutorado = t.idTutorado AND asi.idTutoria = ?) "
+            + "WHERE a.idTutor = ? AND a.idPeriodo = ?";
+
     private static final String SQL_REGISTRAR_ASISTENCIA = "INSERT INTO asistencia (idTutoria, idTutorado, asistio) VALUES (?, ?, ?) "
-        + "ON DUPLICATE KEY UPDATE asistio = VALUES(asistio)";
+            + "ON DUPLICATE KEY UPDATE asistio = VALUES(asistio)";
     private static final String SQL_EXISTE_ASISTENCIA_POR_TUTORIA = "SELECT COUNT(*) AS total FROM asistencia WHERE idTutoria = ?";
 
     public static ArrayList<Tutoria> obtenerSesionesPorTutor(int idTutor, int idPeriodo) throws SQLException {

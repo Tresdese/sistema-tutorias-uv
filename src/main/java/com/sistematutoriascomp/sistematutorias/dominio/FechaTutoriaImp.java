@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 public class FechaTutoriaImp {
+
     public static HashMap<String, Object> registrarFechaTutoria(FechaTutoria fechaTutoria) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
@@ -21,7 +22,7 @@ public class FechaTutoriaImp {
                 return respuesta;
             }
             fechaTutoria.setIdPeriodo(idPeriodo);
-            
+
             boolean yaExiste = FechaTutoriaDAO.validarFechaRegistrada(idPeriodo, fechaTutoria.getNumeroSesion());
             if (yaExiste) {
                 respuesta.put("mensaje", "La Sesión número " + fechaTutoria.getNumeroSesion() + " ya se encuentra registrada en este periodo.");

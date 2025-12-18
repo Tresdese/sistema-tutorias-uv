@@ -21,30 +21,36 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class FXMLGenerarReporteTutoriaController implements Initializable {
-    @FXML private ComboBox<Tutoria> cbSesiones;
-    @FXML private Label lbTotalTutorados;
-    @FXML private Label lbTotalAsistentes;
-    @FXML private Label lbTotalInasistentes;
-    @FXML private Label lbTotalProblematicas;
-    @FXML private TextArea taObservaciones;
-    @FXML private Button btnGenerar;
+
+    @FXML
+    private ComboBox<Tutoria> cbSesiones;
+    @FXML
+    private Label lbTotalTutorados;
+    @FXML
+    private Label lbTotalAsistentes;
+    @FXML
+    private Label lbTotalInasistentes;
+    @FXML
+    private Label lbTotalProblematicas;
+    @FXML
+    private TextArea taObservaciones;
+    @FXML
+    private Button btnGenerar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        configurarAreaTexto(); 
+        configurarAreaTexto();
         cargarSesionesPendientes();
         configurarListenerComboBox();
-    }    
+    }
 
     private void configurarAreaTexto() {
         taObservaciones.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 500) {
-                taObservaciones.setText(oldValue); 
+                taObservaciones.setText(oldValue);
             }
         });
     }
@@ -57,15 +63,15 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             ObservableList<Tutoria> sesionesObs = FXCollections.observableArrayList(lista);
             cbSesiones.setItems(sesionesObs);
         } else {
-            Utilidades.mostrarAlertaSimple("Sin sesiones", 
-                (String) respuesta.get("mensaje"), 
-                Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Sin sesiones",
+                    (String) respuesta.get("mensaje"),
+                    Alert.AlertType.INFORMATION);
             btnGenerar.setDisable(true);
             cbSesiones.setDisable(true);
             taObservaciones.setDisable(true);
         }
     }
-    
+
     private void configurarListenerComboBox() {
         cbSesiones.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -88,7 +94,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error", "No se pudieron calcular los totales.", Alert.AlertType.ERROR);
         }
     }
-    
+
     private void limpiarEtiquetas() {
         lbTotalTutorados.setText("0");
         lbTotalAsistentes.setText("0");
@@ -109,9 +115,9 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
             return;
         }
         if (observaciones.length() > 500) {
-            Utilidades.mostrarAlertaSimple("Texto muy largo", 
-                "Las observaciones no pueden exceder los 500 caracteres. Actual: " + observaciones.length(), 
-                Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Texto muy largo",
+                    "Las observaciones no pueden exceder los 500 caracteres. Actual: " + observaciones.length(),
+                    Alert.AlertType.WARNING);
             return;
         }
         ReporteTutoria nuevoReporte = new ReporteTutoria();
@@ -130,7 +136,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     private void clicVolver(ActionEvent event) {
         cerrarVentana();
     }
-    
+
     @FXML
     private void clicCancelar(ActionEvent event) {
         cerrarVentana();
@@ -141,11 +147,4 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         stage.close();
     }
 
-    @FXML
-    private void clicCerrarSesion(ActionEvent event) {
-    }
-
-    @FXML
-    private void clicGuardar(ActionEvent event) {
-    }
 }

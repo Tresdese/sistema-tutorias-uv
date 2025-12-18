@@ -19,13 +19,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 public class FXMLMenuGestionarTutoriasController implements Initializable {
+
     private static final Logger LOGGER = Logger.getLogger(FXMLMenuGestionarTutoriasController.class.getName());
-    
-    @FXML private Button btnRegistrarHorario;
-    @FXML private Button btnRegistrarAsistencia;
-    @FXML private Button btnRegistrarFecha;
-    @FXML private Button btnAsignarTutorado;
-    @FXML private Button btnRegistrarTutorado;
+
+    @FXML
+    private Button btnRegistrarHorario;
+    @FXML
+    private Button btnRegistrarAsistencia;
+    @FXML
+    private Button btnRegistrarFecha;
+    @FXML
+    private Button btnAsignarTutorado;
+    @FXML
+    private Button btnRegistrarTutorado;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -95,7 +101,7 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
     private void clicAsignarTutorado(ActionEvent event) {
         irPantalla("/tutoria/FXMLAsignarTutorado.fxml", "Asignar Tutorado", event);
     }
-    
+
     @FXML
     private void clicRegistrarTutorado() {
         try {
@@ -118,7 +124,7 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicVolverMenuPrincipal(ActionEvent event) {
         try {
@@ -129,10 +135,10 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

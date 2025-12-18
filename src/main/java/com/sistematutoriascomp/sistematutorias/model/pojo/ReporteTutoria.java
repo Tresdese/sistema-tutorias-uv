@@ -3,8 +3,9 @@ package com.sistematutoriascomp.sistematutorias.model.pojo;
 import java.time.LocalDateTime;
 
 public class ReporteTutoria {
+
     private int idReporteTutoria;
-    private int idTutoria;          
+    private int idTutoria;
     private LocalDateTime fechaGeneracion;
     private String observaciones;
     private String estatus;
@@ -60,7 +61,7 @@ public class ReporteTutoria {
     public void setEstatus(String estatus) {
         this.estatus = estatus;
     }
-    
+
     public String getFechaFormato() {
         return fechaGeneracion != null ? fechaGeneracion.toString().replace("T", " ") : "";
     }

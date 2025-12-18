@@ -11,6 +11,7 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
 
 public class FechaTutoriaDAO {
+
     private static final String SQL_OBTENER_FECHAS_POR_PERIODO = "SELECT * FROM fechatutoria WHERE idPeriodo = ? ORDER BY numeroSesion ASC";
     private static final String SQL_VALIDAR_FECHA_REGISTRADA = "SELECT count(*) FROM fechatutoria WHERE idPeriodo = ? AND numeroSesion = ?";
     private static final String SQL_INSERT_FECHA_TUTORIA = "INSERT INTO fechatutoria (idPeriodo, numeroSesion, fecha, titulo, descripcion) VALUES (?, ?, ?, ?, ?)";
@@ -20,13 +21,13 @@ public class FechaTutoriaDAO {
     public static ArrayList<FechaTutoria> obtenerFechasPorPeriodo(int idPeriodo) throws SQLException {
         ArrayList<FechaTutoria> fechas = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
-        
+
         if (conexion != null) {
             try {
                 PreparedStatement sentencia = conexion.prepareStatement(SQL_OBTENER_FECHAS_POR_PERIODO);
                 sentencia.setInt(1, idPeriodo);
                 ResultSet resultado = sentencia.executeQuery();
-                
+
                 while (resultado.next()) {
                     FechaTutoria fechaT = new FechaTutoria();
                     fechaT.setIdFechaTutoria(resultado.getInt("idFechaTutoria"));
@@ -60,14 +61,14 @@ public class FechaTutoriaDAO {
     public static boolean validarFechaRegistrada(int idPeriodo, int numeroSesion) throws SQLException {
         boolean existe = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
-        
+
         if (conexion != null) {
             try {
                 PreparedStatement sentencia = conexion.prepareStatement(SQL_VALIDAR_FECHA_REGISTRADA);
                 sentencia.setInt(1, idPeriodo);
                 sentencia.setInt(2, numeroSesion);
                 ResultSet resultado = sentencia.executeQuery();
-                
+
                 if (resultado.next() && resultado.getInt(1) > 0) {
                     existe = true;
                 }
@@ -81,7 +82,7 @@ public class FechaTutoriaDAO {
     public static boolean registrarFechaTutoria(FechaTutoria fechaTutoria) throws SQLException {
         boolean resultado = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
-        
+
         if (conexion != null) {
             try {
                 PreparedStatement sentencia = conexion.prepareStatement(SQL_INSERT_FECHA_TUTORIA);
@@ -90,7 +91,7 @@ public class FechaTutoriaDAO {
                 sentencia.setDate(3, Date.valueOf(fechaTutoria.getFecha()));
                 sentencia.setString(4, fechaTutoria.getTitulo());
                 sentencia.setString(5, fechaTutoria.getDescripcion());
-                
+
                 resultado = (sentencia.executeUpdate() > 0);
             } finally {
                 ConexionBaseDatos.cerrarConexionBD();
@@ -102,7 +103,7 @@ public class FechaTutoriaDAO {
     public static int obtenerIdPeriodoActual() throws SQLException {
         int idPeriodo = 0;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
-        
+
         if (conexion != null) {
             try {
                 PreparedStatement sentencia = conexion.prepareStatement(SQL_OBTENER_PERIODO_ACTUAL);
@@ -116,17 +117,17 @@ public class FechaTutoriaDAO {
         }
         return idPeriodo;
     }
-    
+
     public static int comprobarSiguienteSesion(int idPeriodo) throws SQLException {
         int siguiente = 1;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
-        
+
         if (conexion != null) {
             try {
                 PreparedStatement sentencia = conexion.prepareStatement(SQL_MAX_NUMERO_SESION);
                 sentencia.setInt(1, idPeriodo);
                 ResultSet resultado = sentencia.executeQuery();
-                
+
                 if (resultado.next()) {
                     siguiente = resultado.getInt(1) + 1;
                 }

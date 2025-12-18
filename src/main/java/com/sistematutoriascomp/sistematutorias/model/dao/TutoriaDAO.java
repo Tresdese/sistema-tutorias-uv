@@ -12,6 +12,7 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class TutoriaDAO {
+
     private static final String SQL_INSERT_TUTORIA = "INSERT INTO tutoria (idTutor, idPeriodo, fecha, hora_inicio) VALUES (?, ?, ?, ?)";
     private static final String SQL_COMPROBAR_TUTORIA_REGISTRADA = "SELECT idTutoria FROM tutoria WHERE idTutor = ? AND fecha = ?";
     private static final String SQL_SUBIR_EVIDENCIA = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
@@ -93,7 +94,7 @@ public class TutoriaDAO {
         }
         return existe;
     }
-    
+
     public static byte[] obtenerEvidencia(int idTutoria) throws SQLException {
         byte[] evidencia = null;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
@@ -102,7 +103,7 @@ public class TutoriaDAO {
                 PreparedStatement ps = conexion.prepareStatement(SQL_OBTENER_EVIDENCIA_POR_TUTORIA);
                 ps.setInt(1, idTutoria);
                 ResultSet rs = ps.executeQuery();
-                
+
                 if (rs.next()) {
                     evidencia = rs.getBytes("evidencia");
                 }

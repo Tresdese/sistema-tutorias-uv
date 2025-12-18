@@ -28,21 +28,28 @@ import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 public class FXMLRegistrarFechaTutoriaController implements Initializable {
+
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarFechaTutoriaController.class);
 
-    @FXML private TextField tfNumeroSesion;
-    @FXML private DatePicker dpFechaTutoria;
-    @FXML private TextField tfTitulo;
-    @FXML private TextArea taDescripcion;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnRegistrar;
+    @FXML
+    private TextField tfNumeroSesion;
+    @FXML
+    private DatePicker dpFechaTutoria;
+    @FXML
+    private TextField tfTitulo;
+    @FXML
+    private TextArea taDescripcion;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnRegistrar;
 
     private int numeroSesionAuto = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarVentana();
-    }    
+    }
 
     private void configurarVentana() {
         configurarFechasDisponibles();
@@ -66,10 +73,12 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
     private void cargarSiguienteSesion() {
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
-            if(idPeriodo <= 0) idPeriodo = FechaTutoriaDAO.obtenerIdPeriodoActual();
-            
+            if (idPeriodo <= 0) {
+                idPeriodo = FechaTutoriaDAO.obtenerIdPeriodoActual();
+            }
+
             numeroSesionAuto = FechaTutoriaDAO.comprobarSiguienteSesion(idPeriodo);
-            
+
             if (numeroSesionAuto > 3) {
                 tfNumeroSesion.setText("COMPLETO");
                 btnRegistrar.setDisable(true);
@@ -78,7 +87,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
                 tfNumeroSesion.setText(String.valueOf(numeroSesionAuto));
                 btnRegistrar.setDisable(false); // Reactivar por si acaso
             }
-            
+
         } catch (SQLException ex) {
             LOGGER.error("Error al calcular la siguiente sesión", ex);
             tfNumeroSesion.setText("Error");
@@ -106,16 +115,16 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             Utilidades.mostrarAlertaSimple("Error inesperado", "Ocurrió un error al procesar el registro.", Alert.AlertType.ERROR);
         }
     }
-    
+
     private boolean validarCampos() {
         if (dpFechaTutoria.getValue() == null) {
             Utilidades.mostrarAlertaSimple("Campos requeridos", "Por favor seleccione la fecha de la tutoría.", Alert.AlertType.WARNING);
             return false;
         }
-        
+
         if (dpFechaTutoria.getValue().isBefore(LocalDate.now())) {
-             Utilidades.mostrarAlertaSimple("Fecha inválida", "No puede seleccionar una fecha pasada.", Alert.AlertType.WARNING);
-             return false;
+            Utilidades.mostrarAlertaSimple("Fecha inválida", "No puede seleccionar una fecha pasada.", Alert.AlertType.WARNING);
+            return false;
         }
 
         if (tfTitulo.getText().trim().isEmpty()) {
@@ -132,7 +141,7 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
 
     private void registrarInformacion(FechaTutoria fecha) {
         HashMap<String, Object> respuesta = FechaTutoriaImp.registrarFechaTutoria(fecha);
-        
+
         if (!(boolean) respuesta.get("error")) {
             Utilidades.mostrarAlertaSimple("Registro exitoso", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
             limpiarCampos();
@@ -146,14 +155,14 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         limpiarCampos();
         irAtras(event);
     }
-    
+
     private void limpiarCampos() {
         dpFechaTutoria.setValue(null);
         tfTitulo.clear();
         taDescripcion.clear();
         cargarSiguienteSesion();
     }
-    
+
     private void irAtras(ActionEvent event) {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
@@ -163,10 +172,10 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion(); 
+        Sesion.cerrarSesion();
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {

@@ -11,6 +11,7 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class ReporteTutoriaImp {
+
     public static HashMap<String, Object> obtenerSesionesPendientes(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
@@ -57,16 +58,16 @@ public class ReporteTutoriaImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
         }
-        
+
         return respuesta;
     }
 
     public static HashMap<String, Object> obtenerReportesPorTutor(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
-        
+
         try {
-            List<ReporteTutoria> listaReportes = ReporteTutoriaDAO.obtenerReportesPorTutor(idTutor);            
+            List<ReporteTutoria> listaReportes = ReporteTutoriaDAO.obtenerReportesPorTutor(idTutor);
             respuesta.put("error", false);
             respuesta.put("reportes", listaReportes);
         } catch (SQLException e) {
@@ -76,7 +77,7 @@ public class ReporteTutoriaImp {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return respuesta;
     }
 
@@ -86,7 +87,7 @@ public class ReporteTutoriaImp {
 
         try {
             boolean exito = ReporteTutoriaDAO.enviarReporte(idReporte);
-            
+
             if (exito) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "Reporte enviado correctamente.");
@@ -97,20 +98,20 @@ public class ReporteTutoriaImp {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return respuesta;
     }
-    
+
     public static HashMap<String, Object> obtenerReportesPorPeriodo(int idPeriodo) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
-        
+
         try {
             List<ReporteTutoria> listaReportes = ReporteTutoriaDAO.obtenerReportesPorPeriodo(idPeriodo);
-            
+
             respuesta.put("error", false);
             respuesta.put("reportes", listaReportes);
-            
+
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
             e.printStackTrace();
@@ -124,14 +125,14 @@ public class ReporteTutoriaImp {
 
         try {
             boolean exito = ReporteTutoriaDAO.registrarRespuesta(idReporte, textoRespuesta);
-            
+
             if (exito) {
                 respuesta.put("error", false);
                 respuesta.put("mensaje", "Respuesta enviada correctamente.");
             } else {
                 respuesta.put("mensaje", "No se pudo guardar la respuesta.");
             }
-            
+
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
             e.printStackTrace();
@@ -142,7 +143,7 @@ public class ReporteTutoriaImp {
     public static HashMap<String, Object> obtenerReportesPorTutorYPeriodo(int idTutor, int idPeriodo) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
-        
+
         try {
             List<ReporteTutoria> listaReportes = ReporteTutoriaDAO.obtenerReportesPorTutorYPeriodo(idTutor, idPeriodo);
             respuesta.put("error", false);
@@ -154,7 +155,7 @@ public class ReporteTutoriaImp {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return respuesta;
     }
 }

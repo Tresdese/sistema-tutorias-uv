@@ -1,6 +1,7 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Tutorado {
+
     private int idTutorado;
     private String matricula;
     private String nombre;
@@ -107,7 +108,7 @@ public class Tutorado {
     public void setIdTutor(int idTutor) {
         this.idTutor = idTutor;
     }
-    
+
     @Override
     public String toString() {
         return "Tutorado{" + "idTutorado=" + idTutorado + ", matricula=" + matricula + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", idCarrera=" + idCarrera + ", semestre=" + semestre + ", esActivo=" + esActivo + ", idTutor=" + idTutor + '}';
