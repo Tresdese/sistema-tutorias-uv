@@ -40,8 +40,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLFormularioReporteGeneralController implements Initializable {
-
-    private final static Logger LOGGER = LogManager.getLogger(FXMLFormularioReporteGeneralController.class);
+    private static final Logger LOGGER = LogManager.getLogger(FXMLFormularioReporteGeneralController.class);
 
     @FXML
     private Button btnVolver;
@@ -71,7 +70,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     private ComboBox cbPeriodo;
     @FXML
     private ComboBox cbCoordinador;
-
     private TutorDAO tutorDAO = new TutorDAO();
     private PeriodoDAO periodoDAO = new PeriodoDAO();
     private ReporteGeneralDAO reporteGeneralDAO = new ReporteGeneralDAO();
@@ -80,8 +78,71 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarCombos();
-        // Modo alta por defecto: todo editable, sin botón Editar
+        
         configurarModoCreacion();
+    }
+
+    public void inicializarParaEdicion(ReporteGeneral reporte) {
+        this.reporteEnEdicion = reporte;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        txtIdReporteGeneral.setText(String.valueOf(reporte.getIdReporteGeneral()));
+
+        if (reporte.getFechaGeneracion() != null) {
+            txtFechaGeneracion.setText(reporte.getFechaGeneracion().format(formatter));
+        } else {
+            txtFechaGeneracion.clear();
+        }
+
+        txtTotalTutorados.setText(String.valueOf(reporte.getTotalTutorados()));
+        txtTotalTutores.setText(String.valueOf(reporte.getTotalTutores()));
+        txtPorcentajeAsistencia.setText(
+                reporte.getPorcentajeAsistencia() != null ? reporte.getPorcentajeAsistencia().toPlainString() : "");
+        txtTotalProblematicas.setText(String.valueOf(reporte.getTotalProblematicas()));
+
+        cbEstado.setValue(reporte.getEstado());
+        cbPeriodo.setValue(reporte.getNombrePeriodo());
+
+        try {
+            List<Tutor> tutores = tutorDAO.getAllTutors();
+            for (Tutor tutor : tutores) {
+                if (tutor.getIdTutor() == reporte.getIdCoordinador()) {
+                    cbCoordinador.setValue(tutor.getNombre());
+                    break;
+                }
+            }
+        } catch (SQLException ex) {
+            LOGGER.error("Error al cargar coordinador para edición de reporte", ex);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "No se pudo cargar el coordinador del reporte: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al cargar coordinador para edición de reporte", e);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+        }
+
+        configurarModoSoloLecturaEdicion();
+    }
+
+    public int obtenerIdPeriodo() {
+        int idPeriodo = -1;
+        try {
+            idPeriodo = periodoDAO.obtenerIdPorNombre(cbPeriodo.getValue().toString());
+        } catch (SQLException ex) {
+            LOGGER.error("Error al obtener IDs de la base de datos", ex);
+            Utilidades.mostrarAlertaSimple("Error de base de datos",
+                    "Error al obtener IDs: " + ex.getMessage(),
+                    Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            LOGGER.error("Error inesperado al obtener IDs de la base de datos", e);
+            Utilidades.mostrarAlertaSimple("Error inesperado",
+                    "Ocurrió un error inesperado: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+        }
+        return idPeriodo;
     }
 
     @FXML
@@ -289,51 +350,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
         return respuesta;
     }
 
-    public void inicializarParaEdicion(ReporteGeneral reporte) {
-        this.reporteEnEdicion = reporte;
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        txtIdReporteGeneral.setText(String.valueOf(reporte.getIdReporteGeneral()));
-
-        if (reporte.getFechaGeneracion() != null) {
-            txtFechaGeneracion.setText(reporte.getFechaGeneracion().format(formatter));
-        } else {
-            txtFechaGeneracion.clear();
-        }
-
-        txtTotalTutorados.setText(String.valueOf(reporte.getTotalTutorados()));
-        txtTotalTutores.setText(String.valueOf(reporte.getTotalTutores()));
-        txtPorcentajeAsistencia.setText(
-                reporte.getPorcentajeAsistencia() != null ? reporte.getPorcentajeAsistencia().toPlainString() : "");
-        txtTotalProblematicas.setText(String.valueOf(reporte.getTotalProblematicas()));
-
-        cbEstado.setValue(reporte.getEstado());
-        cbPeriodo.setValue(reporte.getNombrePeriodo());
-
-        try {
-            List<Tutor> tutores = tutorDAO.getAllTutors();
-            for (Tutor tutor : tutores) {
-                if (tutor.getIdTutor() == reporte.getIdCoordinador()) {
-                    cbCoordinador.setValue(tutor.getNombre());
-                    break;
-                }
-            }
-        } catch (SQLException ex) {
-            LOGGER.error("Error al cargar coordinador para edición de reporte", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "No se pudo cargar el coordinador del reporte: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
-        } catch (Exception e) {
-            LOGGER.error("Error inesperado al cargar coordinador para edición de reporte", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-        }
-
-        configurarModoSoloLecturaEdicion();
-    }
-
     private void cargarCombosCoordinadores() {
         List<Tutor> tutores;
         try {
@@ -354,24 +370,6 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
                     "Ocurrió un error inesperado: " + e.getMessage(),
                     Alert.AlertType.ERROR);
         }
-    }
-
-    public int obtenerIdPeriodo() {
-        int idPeriodo = -1;
-        try {
-            idPeriodo = periodoDAO.obtenerIdPorNombre(cbPeriodo.getValue().toString());
-        } catch (SQLException ex) {
-            LOGGER.error("Error al obtener IDs de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "Error al obtener IDs: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
-        } catch (Exception e) {
-            LOGGER.error("Error inesperado al obtener IDs de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-        }
-        return idPeriodo;
     }
 
     private int obtenerIdCoordinador() {

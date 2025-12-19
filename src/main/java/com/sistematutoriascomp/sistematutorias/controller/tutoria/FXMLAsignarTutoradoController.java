@@ -32,8 +32,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FXMLAsignarTutoradoController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLAsignarTutoradoController.class);
+
     
     @FXML
     private TableView<Tutorado> tvTutorados;
@@ -55,7 +55,6 @@ public class FXMLAsignarTutoradoController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnAsignar;
-
     private ObservableList<Tutorado> listaTutorados;
     private ObservableList<Tutor> listaTutores;
 
@@ -94,9 +93,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
                 Utilidades.mostrarAlertaSimple("Error al cargar", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
-            LOGGER.error("Error al cargar tablas de asignación", e);
-            System.err.println("Error al cargar tablas de asignación: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "Ocurrió un error al cargar la información.", Alert.AlertType.ERROR);
+            manejarError("Error al cargar tablas de asignación", e, "Ocurrió un error al cargar la información.");
         }
     }
 
@@ -144,11 +141,10 @@ public class FXMLAsignarTutoradoController implements Initializable {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de tutorías", ex);
-            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
+            manejarError("Error al volver al menú de tutorías", ex, "No se pudo volver al menú de tutorías.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
-            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de tutorías", e,
+                    "Ocurrió un error inesperado al volver al menú de tutorías.");
         }
     }
 
@@ -158,11 +154,13 @@ public class FXMLAsignarTutoradoController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

@@ -6,7 +6,6 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Rol {
-
     private int idRol;
     private String nombreRol;
 
@@ -16,6 +15,11 @@ public class Rol {
     public Rol(int idRol, String nombreRol) {
         this.idRol = idRol;
         this.nombreRol = nombreRol;
+    }
+
+    @Override
+    public String toString() {
+        return "Rol{" + "idRol=" + idRol + ", nombreRol=" + nombreRol + '}';
     }
 
     public int getIdRol() {
@@ -33,10 +37,4 @@ public class Rol {
     public void setNombreRol(String nombreRol) {
         this.nombreRol = nombreRol;
     }
-
-    @Override
-    public String toString() {
-        return "Rol{" + "idRol=" + idRol + ", nombreRol=" + nombreRol + '}';
-    }
-
 }

@@ -22,6 +22,7 @@ import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class AsignacionTutorImp {
     private static final Logger LOGGER = LogManager.getLogger(AsignacionTutorImp.class);
+
     
     public static HashMap<String, Object> obtenerListasParaAsignacion() {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -41,11 +42,9 @@ public class AsignacionTutorImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión al cargar las listas: " + e.getMessage());
             LOGGER.error("Error de base de datos al obtener listas para asignación", e);
-            System.err.println("Error de base de datos al obtener listas: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
             LOGGER.error("Error inesperado al obtener listas para asignación", e);
-            System.err.println("Error inesperado al obtener listas: " + e.getMessage());
         }
 
         return respuesta;
@@ -88,7 +87,6 @@ public class AsignacionTutorImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de base de datos al asignar: " + e.getMessage());
             LOGGER.error("Error de base de datos al asignar tutor {} a tutorado {}", tutor.getIdTutor(), tutorado.getIdTutorado(), e);
-            System.err.println("Error al asignar tutor: " + e.getMessage());
         }
 
         return respuesta;

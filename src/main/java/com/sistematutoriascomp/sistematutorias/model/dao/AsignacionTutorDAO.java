@@ -11,7 +11,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class AsignacionTutorDAO {
-
     private static final String SQL_INSERT = "INSERT INTO asignaciontutor (idTutor, idTutorado, idPeriodo) VALUES (?, ?, ?)";
 
     public static boolean registrarAsignacion(int idTutor, int idTutorado, int idPeriodo) throws SQLException {

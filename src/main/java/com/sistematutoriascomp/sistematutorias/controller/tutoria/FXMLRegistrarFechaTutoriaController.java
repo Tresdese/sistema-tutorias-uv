@@ -33,7 +33,6 @@ import javafx.scene.control.TextField;
 import javafx.util.Callback;
 
 public class FXMLRegistrarFechaTutoriaController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarFechaTutoriaController.class);
 
     @FXML
@@ -48,7 +47,6 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnRegistrar;
-
     private int numeroSesionAuto = 0;
 
     @Override
@@ -90,14 +88,13 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
                 Utilidades.mostrarAlertaSimple("Periodo Completo", "Ya se han registrado las 3 sesiones para este periodo.", Alert.AlertType.INFORMATION);
             } else {
                 tfNumeroSesion.setText(String.valueOf(numeroSesionAuto));
-                btnRegistrar.setDisable(false); // Reactivar por si acaso
+                btnRegistrar.setDisable(false); 
             }
 
         } catch (SQLException ex) {
-            LOGGER.error("Error al calcular la siguiente sesión", ex);
             tfNumeroSesion.setText("Error");
-            Utilidades.mostrarAlertaSimple("Error de Conexión", "No se pudo calcular el número de sesión.", Alert.AlertType.ERROR);
-            System.err.println("Error al calcular la siguiente sesión: " + ex.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al calcular la siguiente sesión", ex, "Error de conexión",
+                    "No se pudo calcular el número de sesión.");
         }
     }
 
@@ -117,9 +114,8 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             registrarInformacion(nuevaFecha);
 
         } catch (Exception ex) {
-            LOGGER.error("Error inesperado al intentar registrar fecha de tutoría", ex);
-            Utilidades.mostrarAlertaSimple("Error inesperado", "Ocurrió un error al procesar el registro.", Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al registrar fecha de tutoría: " + ex.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error inesperado al intentar registrar fecha de tutoría", ex,
+                    "Error inesperado", "Ocurrió un error al procesar el registro.");
         }
     }
 
@@ -175,11 +171,10 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de tutorías", ex);
-            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
+            manejarError("Error al volver al menú de tutorías", ex, "No se pudo volver al menú de tutorías.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
-            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de tutorías", e,
+                    "Ocurrió un error inesperado al volver al menú de tutorías.");
         }
     }
 
@@ -189,11 +184,13 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

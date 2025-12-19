@@ -31,9 +31,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class FXMLRegistrarUsuarioController implements Initializable {
-
     private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarUsuarioController.class);
-
+    
     @FXML
     private Button btnVolver;
     @FXML
@@ -55,8 +54,8 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     @FXML
     private ComboBox<String> cbRol;
     @FXML
-    private ComboBox<String> cbCarrera;
 
+    private ComboBox<String> cbCarrera;
     TutorDAO tutorDAO = new TutorDAO();
     RolDAO rolDAO = new RolDAO();
     CarreraDAO carreraDAO = new CarreraDAO();
@@ -115,17 +114,11 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                 cbRol.getItems().add(rol.getNombreRol());
             }
         } catch (SQLException ex) {
-            LOGGER.error("Error al obtener roles de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar roles: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error al obtener roles: " + ex.getMessage());
+            manejarError("Error al obtener roles de la base de datos", ex,
+                    "Error de base de datos", "No se pudieron cargar los roles. Intenta más tarde.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al obtener roles de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al obtener roles: " + e.getMessage());
+            manejarError("Error inesperado al obtener roles de la base de datos", e,
+                    "Error inesperado", "Ocurrió un error inesperado al cargar los roles.");
         }
     }
 
@@ -137,17 +130,11 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                 cbCarrera.getItems().add(carrera.getNombre());
             }
         } catch (SQLException ex) {
-            LOGGER.error("Error al obtener carreras de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar carreras: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error al obtener carreras: " + ex.getMessage());
+            manejarError("Error al obtener carreras de la base de datos", ex,
+                    "Error de base de datos", "No se pudieron cargar las carreras. Intenta más tarde.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al obtener carreras de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al obtener carreras: " + e.getMessage());
+            manejarError("Error inesperado al obtener carreras de la base de datos", e,
+                    "Error inesperado", "Ocurrió un error inesperado al cargar las carreras.");
         }
     }
 
@@ -208,17 +195,15 @@ public class FXMLRegistrarUsuarioController implements Initializable {
                         Alert.AlertType.ERROR);
             }
         } catch (SQLException ex) {
-            LOGGER.error("Error al registrar tutor en la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al registrar tutor: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error al registrar tutor: " + ex.getMessage());
+            manejarError("Error al registrar tutor en la base de datos", ex,
+                    "Error de base de datos", "No se pudo registrar al tutor. Intenta nuevamente.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al registrar tutor", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al registrar tutor: " + e.getMessage());
+            manejarError("Error inesperado al registrar tutor", e,
+                    "Error inesperado", "Ocurrió un error inesperado al registrar al tutor.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String titulo, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, titulo, mensajeUsuario);
     }
 }

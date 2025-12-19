@@ -133,11 +133,14 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de tutorías", ex);
-            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
+            manejarError("Error al volver al menú de tutorías", ex, "No se pudo volver al menú de tutorías.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
-            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de tutorías", e,
+                    "Ocurrió un error inesperado al volver al menú de tutorías.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

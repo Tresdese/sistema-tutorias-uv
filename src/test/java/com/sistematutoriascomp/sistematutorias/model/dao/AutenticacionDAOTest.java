@@ -16,6 +16,17 @@ import org.junit.jupiter.api.Test;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 class AutenticacionDAOTest extends BaseDaoTest {
+    @Test
+    void verificarSesionTutor_devuelveTutorCuandoCoincide() throws SQLException {
+        Tutor tutor = AutenticacionDAO.verificarSesionTutor("123", "secret");
+        assertNotNull(tutor);
+    }
+
+    @Test
+    void verificarSesionTutor_regresaNullConCredencialesIncorrectas() throws SQLException {
+        Tutor tutor = AutenticacionDAO.verificarSesionTutor("123", "wrong");
+        assertNull(tutor);
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -47,17 +58,5 @@ class AutenticacionDAOTest extends BaseDaoTest {
             ps.setInt(9, 1);
             ps.executeUpdate();
         }
-    }
-
-    @Test
-    void verificarSesionTutor_devuelveTutorCuandoCoincide() throws SQLException {
-        Tutor tutor = AutenticacionDAO.verificarSesionTutor("123", "secret");
-        assertNotNull(tutor);
-    }
-
-    @Test
-    void verificarSesionTutor_regresaNullConCredencialesIncorrectas() throws SQLException {
-        Tutor tutor = AutenticacionDAO.verificarSesionTutor("123", "wrong");
-        assertNull(tutor);
     }
 }

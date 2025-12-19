@@ -29,9 +29,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class FXMLRegistrarTutoradoController implements Initializable {
-
     private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarTutoradoController.class);
-
     @FXML
     private TextField txtMatricula;
     @FXML
@@ -52,7 +50,6 @@ public class FXMLRegistrarTutoradoController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
-
     private TutorDAO tutorDAO = new TutorDAO();
     private CarreraDAO carreraDAO = new CarreraDAO();
     private TutoradoDAO tutoradoDAO = new TutoradoDAO();
@@ -97,17 +94,11 @@ public class FXMLRegistrarTutoradoController implements Initializable {
                 cbProgramaEducativo.getItems().add(carrera.getNombre());
             }
         } catch (SQLException ex) {
-            LOGGER.error("Error al obtener carreras de la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", 
-                "Error al cargar carreras: " + ex.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error al obtener carreras: " + ex.getMessage());
+            manejarError("Error al obtener carreras de la base de datos", ex, "Error de base de datos",
+                    "No se pudieron cargar las carreras. Intenta más tarde.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al obtener carreras de la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", 
-                "Ocurrió un error inesperado: " + e.getMessage(), 
-                Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al obtener carreras: " + e.getMessage());
+            manejarError("Error inesperado al obtener carreras de la base de datos", e, "Error inesperado",
+                    "Ocurrió un error inesperado al cargar las carreras.");
         }
     }
 
@@ -137,17 +128,11 @@ public class FXMLRegistrarTutoradoController implements Initializable {
                         Alert.AlertType.ERROR);
             }
         } catch (SQLException ex) {
-            LOGGER.error("Error al registrar tutorado en la base de datos", ex);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "Error al registrar tutorado: " + ex.getMessage(),
-                    Alert.AlertType.ERROR);
-            System.err.println("Error al registrar tutorado: " + ex.getMessage());
+            manejarError("Error al registrar tutorado en la base de datos", ex, "Error de base de datos",
+                    "No se pudo registrar al tutorado. Intenta nuevamente.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al registrar tutorado", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al registrar tutorado: " + e.getMessage());
+            manejarError("Error inesperado al registrar tutorado", e, "Error inesperado",
+                    "Ocurrió un error inesperado al registrar al tutorado.");
         }
 
     }
@@ -193,5 +178,9 @@ public class FXMLRegistrarTutoradoController implements Initializable {
         txtCorreo.clear();
         txtSemestre.clear();
         cbProgramaEducativo.getSelectionModel().clearSelection();
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String titulo, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, titulo, mensajeUsuario);
     }
 }

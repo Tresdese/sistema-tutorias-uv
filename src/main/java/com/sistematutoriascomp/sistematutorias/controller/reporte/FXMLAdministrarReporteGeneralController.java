@@ -36,7 +36,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLAdministrarReporteGeneralController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLAdministrarReporteGeneralController.class);
 
     @FXML
@@ -57,14 +56,13 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
     private TableColumn<?, ?> colFechaGeneracion;
     @FXML
     private TableColumn<?, ?> colEstado;
-
-    private ReporteGeneralDAO reporteGeneralDAO;
+    
+    private ReporteGeneralDAO reporteGeneralDAO = new ReporteGeneralDAO();
     private ObservableList<ReporteGeneral> observableListReportesGenerales;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarDatosUsuario();
-        reporteGeneralDAO = new ReporteGeneralDAO();
         llenarTabla();
         cargarInformacion();
     }
@@ -107,16 +105,15 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
                 tblReportesGenerales.setItems(observableListReportesGenerales);
                 configurarBusqueda();
             } else {
-                Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar los reportes generales", Alert.AlertType.ERROR);
+                Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar los reportes generales",
+                        Alert.AlertType.ERROR);
             }
         } catch (SQLException e) {
-            LOGGER.error("Error al cargar los reportes generales desde la base de datos", e);
-            Utilidades.mostrarAlertaSimple("Error de base de datos", "No se pudieron cargar los reportes generales: " + e.getMessage(), Alert.AlertType.ERROR);
-            System.err.println("Error al cargar reportes generales: " + e.getMessage());
+            manejarError("Error al cargar los reportes generales desde la base de datos", e, "Error de base de datos",
+                    "No se pudieron cargar los reportes generales. Intenta más tarde.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cargar los reportes generales", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado", "Ocurrió un error inesperado: " + e.getMessage(), Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al cargar reportes generales: " + e.getMessage());
+            manejarError("Error inesperado al cargar los reportes generales", e, "Error inesperado",
+                    "Ocurrió un error inesperado al cargar los reportes generales.");
         }
     }
 
@@ -134,11 +131,11 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
         try {
             Utilidades.volverMenuGestionarReportes(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de reportes", ex);
-            System.err.println("Error al volver al menú de reportes: " + ex.getMessage());
+            manejarError("Error al volver al menú de reportes", ex, "Error",
+                    "No se pudo volver al menú de reportes.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de reportes", e);
-            System.err.println("Error inesperado al volver al menú de reportes: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de reportes", e, "Error inesperado",
+                    "Ocurrió un error inesperado al volver al menú de reportes.");
         }
     }
 
@@ -147,15 +144,14 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
             Utilidades.openModal("/reporte/FXMLFormularioReporteGeneral.fxml", "Generar Reporte General");
             cargarInformacion();
         } catch (IOException e) {
-            LOGGER.error("Error al abrir la ventana para registrar un reporte general", e);
-            System.err.println("Error al abrir ventana para registrar reporte general: " + e.getMessage());
+            manejarError("Error al abrir la ventana para registrar un reporte general", e, "Error",
+                    "No se pudo abrir la ventana para registrar un reporte general.");
         } catch (NullPointerException e) {
-            LOGGER.error("Recurso no encontrado al abrir la ventana para registrar un reporte general", e);
-            System.err.println("Recurso no encontrado al registrar reporte general: " + e.getMessage());
-
+            manejarError("Recurso no encontrado al abrir la ventana para registrar un reporte general", e,
+                    "Recurso no encontrado", "No se encontró el recurso para registrar un reporte general.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al abrir la ventana para registrar un reporte general", e);
-            System.err.println("Error inesperado al registrar reporte general: " + e.getMessage());
+            manejarError("Error inesperado al abrir la ventana para registrar un reporte general", e,
+                    "Error inesperado", "Ocurrió un error inesperado al registrar un reporte general.");
         }
     }
 
@@ -185,17 +181,15 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
 
             cargarInformacion();
         } catch (IOException e) {
-            LOGGER.error("Error al abrir la ventana para editar un reporte general", e);
-            Utilidades.mostrarAlertaSimple("Error",
-                    "No se pudo abrir la ventana de edición del reporte general: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-            System.err.println("Error al abrir ventana de edición de reporte general: " + e.getMessage());
+            manejarError("Error al abrir la ventana para editar un reporte general", e, "Error",
+                    "No se pudo abrir la ventana de edición del reporte general.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al editar un reporte general", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
-            System.err.println("Error inesperado al editar reporte general: " + e.getMessage());
+            manejarError("Error inesperado al editar un reporte general", e, "Error inesperado",
+                    "Ocurrió un error inesperado al editar el reporte general.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String titulo, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, titulo, mensajeUsuario);
     }
 }

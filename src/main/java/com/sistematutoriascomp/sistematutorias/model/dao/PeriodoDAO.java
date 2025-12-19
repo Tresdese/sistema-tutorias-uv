@@ -16,7 +16,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Periodo;
 
 public class PeriodoDAO {
-
     private static final String SQL_SELECT_PERIODO_ACTUAL = "SELECT idPeriodo FROM periodo WHERE esActual = 1";
     private static final String SQL_SELECT_PERIODO_POR_ID = "SELECT idPeriodo, nombre, esActual FROM periodo WHERE idPeriodo = ?";
     private static final String SQL_SELECT_ID_POR_NOMBRE = "SELECT idPeriodo FROM periodo WHERE nombre = ?";

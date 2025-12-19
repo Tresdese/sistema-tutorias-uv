@@ -14,9 +14,11 @@ import com.sistematutoriascomp.sistematutorias.model.dao.AutenticacionDAO;
 import com.sistematutoriascomp.sistematutorias.model.dao.PeriodoDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
+
+import javafx.scene.control.Alert;
 
 public class AutenticacionImp {
-
     private static final Logger LOGGER = LogManager.getLogger(AutenticacionImp.class);
 
     public static boolean iniciarSesionTutor(String numeroPersonal, String password) {
@@ -31,17 +33,19 @@ public class AutenticacionImp {
                         Sesion.setIdPeriodoActual(idPeriodo);
                     } else {
                         LOGGER.warn("No se encontró un periodo activo en la BD.");
-                        System.out.println("ADVERTENCIA: No se encontró un periodo activo en la BD.");
+                        Utilidades.mostrarAlertaSimple("Sin periodo activo",
+                                "No existe un periodo escolar activo. Comunícate con tu coordinador.",
+                                Alert.AlertType.WARNING);
                     }
                 } catch (SQLException exPeriodo) {
-                    LOGGER.error("Error al obtener el periodo actual: ", exPeriodo);
-                    System.err.println("Error al obtener periodo: " + exPeriodo.getMessage());
+                    Utilidades.manejarErrorTecnico(LOGGER, "Error al obtener el periodo actual", exPeriodo, "Error",
+                            "No se pudo obtener el periodo actual.");
                 }
                 respuesta = true;
             }
         } catch (SQLException ex) {
-            LOGGER.error("Error al iniciar sesión del tutor: ", ex);
-            System.err.println("Error al iniciar sesión del tutor: " + ex.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al iniciar sesión del tutor", ex, "Error",
+                    "No se pudo completar el inicio de sesión. Intenta más tarde.");
         }
         return respuesta;
     }

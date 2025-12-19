@@ -26,7 +26,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 public class FXMLMenuGestionarTutoriasController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLMenuGestionarTutoriasController.class);
 
     @FXML
@@ -114,11 +113,11 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
         try {
             Utilidades.openModal("/tutoria/FXMLRegistrarTutorado.fxml", "Registrar Tutorado");
         } catch (IOException e) {
-            LOGGER.error("Error al cambiar a la ventana de registro de tutorado", e);
-            System.err.println("Error al cambiar a la ventana de registro de tutorado: " + e.getMessage());
+            manejarError("Error al cambiar a la ventana de registro de tutorado", e,
+                    "No se pudo abrir la ventana de registro de tutorado.");
         } catch (Exception ex) {
-            LOGGER.error("Error inesperado al cambiar a la ventana de registro de tutorado", ex);
-            System.err.println("Error inesperado al cambiar a la ventana de registro de tutorado: " + ex.getMessage());
+            manejarError("Error inesperado al cambiar a la ventana de registro de tutorado", ex,
+                    "Ocurrió un error inesperado al abrir la ventana de registro de tutorado.");
         }
     }
 
@@ -126,11 +125,10 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
         try {
             Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
-            LOGGER.error("Error al cambiar de ventana hacia {}", ruta, ex);
-            System.err.println("Error al cambiar de ventana: " + ex.getMessage());
+            manejarError("Error al cambiar de ventana hacia " + ruta, ex, "No se pudo cambiar de ventana.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cambiar de ventana hacia {}", ruta, e);
-            System.err.println("Error inesperado al cambiar de ventana: " + e.getMessage());
+            manejarError("Error inesperado al cambiar de ventana hacia " + ruta, e,
+                    "Ocurrió un error inesperado al cambiar de ventana.");
         }
     }
 
@@ -139,11 +137,10 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
         try {
             Utilidades.volverMenuPrincipal(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú principal", ex);
-            System.err.println("Error al volver al menú principal: " + ex.getMessage());
+            manejarError("Error al volver al menú principal", ex, "No se pudo volver al menú principal.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú principal", e);
-            System.err.println("Error inesperado al volver al menú principal: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú principal", e,
+                    "Ocurrió un error inesperado al volver al menú principal.");
         }
     }
 
@@ -153,11 +150,13 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

@@ -21,38 +21,30 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ReporteGeneralDAO {
-
     private static final String SQL_INSERT = "INSERT INTO reportegeneral (idPeriodo, idCoordinador, fechaGeneracion, estado, "
             + "totalTutorados, totalEstudiantesRiesgo, totalTutores, porcentajeAsistencia, "
             + "totalProblematicas, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
     private static final String SQL_UPDATE = "UPDATE reportegeneral SET idPeriodo = ?, idCoordinador = ?, fechaGeneracion = ?, "
             + "estado = ?, totalTutorados = ?, totalEstudiantesRiesgo = ?, totalTutores = ?, "
             + "porcentajeAsistencia = ?, totalProblematicas = ?, observaciones = ? "
             + "WHERE idReporteGeneral = ?";
-
     private static final String SQL_DELETE = "DELETE FROM reportegeneral WHERE idReporteGeneral = ?";
-
     private static final String SQL_SELECT_BY_ID = "SELECT rg.*, p.nombre as nombrePeriodo "
             + "FROM reportegeneral rg "
             + "INNER JOIN periodo p ON rg.idPeriodo = p.idPeriodo "
             + "WHERE rg.idReporteGeneral = ?";
-
     private static final String SQL_SELECT_ALL = "SELECT rg.*, p.nombre as nombrePeriodo "
             + "FROM reportegeneral rg "
             + "INNER JOIN periodo p ON rg.idPeriodo = p.idPeriodo "
             + "ORDER BY rg.fechaGeneracion DESC";
-
     private static final String SQL_SELECT_BY_PERIODO = "SELECT rg.*, p.nombre as nombrePeriodo "
             + "FROM reportegeneral rg "
             + "INNER JOIN periodo p ON rg.idPeriodo = p.idPeriodo "
             + "WHERE rg.idPeriodo = ? ORDER BY rg.fechaGeneracion DESC";
-
     private static final String SQL_SELECT_BY_COORDINADOR = "SELECT rg.*, p.nombre as nombrePeriodo "
             + "FROM reportegeneral rg "
             + "INNER JOIN periodo p ON rg.idPeriodo = p.idPeriodo "
             + "WHERE rg.idCoordinador = ? ORDER BY rg.fechaGeneracion DESC";
-
     private static final String SQL_INSERT_ANSWERS = "UPDATE reportegeneral SET observaciones = ?, estado = ? WHERE idReporteGeneral = ?";
 
     public boolean insertar(ReporteGeneral reporteGeneral) throws SQLException {

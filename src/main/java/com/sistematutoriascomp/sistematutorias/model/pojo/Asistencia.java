@@ -6,7 +6,6 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Asistencia {
-
     private int idAsistencia;
     private int idTutoria;
     private int idTutorado;
@@ -53,5 +52,4 @@ public class Asistencia {
     public void setAsistio(Boolean asistio) {
         this.asistio = asistio;
     }
-
 }

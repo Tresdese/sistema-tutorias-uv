@@ -6,7 +6,6 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Tutor {
-
     private int idTutor;
     private String numeroDePersonal;
     private String nombre;
@@ -34,6 +33,11 @@ public class Tutor {
         this.esActivo = esActivo;
         this.idCarrera = idCarrera;
         this.cantidadTutorados = cantidadTutorados;
+    }
+
+    @Override
+    public String toString() {
+        return "Tutor{" + "idTutor=" + idTutor + ", numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idRol=" + idRol + ", esActivo=" + esActivo + ", idCarrera=" + idCarrera + ", cantidadTutorados=" + cantidadTutorados + '}';
     }
 
     public int getIdTutor() {
@@ -122,10 +126,5 @@ public class Tutor {
 
     public void setCantidadTutorados(int cantidadTutorados) {
         this.cantidadTutorados = cantidadTutorados;
-    }
-
-    @Override
-    public String toString() {
-        return "Tutor{" + "idTutor=" + idTutor + ", numeroDePersonal=" + numeroDePersonal + ", nombre=" + nombre + ", apellidoPaterno=" + apellidoPaterno + ", apellidoMaterno=" + apellidoMaterno + ", correo=" + correo + ", password=" + password + ", idRol=" + idRol + ", esActivo=" + esActivo + ", idCarrera=" + idCarrera + ", cantidadTutorados=" + cantidadTutorados + '}';
     }
 }

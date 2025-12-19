@@ -21,20 +21,6 @@ import org.junit.jupiter.api.Test;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 class TutoriaDAOTest extends BaseDaoTest {
-
-    @BeforeEach
-    void setupSchema() throws SQLException {
-        execute("DROP TABLE IF EXISTS tutoria");
-        execute("CREATE TABLE tutoria ("
-                + "idTutoria INT AUTO_INCREMENT PRIMARY KEY,"
-                + "idTutor INT,"
-                + "idPeriodo INT,"
-                + "fecha DATE,"
-                + "hora_inicio TIME,"
-                + "evidencia BLOB"
-                + ")");
-    }
-
     @Test
     void registrarTutoria_guardaRegistro() throws SQLException {
         Tutoria tutoria = new Tutoria();
@@ -83,5 +69,18 @@ class TutoriaDAOTest extends BaseDaoTest {
         byte[] evidencia = {1, 2, 3};
         assertTrue(TutoriaDAO.subirEvidencia(idTutoria, evidencia));
         assertTrue(TutoriaDAO.comprobarExistenciaEvidencia(idTutoria));
+    }
+
+    @BeforeEach
+    void setupSchema() throws SQLException {
+        execute("DROP TABLE IF EXISTS tutoria");
+        execute("CREATE TABLE tutoria ("
+                + "idTutoria INT AUTO_INCREMENT PRIMARY KEY,"
+                + "idTutor INT,"
+                + "idPeriodo INT,"
+                + "fecha DATE,"
+                + "hora_inicio TIME,"
+                + "evidencia BLOB"
+                + ")");
     }
 }

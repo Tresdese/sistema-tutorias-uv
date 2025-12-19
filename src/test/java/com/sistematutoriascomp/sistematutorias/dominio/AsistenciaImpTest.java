@@ -22,7 +22,6 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class AsistenciaImpTest {
-
     @Test
     public void testObtenerSesionesTutor_SinSesiones() {
         System.out.println("Prueba: obtenerSesionesTutor sin sesiones registradas");

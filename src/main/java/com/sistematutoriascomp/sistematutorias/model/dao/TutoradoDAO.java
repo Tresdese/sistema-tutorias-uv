@@ -15,7 +15,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutorado;
 
 public class TutoradoDAO {
-
     private static final String SQL_INSERT = "INSERT INTO tutorado (matricula, nombre, apellidoPaterno, apellidoMaterno, correo, idCarrera, semestre, esActivo, idTutor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE tutorado SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, idCarrera = ?, semestre = ?, esActivo = ?, idTutor = ? WHERE matricula = ?";
     private static final String SQL_UPDATE_ASIGNAR_TUTOR = "UPDATE tutorado SET idTutor = ? WHERE idTutorado = ?";
@@ -91,36 +90,6 @@ public class TutoradoDAO {
         return tutorado;
     }
 
-    public List<Tutorado> getAllTutorados() throws SQLException {
-        List<Tutorado> tutorados = new ArrayList<>();
-        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
-            if (connection != null) {
-                var statement = connection.prepareStatement(SQL_SELECT_ALL);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    Tutorado tutorado = mapResultSetToTutorado(resultSet);
-                    tutorados.add(tutorado);
-                }
-            }
-        }
-        return tutorados;
-    }
-
-    private Tutorado mapResultSetToTutorado(ResultSet resultSet) throws SQLException {
-        Tutorado tutorado = new Tutorado();
-        tutorado.setIdTutorado(resultSet.getInt("idTutorado"));
-        tutorado.setMatricula(resultSet.getString("matricula"));
-        tutorado.setNombre(resultSet.getString("nombre"));
-        tutorado.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
-        tutorado.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
-        tutorado.setCorreo(resultSet.getString("correo"));
-        tutorado.setIdCarrera(resultSet.getInt("idCarrera"));
-        tutorado.setSemestre(resultSet.getInt("semestre"));
-        tutorado.setActivo(resultSet.getBoolean("esActivo"));
-        tutorado.setIdTutor(resultSet.getInt("idTutor"));
-        return tutorado;
-    }
-
     public List<Tutorado> obtenerTutoradosSinTutor() throws SQLException {
         List<Tutorado> tutorados = new ArrayList<>();
 
@@ -149,5 +118,35 @@ public class TutoradoDAO {
             }
         }
         return resultado;
+    }
+
+    private Tutorado mapResultSetToTutorado(ResultSet resultSet) throws SQLException {
+        Tutorado tutorado = new Tutorado();
+        tutorado.setIdTutorado(resultSet.getInt("idTutorado"));
+        tutorado.setMatricula(resultSet.getString("matricula"));
+        tutorado.setNombre(resultSet.getString("nombre"));
+        tutorado.setApellidoPaterno(resultSet.getString("apellidoPaterno"));
+        tutorado.setApellidoMaterno(resultSet.getString("apellidoMaterno"));
+        tutorado.setCorreo(resultSet.getString("correo"));
+        tutorado.setIdCarrera(resultSet.getInt("idCarrera"));
+        tutorado.setSemestre(resultSet.getInt("semestre"));
+        tutorado.setActivo(resultSet.getBoolean("esActivo"));
+        tutorado.setIdTutor(resultSet.getInt("idTutor"));
+        return tutorado;
+    }
+
+    public List<Tutorado> getAllTutorados() throws SQLException {
+        List<Tutorado> tutorados = new ArrayList<>();
+        try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
+            if (connection != null) {
+                var statement = connection.prepareStatement(SQL_SELECT_ALL);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    Tutorado tutorado = mapResultSetToTutorado(resultSet);
+                    tutorados.add(tutorado);
+                }
+            }
+        }
+        return tutorados;
     }
 }

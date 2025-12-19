@@ -34,13 +34,20 @@ import javafx.stage.Stage;
 public class FXMLGenerarReporteTutoriaController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLGenerarReporteTutoriaController.class);
 
-    @FXML private ComboBox<Tutoria> cbSesiones;
-    @FXML private Label lbTotalTutorados;
-    @FXML private Label lbTotalAsistentes;
-    @FXML private Label lbTotalInasistentes;
-    @FXML private Label lbTotalProblematicas;
-    @FXML private TextArea taObservaciones;
-    @FXML private Button btnGenerar;
+    @FXML
+    private ComboBox<Tutoria> cbSesiones;
+    @FXML
+    private Label lbTotalTutorados;
+    @FXML
+    private Label lbTotalAsistentes;
+    @FXML
+    private Label lbTotalInasistentes;
+    @FXML
+    private Label lbTotalProblematicas;
+    @FXML
+    private TextArea taObservaciones;
+    @FXML
+    private Button btnGenerar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -110,11 +117,13 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         Tutoria sesionSeleccionada = cbSesiones.getValue();
         String observaciones = taObservaciones.getText() != null ? taObservaciones.getText().trim() : "";
         if (sesionSeleccionada == null) {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione una sesión de tutoría.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione una sesión de tutoría.",
+                    Alert.AlertType.WARNING);
             return;
         }
         if (observaciones.isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos vacíos", "Es necesario escribir las observaciones generales.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Campos vacíos", "Es necesario escribir las observaciones generales.",
+                    Alert.AlertType.WARNING);
             return;
         }
         if (observaciones.length() > 500) {
@@ -128,7 +137,8 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         nuevoReporte.setObservaciones(observaciones);
         HashMap<String, Object> respuesta = ReporteTutoriaImp.guardarReporte(nuevoReporte);
         if (!(boolean) respuesta.get("error")) {
-            Utilidades.mostrarAlertaSimple("Reporte Generado", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Reporte Generado", (String) respuesta.get("mensaje"),
+                    Alert.AlertType.INFORMATION);
             cerrarVentana();
         } else {
             LOGGER.error("Error al guardar reporte: {}", respuesta.get("mensaje"));
@@ -150,5 +160,4 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         Stage stage = (Stage) btnGenerar.getScene().getWindow();
         stage.close();
     }
-
 }

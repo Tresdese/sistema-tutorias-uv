@@ -17,7 +17,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 public class ProblematicaDAO {
-
     private static final String SQL_INSERT_PROBLEMATICA = "INSERT INTO problematica (idTutorado, idTutoria, titulo, descripcion, fecha, estatus) "
             + "VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_SELECT_PROBLEMATICAS_POR_FECHA = "SELECT p.titulo, p.descripcion "

@@ -16,17 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 
 public abstract class BaseDaoTest {
-
     protected Connection connection;
-
-    @BeforeAll
-    static void setupProperties() {
-        System.setProperty("db.url", "jdbc:h2:mem:tutoriatestbd;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1");
-        System.setProperty("db.user", "sa");
-        System.setProperty("db.password", "");
-        System.setProperty("db.driver", "org.h2.Driver");
-        System.setProperty("db.options", "");
-    }
 
     @BeforeEach
     void openConnection() throws SQLException {
@@ -51,5 +41,14 @@ public abstract class BaseDaoTest {
         if (connection == null || connection.isClosed()) {
             connection = ConexionBaseDatos.abrirConexionBD();
         }
+    }
+
+    @BeforeAll
+    static void setupProperties() {
+        System.setProperty("db.url", "jdbc:h2:mem:tutoriatestbd;MODE=MySQL;DATABASE_TO_UPPER=false;DB_CLOSE_DELAY=-1");
+        System.setProperty("db.user", "sa");
+        System.setProperty("db.password", "");
+        System.setProperty("db.driver", "org.h2.Driver");
+        System.setProperty("db.options", "");
     }
 }

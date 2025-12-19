@@ -42,24 +42,40 @@ import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 
 public class FXMLGenerarReporteGeneralController implements Initializable {
-    private final static Logger LOGGER = LogManager.getLogger(FXMLGenerarReporteGeneralController.class);
+    private static final Logger LOGGER = LogManager.getLogger(FXMLGenerarReporteGeneralController.class);
 
-    @FXML private ComboBox<Periodo> cbPeriodo;
-    @FXML private ComboBox<FechaTutoria> cbNumeroSesion;
-    @FXML private Button btnGenerar;
-    @FXML private Button btnVolver;
-    @FXML private Button btnCancelar;
-    @FXML private Button btnFinalizar;
-    @FXML private HBox hbBotonesEdicion;
-    @FXML private VBox vbDatosReporte;
-    @FXML private Label lbTotalTutorados;
-    @FXML private Label lbTotalAsistentes;
-    @FXML private Label lbTotalInasistentes;
-    @FXML private Label lbTotalProblematicas;
-    @FXML private TableView<Problematica> tvProblematicas;
-    @FXML private TableColumn<Problematica, String> tcTitulo;
-    @FXML private TableColumn<Problematica, String> tcDescripcion;
-    @FXML private TextArea taComentariosGenerales;
+    @FXML
+    private ComboBox<Periodo> cbPeriodo;
+    @FXML
+    private ComboBox<FechaTutoria> cbNumeroSesion;
+    @FXML
+    private Button btnGenerar;
+    @FXML
+    private Button btnVolver;
+    @FXML
+    private Button btnCancelar;
+    @FXML
+    private Button btnFinalizar;
+    @FXML
+    private HBox hbBotonesEdicion;
+    @FXML
+    private VBox vbDatosReporte;
+    @FXML
+    private Label lbTotalTutorados;
+    @FXML
+    private Label lbTotalAsistentes;
+    @FXML
+    private Label lbTotalInasistentes;
+    @FXML
+    private Label lbTotalProblematicas;
+    @FXML
+    private TableView<Problematica> tvProblematicas;
+    @FXML
+    private TableColumn<Problematica, String> tcTitulo;
+    @FXML
+    private TableColumn<Problematica, String> tcDescripcion;
+    @FXML
+    private TextArea taComentariosGenerales;
     
     private ReporteGeneral reporteCalculado;
 
@@ -120,9 +136,8 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
             List<Periodo> lista = PeriodoDAO.obtenerTodosPeriodos();
             cbPeriodo.setItems(FXCollections.observableArrayList(lista));
         } catch (SQLException e) {
-            LOGGER.error("Error al cargar periodos.", e);
-            Utilidades.mostrarAlertaSimple("Error", "Error al cargar periodos.", Alert.AlertType.ERROR);
-            System.err.println("Error al cargar periodos: " + e.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al cargar periodos.", e, "Error",
+                    "No se pudieron cargar los periodos. Intenta más tarde.");
         }
     }
 
@@ -142,14 +157,14 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
         FechaTutoria sesionSeleccionada = cbNumeroSesion.getValue();
 
         if (periodoSeleccionado == null || sesionSeleccionada == null) {
-            Utilidades.mostrarAlertaSimple("Campos requeridos", "Por favor selecciona un periodo escolar y una sesión.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Campos requeridos", "Por favor selecciona un periodo escolar y una sesión.",
+                    Alert.AlertType.WARNING);
             return;
         }
 
         HashMap<String, Object> respuesta = ReporteGeneralImp.calcularDatosReporte(
                 periodoSeleccionado.getIdPeriodo(),
-                sesionSeleccionada.getIdFechaTutoria()
-        );
+                sesionSeleccionada.getIdFechaTutoria());
 
         if (!(boolean) respuesta.get("error")) {
             reporteCalculado = (ReporteGeneral) respuesta.get("reporte");
@@ -180,7 +195,8 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
         String comentarios = taComentariosGenerales.getText();
 
         if (comentarios == null || comentarios.trim().isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campos requeridos", "Es necesario agregar observaciones generales.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Campos requeridos", "Es necesario agregar observaciones generales.",
+                    Alert.AlertType.WARNING);
             return;
         }
 
@@ -196,7 +212,8 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
             HashMap<String, Object> respuesta = ReporteGeneralImp.guardarReporteGeneral(reporteCalculado);
 
             if (!(boolean) respuesta.get("error")) {
-                Utilidades.mostrarAlertaSimple("Éxito", "Reporte General guardado correctamente.", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarAlertaSimple("Éxito", "Reporte General guardado correctamente.",
+                        Alert.AlertType.INFORMATION);
 
                 taComentariosGenerales.setEditable(false);
                 taComentariosGenerales.setStyle("-fx-opacity: 1; -fx-background-color: #f4f4f4;");
@@ -222,11 +239,10 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
         try {
             Utilidades.volverMenuGestionarReportes(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de reportes.", ex);
-            System.err.println("Error al volver al menú de reportes: " + ex.getMessage());
+            manejarError("Error al volver al menú de reportes.", ex, "No se pudo volver al menú de reportes.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de reportes.", e);
-            System.err.println("Error inesperado al volver al menú de reportes: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de reportes.", e,
+                    "Ocurrió un error inesperado al volver al menú de reportes.");
         }
     }
 
@@ -236,11 +252,13 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión.", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión.", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión.", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión.", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

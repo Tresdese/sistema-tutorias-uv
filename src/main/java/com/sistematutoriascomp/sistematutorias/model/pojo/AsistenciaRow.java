@@ -9,7 +9,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class AsistenciaRow {
-
     private int idTutorado;
     private String matricula;
     private String nombreCompleto;
@@ -22,6 +21,10 @@ public class AsistenciaRow {
         this.nombreCompleto = nombreCompleto;
         this.semestre = semestre;
         this.asistio = new SimpleBooleanProperty(asistio);
+    }
+
+    public BooleanProperty asistioProperty() {
+        return asistio;
     }
 
     public int getIdTutorado() {
@@ -38,10 +41,6 @@ public class AsistenciaRow {
 
     public int getSemestre() {
         return semestre;
-    }
-
-    public BooleanProperty asistioProperty() {
-        return asistio;
     }
 
     public boolean isAsistio() {

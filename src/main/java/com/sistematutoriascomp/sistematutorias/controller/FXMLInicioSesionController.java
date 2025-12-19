@@ -27,7 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class FXMLInicioSesionController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLInicioSesionController.class);
 
     @FXML
@@ -125,12 +124,8 @@ public class FXMLInicioSesionController implements Initializable {
             escenario.setTitle("Menú Principal");
             escenario.show();
         } catch (IOException ex) {
-            LOGGER.error("Error al abrir el menú principal", ex);
-            System.err.println("Error al abrir el menú principal: " + ex.getMessage());
-            Utilidades.mostrarAlertaSimple(
-                    "Error",
-                    "No se pudo abrir el menú principal.",
-                    Alert.AlertType.ERROR);
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al abrir el menú principal", ex, "Error",
+                    "No se pudo abrir el menú principal.");
         }
     }
 }

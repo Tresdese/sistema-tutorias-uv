@@ -18,39 +18,7 @@ import org.junit.jupiter.api.Test;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 class TutorDAOTest extends BaseDaoTest {
-
     private TutorDAO dao = new TutorDAO();
-
-    @BeforeEach
-    void setupSchema() throws SQLException {
-        execute("DROP TABLE IF EXISTS tutor");
-        execute("CREATE TABLE tutor ("
-                + "idTutor INT AUTO_INCREMENT PRIMARY KEY,"
-                + "numeroDePersonal VARCHAR(50),"
-                + "nombre VARCHAR(50),"
-                + "apellidoPaterno VARCHAR(50),"
-                + "apellidoMaterno VARCHAR(50),"
-                + "correo VARCHAR(100),"
-                + "password VARCHAR(100),"
-                + "idRol INT,"
-                + "esActivo BOOLEAN,"
-                + "idCarrera INT"
-                + ")");
-    }
-
-    private Tutor crearTutor() {
-        Tutor tutor = new Tutor();
-        tutor.setNumeroDePersonal("T001");
-        tutor.setNombre("Juan");
-        tutor.setApellidoPaterno("Perez");
-        tutor.setApellidoMaterno("Lopez");
-        tutor.setCorreo("juan@example.com");
-        tutor.setPassword("pwd");
-        tutor.setIdRol(1);
-        tutor.setEsActivo(true);
-        tutor.setIdCarrera(2);
-        return tutor;
-    }
 
     @Test
     void insertarYBuscarTutor_funciona() throws SQLException {
@@ -96,5 +64,36 @@ class TutorDAOTest extends BaseDaoTest {
         Tutor tutor = crearTutor();
         dao.insertarTutor(tutor);
         assertEquals(1, dao.obtenerIdPorNombre("Juan"));
+    }
+
+    private Tutor crearTutor() {
+        Tutor tutor = new Tutor();
+        tutor.setNumeroDePersonal("T001");
+        tutor.setNombre("Juan");
+        tutor.setApellidoPaterno("Perez");
+        tutor.setApellidoMaterno("Lopez");
+        tutor.setCorreo("juan@example.com");
+        tutor.setPassword("pwd");
+        tutor.setIdRol(1);
+        tutor.setEsActivo(true);
+        tutor.setIdCarrera(2);
+        return tutor;
+    }
+
+    @BeforeEach
+    void setupSchema() throws SQLException {
+        execute("DROP TABLE IF EXISTS tutor");
+        execute("CREATE TABLE tutor ("
+                + "idTutor INT AUTO_INCREMENT PRIMARY KEY,"
+                + "numeroDePersonal VARCHAR(50),"
+                + "nombre VARCHAR(50),"
+                + "apellidoPaterno VARCHAR(50),"
+                + "apellidoMaterno VARCHAR(50),"
+                + "correo VARCHAR(100),"
+                + "password VARCHAR(100),"
+                + "idRol INT,"
+                + "esActivo BOOLEAN,"
+                + "idCarrera INT"
+                + ")");
     }
 }

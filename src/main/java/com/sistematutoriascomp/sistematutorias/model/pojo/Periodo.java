@@ -6,7 +6,6 @@
 package com.sistematutoriascomp.sistematutorias.model.pojo;
 
 public class Periodo {
-
     private int idPeriodo;
     private String nombre;
     private boolean esActual;
@@ -18,6 +17,11 @@ public class Periodo {
         this.idPeriodo = idPeriodo;
         this.nombre = nombre;
         this.esActual = esActual;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 
     public int getIdPeriodo() {
@@ -42,10 +46,5 @@ public class Periodo {
 
     public void setEsActual(boolean esActual) {
         this.esActual = esActual;
-    }
-
-    @Override
-    public String toString() {
-        return nombre;
     }
 }

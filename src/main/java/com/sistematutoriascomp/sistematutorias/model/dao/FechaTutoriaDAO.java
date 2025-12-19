@@ -16,7 +16,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
 
 public class FechaTutoriaDAO {
-
     private static final String SQL_OBTENER_FECHAS_POR_PERIODO = "SELECT * FROM fechatutoria WHERE idPeriodo = ? ORDER BY numeroSesion ASC";
     private static final String SQL_VALIDAR_FECHA_REGISTRADA = "SELECT count(*) FROM fechatutoria WHERE idPeriodo = ? AND numeroSesion = ?";
     private static final String SQL_INSERT_FECHA_TUTORIA = "INSERT INTO fechatutoria (idPeriodo, numeroSesion, fecha, titulo, descripcion) VALUES (?, ?, ?, ?, ?)";
@@ -52,15 +51,6 @@ public class FechaTutoriaDAO {
             }
         }
         return fechas;
-    }
-
-    private static boolean hasColumn(ResultSet rs, String columnLabel) {
-        try {
-            rs.findColumn(columnLabel);
-            return true;
-        } catch (SQLException ex) {
-            return false;
-        }
     }
 
     public static boolean validarFechaRegistrada(int idPeriodo, int numeroSesion) throws SQLException {
@@ -141,5 +131,14 @@ public class FechaTutoriaDAO {
             }
         }
         return siguiente;
+    }
+
+    private static boolean hasColumn(ResultSet rs, String columnLabel) {
+        try {
+            rs.findColumn(columnLabel);
+            return true;
+        } catch (SQLException ex) {
+            return false;
+        }
     }
 }

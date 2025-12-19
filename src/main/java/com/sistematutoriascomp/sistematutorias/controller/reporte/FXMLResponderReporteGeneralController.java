@@ -24,12 +24,10 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class FXMLResponderReporteGeneralController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLResponderReporteGeneralController.class);
 
     @FXML
     private TextArea taRespuesta;
-
     private final ReporteGeneralDAO reporteGeneralDAO = new ReporteGeneralDAO();
     private ReporteGeneral reporte;
     private boolean respuestaGuardada = false;

@@ -15,19 +15,66 @@ import java.util.Properties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ConexionBaseDatos {
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
+public class ConexionBaseDatos {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static Connection CONEXION = null;
     private static final Logger LOGGER = LogManager.getLogger(ConexionBaseDatos.class);
+
+    private static Connection CONEXION = null;
+
+    public static Connection abrirConexionBD() {
+        Properties properties = cargarPropiedades();
+        String URL_CONEXION = properties.getProperty("db.url");
+        String USUARIO = properties.getProperty("db.user");
+        String CONTRASENIA = properties.getProperty("db.password");
+        String DRIVER_CONFIG = properties.getProperty("db.driver", DRIVER);
+
+        String opcionesPersonalizadas = properties.getProperty("db.options");
+        if (URL_CONEXION != null && opcionesPersonalizadas != null && !opcionesPersonalizadas.isBlank()) {
+            String separador = URL_CONEXION.contains("?") ? "&" : "?";
+            URL_CONEXION = URL_CONEXION + separador + opcionesPersonalizadas;
+        } else if (URL_CONEXION != null && URL_CONEXION.startsWith("jdbc:mysql") && !URL_CONEXION.contains("?")) {
+            URL_CONEXION = URL_CONEXION + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        }
+
+        try {
+            Class.forName(DRIVER_CONFIG);
+
+            if (CONEXION == null || CONEXION.isClosed()) {
+                CONEXION = DriverManager.getConnection(URL_CONEXION, USUARIO, CONTRASENIA);
+            }
+        } catch (ClassNotFoundException e) {
+            Utilidades.manejarErrorTecnico(LOGGER, "Driver JDBC no encontrado: " + DRIVER_CONFIG, e, "Error de configuración",
+                    "Falta el controlador de base de datos. Contacta al administrador.");
+        } catch (SQLException e) {
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al abrir conexión a BD", e, "Error de conexión",
+                    "No se pudo conectar a la base de datos.");
+        }
+
+        return CONEXION;
+    }
+
+    public static void cerrarConexionBD() {
+        try {
+            if (CONEXION != null && !CONEXION.isClosed()) {
+                CONEXION.close();
+            }
+        } catch (SQLException e) {
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al cerrar conexión a BD", e, "Error de conexión",
+                    "No se pudo cerrar la conexión a la base de datos.");
+        } finally {
+            CONEXION = null;
+        }
+    }
 
     private static Properties cargarPropiedades() {
         Properties properties = new Properties();
         try (FileInputStream fileInputStream = new FileInputStream("config.properties")) {
             properties.load(fileInputStream);
         } catch (IOException e) {
-            LOGGER.error("Error al cargar archivo de propiedades de BD", e);
-            System.err.println("Error al cargar propiedades de BD: " + e.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al cargar archivo de propiedades de BD", e, "Error de configuración",
+                    "No se pudieron cargar las propiedades de la base de datos.");
         }
 
         String urlSistema = System.getProperty("db.url");
@@ -53,50 +100,5 @@ public class ConexionBaseDatos {
         }
 
         return properties;
-    }
-
-    public static Connection abrirConexionBD() {
-        Properties properties = cargarPropiedades();
-        String URL_CONEXION = properties.getProperty("db.url");
-        String USUARIO = properties.getProperty("db.user");
-        String CONTRASENIA = properties.getProperty("db.password");
-        String DRIVER_CONFIG = properties.getProperty("db.driver", DRIVER);
-
-        String opcionesPersonalizadas = properties.getProperty("db.options");
-        if (URL_CONEXION != null && opcionesPersonalizadas != null && !opcionesPersonalizadas.isBlank()) {
-            String separador = URL_CONEXION.contains("?") ? "&" : "?";
-            URL_CONEXION = URL_CONEXION + separador + opcionesPersonalizadas;
-        } else if (URL_CONEXION != null && URL_CONEXION.startsWith("jdbc:mysql") && !URL_CONEXION.contains("?")) {
-            URL_CONEXION = URL_CONEXION + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
-        }
-
-        try {
-            Class.forName(DRIVER_CONFIG);
-
-            if (CONEXION == null || CONEXION.isClosed()) {
-                CONEXION = DriverManager.getConnection(URL_CONEXION, USUARIO, CONTRASENIA);
-            }
-        } catch (ClassNotFoundException e) {
-            LOGGER.error("Driver JDBC no encontrado: {}", DRIVER_CONFIG, e);
-            System.err.println("Driver JDBC no encontrado: " + e.getMessage());
-        } catch (SQLException e) {
-            LOGGER.error("Error al abrir conexión a BD", e);
-            System.err.println("Error al abrir conexión a BD: " + e.getMessage());
-        }
-
-        return CONEXION;
-    }
-
-    public static void cerrarConexionBD() {
-        try {
-            if (CONEXION != null && !CONEXION.isClosed()) {
-                CONEXION.close();
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Error al cerrar conexión a BD", e);
-            System.err.println("Error al cerrar conexión a BD: " + e.getMessage());
-        } finally {
-            CONEXION = null;
-        }
     }
 }

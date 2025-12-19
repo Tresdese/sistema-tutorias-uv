@@ -8,7 +8,6 @@ package com.sistematutoriascomp.sistematutorias.model.pojo;
 import java.time.LocalDateTime;
 
 public class ReporteTutoria {
-
     private int idReporteTutoria;
     private int idTutoria;
     private LocalDateTime fechaGeneracion;

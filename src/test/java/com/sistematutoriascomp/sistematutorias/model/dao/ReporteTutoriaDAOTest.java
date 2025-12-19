@@ -21,6 +21,37 @@ import org.junit.jupiter.api.Test;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 
 class ReporteTutoriaDAOTest extends BaseDaoTest {
+    @Test
+    void obtenerSesionesPendientes_devuelveSinReporteConAsistencia() throws SQLException {
+        var sesiones = ReporteTutoriaDAO.obtenerSesionesPendientes(1, 1);
+        assertEquals(1, sesiones.size());
+        assertEquals(LocalDate.of(2024, 2, 2), sesiones.get(0).getFecha());
+    }
+
+    @Test
+    void obtenerTotales_calculaAsistentesFaltantesYProblematicas() throws SQLException {
+        HashMap<String, Integer> totales = ReporteTutoriaDAO.obtenerTotales(1);
+        assertEquals(1, totales.get("tutorados").intValue());
+        assertEquals(1, totales.get("asistentes").intValue());
+        assertEquals(0, totales.get("faltantes").intValue());
+        assertEquals(1, totales.get("problematicas").intValue());
+    }
+
+    @Test
+    void registrarReporte_insertaNuevo() throws SQLException {
+        ReporteTutoria reporte = new ReporteTutoria();
+        reporte.setIdTutoria(1);
+        reporte.setObservaciones("Observaciones");
+        assertTrue(ReporteTutoriaDAO.registrarReporte(reporte));
+
+        reopenConnection();
+        try (PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM reportetutoria WHERE idTutoria = ?")) {
+            ps.setInt(1, 1);
+            ResultSet rs = ps.executeQuery();
+            assertTrue(rs.next());
+            assertTrue(rs.getInt(1) >= 1);
+        }
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -72,38 +103,6 @@ class ReporteTutoriaDAOTest extends BaseDaoTest {
             ps.setString(2, "Ya generado");
             ps.setString(3, "BORRADOR");
             ps.executeUpdate();
-        }
-    }
-
-    @Test
-    void obtenerSesionesPendientes_devuelveSinReporteConAsistencia() throws SQLException {
-        var sesiones = ReporteTutoriaDAO.obtenerSesionesPendientes(1, 1);
-        assertEquals(1, sesiones.size());
-        assertEquals(LocalDate.of(2024, 2, 2), sesiones.get(0).getFecha());
-    }
-
-    @Test
-    void obtenerTotales_calculaAsistentesFaltantesYProblematicas() throws SQLException {
-        HashMap<String, Integer> totales = ReporteTutoriaDAO.obtenerTotales(1);
-        assertEquals(1, totales.get("tutorados").intValue());
-        assertEquals(1, totales.get("asistentes").intValue());
-        assertEquals(0, totales.get("faltantes").intValue());
-        assertEquals(1, totales.get("problematicas").intValue());
-    }
-
-    @Test
-    void registrarReporte_insertaNuevo() throws SQLException {
-        ReporteTutoria reporte = new ReporteTutoria();
-        reporte.setIdTutoria(1);
-        reporte.setObservaciones("Observaciones");
-        assertTrue(ReporteTutoriaDAO.registrarReporte(reporte));
-
-        reopenConnection();
-        try (PreparedStatement ps = connection.prepareStatement("SELECT COUNT(*) FROM reportetutoria WHERE idTutoria = ?")) {
-            ps.setInt(1, 1);
-            ResultSet rs = ps.executeQuery();
-            assertTrue(rs.next());
-            assertTrue(rs.getInt(1) >= 1);
         }
     }
 }

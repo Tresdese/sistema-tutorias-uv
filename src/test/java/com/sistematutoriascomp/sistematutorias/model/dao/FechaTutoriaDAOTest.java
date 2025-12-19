@@ -14,6 +14,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FechaTutoriaDAOTest extends BaseDaoTest {
+    @Test
+    void obtenerFechasPorPeriodo_regresaOrdenAscendente() throws SQLException {
+        assertEquals(2, FechaTutoriaDAO.obtenerFechasPorPeriodo(1).size());
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -35,10 +39,5 @@ class FechaTutoriaDAOTest extends BaseDaoTest {
             ps.setDate(6, Date.valueOf("2024-02-10"));
             ps.executeUpdate();
         }
-    }
-
-    @Test
-    void obtenerFechasPorPeriodo_regresaOrdenAscendente() throws SQLException {
-        assertEquals(2, FechaTutoriaDAO.obtenerFechasPorPeriodo(1).size());
     }
 }

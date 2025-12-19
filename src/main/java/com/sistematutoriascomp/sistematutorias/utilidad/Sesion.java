@@ -14,14 +14,18 @@ import com.sistematutoriascomp.sistematutorias.model.dao.RolDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class Sesion {
-
     private static final Logger LOGGER = LogManager.getLogger(Sesion.class);
 
     private static RolDAO rolDAO = new RolDAO();
-
     private static Tutor tutorSesion;
     private static String rolActual;
     private static int idPeriodoActual;
+
+    public static void cerrarSesion() {
+        tutorSesion = null;
+        rolActual = null;
+        idPeriodoActual = 0;
+    }
 
     public static Tutor getTutorSesion() {
         return tutorSesion;
@@ -62,11 +66,5 @@ public class Sesion {
 
     public static void setIdPeriodoActual(int idPeriodo) {
         idPeriodoActual = idPeriodo;
-    }
-
-    public static void cerrarSesion() {
-        tutorSesion = null;
-        rolActual = null;
-        idPeriodoActual = 0;
     }
 }

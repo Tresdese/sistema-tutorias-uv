@@ -20,7 +20,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class TutoriaDAO {
-
     private static final String SQL_INSERT_TUTORIA = "INSERT INTO tutoria (idTutor, idPeriodo, fecha, hora_inicio) VALUES (?, ?, ?, ?)";
     private static final String SQL_COMPROBAR_TUTORIA_REGISTRADA = "SELECT idTutoria FROM tutoria WHERE idTutor = ? AND fecha = ?";
     private static final String SQL_SUBIR_EVIDENCIA = "UPDATE tutoria SET evidencia = ? WHERE idTutoria = ?";
@@ -42,7 +41,6 @@ public class TutoriaDAO {
                 resultado = sentencia.executeUpdate();
             } catch (SQLException e) {
                 LOGGER.error("Error al registrar tutoría", e);
-                System.err.println("Error al registrar tutoría: " + e.getMessage());
                 throw e;
             } finally {
                 ConexionBaseDatos.cerrarConexionBD();
@@ -63,11 +61,9 @@ public class TutoriaDAO {
                 registrada = resultado.next();
             } catch (SQLException e) {
                 LOGGER.error("Error al comprobar tutoría registrada para tutor {} en fecha {}", idTutor, fecha, e);
-                System.err.println("Error al comprobar tutoría registrada: " + e.getMessage());
                 throw e;
             } catch (Exception e) {
                 LOGGER.error("Error inesperado al comprobar tutoría registrada para tutor {} en fecha {}", idTutor, fecha, e);
-                System.err.println("Error inesperado al comprobar tutoría registrada: " + e.getMessage());
                 throw new SQLException("Error inesperado al comprobar tutoría registrada", e);
             } finally {
                 ConexionBaseDatos.cerrarConexionBD();

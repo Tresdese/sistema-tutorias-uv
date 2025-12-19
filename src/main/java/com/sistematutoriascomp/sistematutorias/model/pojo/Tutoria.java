@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Tutoria {
-
     private int idTutoria;
     private int idTutor;
     private LocalDate fecha;
@@ -27,6 +26,11 @@ public class Tutoria {
         this.horaInicio = horaInicio;
         this.idPeriodo = idPeriodo;
         this.evidencia = evidencia;
+    }
+
+    @Override
+    public String toString() {
+        return fecha.toString() + " - " + horaInicio.toString();
     }
 
     public int getIdTutoria() {
@@ -75,10 +79,5 @@ public class Tutoria {
 
     public void setEvidencia(byte[] evidencia) {
         this.evidencia = evidencia;
-    }
-
-    @Override
-    public String toString() {
-        return fecha.toString() + " - " + horaInicio.toString();
     }
 }

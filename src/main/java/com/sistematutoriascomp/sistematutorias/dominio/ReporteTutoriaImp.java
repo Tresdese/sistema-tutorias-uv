@@ -37,7 +37,6 @@ public class ReporteTutoriaImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
             LOGGER.error("Error al obtener sesiones pendientes para el tutor {}", idTutor, ex);
-            System.err.println("Error al obtener sesiones pendientes: " + ex.getMessage());
         }
         return respuesta;
     }
@@ -52,7 +51,6 @@ public class ReporteTutoriaImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al calcular totales.");
             LOGGER.error("Error al cargar totales para la tutoría {}", idTutoria, ex);
-            System.err.println("Error al cargar totales: " + ex.getMessage());
         }
         return respuesta;
     }
@@ -71,7 +69,6 @@ public class ReporteTutoriaImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
             LOGGER.error("Error al guardar reporte de tutoría", ex);
-            System.err.println("Error al guardar reporte: " + ex.getMessage());
         }
 
         return respuesta;
@@ -88,11 +85,9 @@ public class ReporteTutoriaImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error en base de datos al cargar lista: " + e.getMessage());
             LOGGER.error("Error al obtener reportes por tutor {}", idTutor, e);
-            System.err.println("Error al obtener reportes por tutor: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
             LOGGER.error("Error inesperado al obtener reportes por tutor {}", idTutor, e);
-            System.err.println("Error inesperado al obtener reportes por tutor: " + e.getMessage());
         }
 
         return respuesta;
@@ -114,7 +109,6 @@ public class ReporteTutoriaImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
             LOGGER.error("Error al enviar reporte {}", idReporte, e);
-            System.err.println("Error al enviar reporte: " + e.getMessage());
         }
 
         return respuesta;
@@ -133,7 +127,6 @@ public class ReporteTutoriaImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
             LOGGER.error("Error al obtener reportes por periodo {}", idPeriodo, e);
-            System.err.println("Error al obtener reportes por periodo: " + e.getMessage());
         }
         return respuesta;
     }
@@ -155,7 +148,6 @@ public class ReporteTutoriaImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión: " + e.getMessage());
             LOGGER.error("Error al responder reporte {}", idReporte, e);
-            System.err.println("Error al responder reporte: " + e.getMessage());
         }
         return respuesta;
     }
@@ -171,11 +163,9 @@ public class ReporteTutoriaImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error en base de datos al cargar lista filtrada: " + e.getMessage());
             LOGGER.error("Error al obtener reportes por tutor {} y periodo {}", idTutor, idPeriodo, e);
-            System.err.println("Error al obtener reportes por tutor y periodo: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
             LOGGER.error("Error inesperado al obtener reportes por tutor {} y periodo {}", idTutor, idPeriodo, e);
-            System.err.println("Error inesperado al obtener reportes por tutor y periodo: " + e.getMessage());
         }
 
         return respuesta;

@@ -15,6 +15,17 @@ import org.junit.jupiter.api.Test;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 class ProblematicaDAOTest extends BaseDaoTest {
+    @Test
+    void registrarProblematica_insertaFila() throws SQLException {
+        Problematica p = new Problematica();
+        p.setIdTutorado(1);
+        p.setIdTutoria(2);
+        p.setTitulo("Titulo");
+        p.setDescripcion("Descripcion");
+        p.setFecha(Date.valueOf("2024-01-01").toLocalDate());
+
+        assertTrue(ProblematicaDAO.registrarProblematica(p));
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -28,17 +39,5 @@ class ProblematicaDAOTest extends BaseDaoTest {
                 + "fecha DATE,"
                 + "estatus VARCHAR(50)"
                 + ")");
-    }
-
-    @Test
-    void registrarProblematica_insertaFila() throws SQLException {
-        Problematica p = new Problematica();
-        p.setIdTutorado(1);
-        p.setIdTutoria(2);
-        p.setTitulo("Titulo");
-        p.setDescripcion("Descripcion");
-        p.setFecha(Date.valueOf("2024-01-01").toLocalDate());
-
-        assertTrue(ProblematicaDAO.registrarProblematica(p));
     }
 }

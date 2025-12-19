@@ -45,7 +45,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLConsultarReporteTutoriaController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLConsultarReporteTutoriaController.class);
 
     @FXML
@@ -62,7 +61,6 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private Label lbTotalProblematicas;
     @FXML
     private TextArea taObservaciones;
-
     @FXML
     private TableView<Problematica> tvProblematicas;
     @FXML
@@ -71,17 +69,15 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private TableColumn<Problematica, String> tcDescripcion;
     @FXML
     private Button btnDescargarEvidencia;
-
     @FXML
     private VBox vbRespuesta;
     @FXML
     private TextArea taRespuesta;
-
     @FXML
     private Button btnEnviar;
     @FXML
     private Button btnResponder;
-
+    
     private ReporteTutoria reporteActual;
     private boolean esCoordinador = false;
     private Integer idTutorReporte = null;
@@ -91,26 +87,26 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
         configurarTabla();
     }
 
-    private void configurarTabla() {
-        tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
-        tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tvProblematicas.setPlaceholder(new Label("Sin problemáticas para mostrar"));
-    }
-
     public void inicializarInformacion(ReporteTutoria reporte, boolean esCoordinador) {
         this.reporteActual = reporte;
         this.esCoordinador = esCoordinador;
         try {
             idTutorReporte = TutoriaDAO.obtenerIdTutorPorTutoria(reporte.getIdTutoria());
         } catch (SQLException e) {
-            LOGGER.error("No se pudo obtener el tutor propietario de la tutoría {}", reporte.getIdTutoria(), e);
-            System.err.println("No se pudo obtener el tutor propietario de la tutoría: " + e.getMessage());
+            manejarError("No se pudo obtener el tutor propietario de la tutoría " + reporte.getIdTutoria(), e,
+                    "No se pudo cargar la información del tutor del reporte.");
             idTutorReporte = null;
         }
         cargarDatosUI();
         cargarTotales(reporte.getIdTutoria());
         cargarProblematicas(reporte.getIdTutoria());
         configurarBotonEvidencia(reporte.getIdTutoria());
+    }
+
+    private void configurarTabla() {
+        tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        tvProblematicas.setPlaceholder(new Label("Sin problemáticas para mostrar"));
     }
 
     private void cargarDatosUI() {
@@ -133,25 +129,31 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                 if ("BORRADOR".equalsIgnoreCase(reporteActual.getEstatus()) && esDelTutorSesion) {
                     btnEnviar.setVisible(true);
                     btnEnviar.setManaged(true);
-                    lbEstatus.setStyle("-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
+                    lbEstatus.setStyle(
+                            "-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
                 }
 
                 if ("ENVIADO".equalsIgnoreCase(reporteActual.getEstatus())) {
                     btnResponder.setVisible(true);
                     btnResponder.setManaged(true);
-                    lbEstatus.setStyle("-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
+                    lbEstatus.setStyle(
+                            "-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
                 } else if ("REVISADO".equalsIgnoreCase(reporteActual.getEstatus())) {
-                    lbEstatus.setStyle("-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
+                    lbEstatus.setStyle(
+                            "-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
                 }
             } else {
                 if ("BORRADOR".equalsIgnoreCase(reporteActual.getEstatus()) && esDelTutorSesion) {
                     btnEnviar.setVisible(true);
                     btnEnviar.setManaged(true);
-                    lbEstatus.setStyle("-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
+                    lbEstatus.setStyle(
+                            "-fx-background-color: #FFF3CD; -fx-text-fill: #856404; -fx-padding: 5 10; -fx-background-radius: 5;");
                 } else if ("REVISADO".equalsIgnoreCase(reporteActual.getEstatus())) {
-                    lbEstatus.setStyle("-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
+                    lbEstatus.setStyle(
+                            "-fx-background-color: #CCE5FF; -fx-text-fill: #004085; -fx-padding: 5 10; -fx-background-radius: 5;");
                 } else {
-                    lbEstatus.setStyle("-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
+                    lbEstatus.setStyle(
+                            "-fx-background-color: #D4EDDA; -fx-text-fill: #155724; -fx-padding: 5 10; -fx-background-radius: 5;");
                 }
             }
 
@@ -190,9 +192,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                         Alert.AlertType.INFORMATION);
             }
         } catch (SQLException e) {
-            LOGGER.error("Error al cargar problemáticas del reporte", e);
-            System.err.println("Error al cargar problemáticas del reporte: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar las problemáticas.", Alert.AlertType.ERROR);
+            manejarError("Error al cargar problemáticas del reporte", e,
+                    "No se pudieron cargar las problemáticas de la tutoría.");
         }
     }
 
@@ -207,8 +208,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                 btnDescargarEvidencia.setText("Sin Evidencia Adjunta");
             }
         } catch (SQLException e) {
-            LOGGER.error("Error al obtener evidencia para la tutoría {}", idTutoria, e);
-            System.err.println("Error al obtener evidencia: " + e.getMessage());
+            manejarError("Error al obtener evidencia para la tutoría " + idTutoria, e,
+                    "No se pudo obtener la evidencia de la sesión.");
             btnDescargarEvidencia.setDisable(true);
         }
     }
@@ -218,7 +219,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
         try {
             byte[] evidencia = TutoriaDAO.obtenerEvidencia(reporteActual.getIdTutoria());
             if (evidencia != null) {
-                File archivoTemporal = File.createTempFile("Evidencia_Reporte_" + reporteActual.getIdReporteTutoria() + "_", ".pdf");
+                File archivoTemporal = File
+                        .createTempFile("Evidencia_Reporte_" + reporteActual.getIdReporteTutoria() + "_", ".pdf");
                 archivoTemporal.deleteOnExit();
 
                 try (FileOutputStream fos = new FileOutputStream(archivoTemporal)) {
@@ -228,13 +230,13 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
                 if (Desktop.isDesktopSupported()) {
                     Desktop.getDesktop().open(archivoTemporal);
                 } else {
-                    Utilidades.mostrarAlertaSimple("Error", "El sistema no soporta la apertura automática de archivos.", Alert.AlertType.ERROR);
+                    Utilidades.mostrarAlertaSimple("Error", "El sistema no soporta la apertura automática de archivos.",
+                            Alert.AlertType.ERROR);
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error al visualizar evidencia", e);
-            System.err.println("Error al visualizar evidencia: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "Ocurrió un error al intentar abrir el archivo de evidencia.", Alert.AlertType.ERROR);
+            manejarError("Error al visualizar evidencia", e,
+                    "Ocurrió un error al intentar abrir el archivo de evidencia.");
         }
     }
 
@@ -250,7 +252,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private void enviarReporte() {
         HashMap<String, Object> respuesta = ReporteTutoriaImp.enviarReporte(reporteActual.getIdReporteTutoria());
         if (!(boolean) respuesta.get("error")) {
-            Utilidades.mostrarAlertaSimple("Reporte enviado correctamente", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
+            Utilidades.mostrarAlertaSimple("Reporte enviado correctamente", (String) respuesta.get("mensaje"),
+                    Alert.AlertType.INFORMATION);
             reporteActual.setEstatus("ENVIADO");
             cargarDatosUI();
         } else {
@@ -265,7 +268,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
 
     private void abrirVentanaRespuesta() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLResponderReporteTutoria.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLResponderReporteTutoria.fxml"));
             Parent root = loader.load();
             FXMLResponderReporteTutoriaController controlador = loader.getController();
             controlador.inicializarReporte(reporteActual);
@@ -284,11 +288,11 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             }
 
         } catch (IOException ex) {
-            LOGGER.error("Error al abrir ventana de respuesta", ex);
-            System.err.println("Error al abrir ventana de respuesta: " + ex.getMessage());
+            manejarError("Error al abrir ventana de respuesta", ex,
+                    "No se pudo abrir la ventana para responder el reporte.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al abrir ventana de respuesta", e);
-            System.err.println("Error inesperado al abrir ventana de respuesta: " + e.getMessage());
+            manejarError("Error inesperado al abrir ventana de respuesta", e,
+                    "Ocurrió un error inesperado al responder el reporte.");
         }
     }
 
@@ -303,11 +307,13 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

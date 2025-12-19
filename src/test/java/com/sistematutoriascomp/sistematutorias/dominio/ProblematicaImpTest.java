@@ -19,7 +19,6 @@ import com.sistematutoriascomp.sistematutorias.model.dao.ProblematicaDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 public class ProblematicaImpTest {
-
     @Test
     public void testRegistrarProblematica_Exito() {
         System.out.println("Prueba: registrarProblematica éxito");

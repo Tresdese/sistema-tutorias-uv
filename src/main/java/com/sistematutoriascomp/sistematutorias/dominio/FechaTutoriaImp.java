@@ -49,11 +49,9 @@ public class FechaTutoriaImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de conexión a la base de datos: " + e.getMessage());
             LOGGER.error("Error de base de datos al registrar fecha de tutoría", e);
-            System.err.println("Error de base de datos al registrar fecha: " + e.getMessage());
         } catch (Exception e) {
             respuesta.put("mensaje", "Error inesperado al registrar: " + e.getMessage());
             LOGGER.error("Error inesperado al registrar fecha de tutoría", e);
-            System.err.println("Error inesperado al registrar fecha: " + e.getMessage());
         }
 
         return respuesta;

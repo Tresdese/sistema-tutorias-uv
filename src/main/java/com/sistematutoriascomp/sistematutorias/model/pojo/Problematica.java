@@ -8,7 +8,6 @@ package com.sistematutoriascomp.sistematutorias.model.pojo;
 import java.time.LocalDate;
 
 public class Problematica {
-
     private int idProblematica;
     private int idTutorado;
     private int idTutoria;

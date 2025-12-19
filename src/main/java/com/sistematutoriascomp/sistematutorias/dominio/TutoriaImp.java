@@ -19,7 +19,7 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class TutoriaImp {
-    private final static Logger LOGGER = LogManager.getLogger(TutoriaImp.class);
+    private static final Logger LOGGER = LogManager.getLogger(TutoriaImp.class);
 
     public static HashMap<String, Object> obtenerFechasPeriodoActual() {
         HashMap<String, Object> respuesta = new HashMap<>();

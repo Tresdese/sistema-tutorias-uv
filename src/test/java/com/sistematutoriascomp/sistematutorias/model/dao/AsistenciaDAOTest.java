@@ -21,6 +21,37 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 class AsistenciaDAOTest extends BaseDaoTest {
+    @Test
+    void obtenerSesionesPorTutor_devuelveSesionesOrdenadas() throws SQLException {
+        ArrayList<Tutoria> sesiones = AsistenciaDAO.obtenerSesionesPorTutor(1, 1);
+        assertEquals(2, sesiones.size());
+        assertTrue(sesiones.get(0).getFecha().isAfter(sesiones.get(1).getFecha()));
+    }
+
+    @Test
+    void obtenerTutoradosPorTutor_devuelveAsignados() throws SQLException {
+        ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(1, 1, 1);
+        assertEquals(2, lista.size());
+    }
+
+    @Test
+    void registrarAsistencia_insertaYOActualiza() throws SQLException {
+        assertTrue(AsistenciaDAO.registrarAsistencia(1, 1, true));
+        assertTrue(AsistenciaDAO.existeAsistenciaParaTutoria(1));
+
+        assertTrue(AsistenciaDAO.registrarAsistencia(1, 1, false));
+
+        reopenConnection();
+        try (PreparedStatement ps = connection.prepareStatement(
+                "SELECT asistio FROM asistencia WHERE idTutoria = ? AND idTutorado = ?")) {
+            ps.setInt(1, 1);
+            ps.setInt(2, 1);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                assertEquals(false, rs.getBoolean("asistio"));
+            }
+        }
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -71,38 +102,6 @@ class AsistenciaDAOTest extends BaseDaoTest {
             ps.setInt(5, 1);
             ps.setInt(6, 1);
             ps.executeUpdate();
-        }
-    }
-
-    @Test
-    void obtenerSesionesPorTutor_devuelveSesionesOrdenadas() throws SQLException {
-        ArrayList<Tutoria> sesiones = AsistenciaDAO.obtenerSesionesPorTutor(1, 1);
-        assertEquals(2, sesiones.size());
-        assertTrue(sesiones.get(0).getFecha().isAfter(sesiones.get(1).getFecha()));
-    }
-
-    @Test
-    void obtenerTutoradosPorTutor_devuelveAsignados() throws SQLException {
-        ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(1, 1, 1);
-        assertEquals(2, lista.size());
-    }
-
-    @Test
-    void registrarAsistencia_insertaYOActualiza() throws SQLException {
-        assertTrue(AsistenciaDAO.registrarAsistencia(1, 1, true));
-        assertTrue(AsistenciaDAO.existeAsistenciaParaTutoria(1));
-
-        assertTrue(AsistenciaDAO.registrarAsistencia(1, 1, false));
-
-        reopenConnection();
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT asistio FROM asistencia WHERE idTutoria = ? AND idTutorado = ?")) {
-            ps.setInt(1, 1);
-            ps.setInt(2, 1);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                assertEquals(false, rs.getBoolean("asistio"));
-            }
         }
     }
 }

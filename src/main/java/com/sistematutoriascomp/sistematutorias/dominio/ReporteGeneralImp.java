@@ -34,7 +34,6 @@ public class ReporteGeneralImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al cargar sesiones: " + ex.getMessage());
             LOGGER.error("Error al obtener sesiones por periodo {}", idPeriodo, ex);
-            System.err.println("Error al obtener sesiones por periodo: " + ex.getMessage());
         }
 
         return respuesta;
@@ -60,7 +59,6 @@ public class ReporteGeneralImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error al calcular datos: " + ex.getMessage());
             LOGGER.error("Error al calcular datos de reporte general (periodo {}, fecha {})", idPeriodo, idFechaTutoria, ex);
-            System.err.println("Error al calcular datos de reporte general: " + ex.getMessage());
         }
         return respuesta;
     }
@@ -82,7 +80,6 @@ public class ReporteGeneralImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
             LOGGER.error("Error al guardar reporte general", ex);
-            System.err.println("Error al guardar reporte general: " + ex.getMessage());
         }
         return respuesta;
     }

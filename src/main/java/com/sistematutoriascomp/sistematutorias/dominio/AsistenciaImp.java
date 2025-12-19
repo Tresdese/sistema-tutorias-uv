@@ -16,9 +16,10 @@ import com.sistematutoriascomp.sistematutorias.model.dao.AsistenciaDAO;
 import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
+import com.sistematutoriascomp.sistematutorias.utilidad.Utilidades;
 
 public class AsistenciaImp {
-    private final static Logger LOGGER = LogManager.getLogger(AsistenciaImp.class);
+    private static final Logger LOGGER = LogManager.getLogger(AsistenciaImp.class);
 
     public static HashMap<String, Object> obtenerSesionesTutor(int idTutor) {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -77,10 +78,9 @@ public class AsistenciaImp {
         try {
             return AsistenciaDAO.existeAsistenciaParaTutoria(idTutoria);
         } catch (SQLException ex) {
-            LOGGER.error("Error al verificar asistencia: " + ex.getMessage());
-            System.err.println("Error al verificar asistencia: " + ex.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al verificar asistencia", ex, "Error",
+                    "No se pudo verificar la asistencia.");
             return false;
         }
     }
-
 }

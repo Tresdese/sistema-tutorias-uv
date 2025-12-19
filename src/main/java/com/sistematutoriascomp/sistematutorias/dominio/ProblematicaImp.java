@@ -16,6 +16,7 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Problematica;
 
 public class ProblematicaImp {
     private static final Logger LOGGER = LogManager.getLogger(ProblematicaImp.class);
+
     
     public static HashMap<String, Object> registrarProblematica(Problematica problematica) {
         HashMap<String, Object> respuesta = new HashMap<>();
@@ -32,7 +33,6 @@ public class ProblematicaImp {
         } catch (SQLException ex) {
             respuesta.put("mensaje", "Error de base de datos: " + ex.getMessage());
             LOGGER.error("Error al registrar problemática", ex);
-            System.err.println("Error al registrar problemática: " + ex.getMessage());
         }
 
         return respuesta;

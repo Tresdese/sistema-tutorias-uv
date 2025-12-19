@@ -14,8 +14,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RolDAOTest extends BaseDaoTest {
-
     private RolDAO dao = new RolDAO();
+
+    @Test
+    void obtenerRolPorId_devuelveNombre() throws SQLException {
+        assertEquals("Coordinador", dao.obtenerRolPorId(1));
+        assertNull(dao.obtenerRolPorId(99));
+    }
+
+    @Test
+    void obtenerTodosRoles_devuelveLista() throws SQLException {
+        assertEquals(2, dao.obtenerTodosRoles().size());
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -28,16 +38,5 @@ class RolDAOTest extends BaseDaoTest {
             ps.setString(2, "Tutor");
             ps.executeUpdate();
         }
-    }
-
-    @Test
-    void obtenerRolPorId_devuelveNombre() throws SQLException {
-        assertEquals("Coordinador", dao.obtenerRolPorId(1));
-        assertNull(dao.obtenerRolPorId(99));
-    }
-
-    @Test
-    void obtenerTodosRoles_devuelveLista() throws SQLException {
-        assertEquals(2, dao.obtenerTodosRoles().size());
     }
 }

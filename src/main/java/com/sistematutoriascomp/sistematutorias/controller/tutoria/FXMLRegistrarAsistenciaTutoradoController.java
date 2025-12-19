@@ -198,8 +198,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 ocultarMensajeInfo();
             }
         } catch (Exception e) {
-            LOGGER.error("Error al configurar estado de los botones para la sesión {}", idTutoria, e);
-            System.err.println("Error al configurar estado de botones: " + e.getMessage());
+            manejarError("Error al configurar estado de los botones para la sesión " + idTutoria, e,
+                    "No se pudo actualizar el estado de los botones.");
         }
     }
 
@@ -294,8 +294,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
             }
         } catch (Exception e) {
-            LOGGER.error("Error al habilitar subida de evidencia para la sesión {}", idTutoria, e);
-            System.err.println("Error al habilitar subida de evidencia: " + e.getMessage());
+            manejarError("Error al habilitar subida de evidencia para la sesión " + idTutoria, e,
+                    "No se pudo habilitar la carga de evidencia.");
         }
     }
 
@@ -343,8 +343,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 return true;
             }
         } catch (Exception e) {
-            LOGGER.error("Error al verificar evidencia existente para la sesión {}", sesion.getIdTutoria(), e);
-            System.err.println("Error al verificar evidencia: " + e.getMessage());
+            manejarError("Error al verificar evidencia existente para la sesión " + sesion.getIdTutoria(), e,
+                    "No se pudo verificar la evidencia de la sesión.");
         }
         return false;
     }
@@ -391,13 +391,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             }
 
         } catch (IOException e) {
-            Utilidades.mostrarAlertaSimple(
-                    "Error",
-                    "Error al validar el archivo: " + e.getMessage(),
-                    Alert.AlertType.ERROR
-            );
-            LOGGER.error("Error al validar archivo PDF", e);
-            System.err.println("Error al validar archivo: " + e.getMessage());
+            manejarError("Error al validar archivo PDF", e, "No se pudo validar el archivo seleccionado.");
             return false;
         }
 
@@ -426,13 +420,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 );
             }
         } catch (Exception ex) {
-            Utilidades.mostrarAlertaSimple(
-                    "Error",
-                    "Error al leer el archivo: " + ex.getMessage(),
-                    Alert.AlertType.ERROR
-            );
-            LOGGER.error("Error al subir evidencia para la sesión {}", sesion.getIdTutoria(), ex);
-            System.err.println("Error al subir evidencia: " + ex.getMessage());
+            manejarError("Error al subir evidencia para la sesión " + sesion.getIdTutoria(), ex,
+                    "No se pudo procesar la evidencia seleccionada.");
         }
     }
 
@@ -462,8 +451,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             escenario.showAndWait();
 
         } catch (Exception ex) {
-            LOGGER.error("Error al abrir ventana de problemática para el alumno {}", nombreAlumno, ex);
-            System.err.println("Error al abrir ventana de problemática: " + ex.getMessage());
+            manejarError("Error al abrir ventana de problemática para el alumno " + nombreAlumno, ex,
+                    "No se pudo abrir la ventana para registrar la problemática.");
         }
     }
 
@@ -472,11 +461,10 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         try {
             Utilidades.volverMenuGestionarTutorias(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de tutorías", ex);
-            System.err.println("Error al volver al menú de tutorías: " + ex.getMessage());
+            manejarError("Error al volver al menú de tutorías", ex, "No se pudo volver al menú de tutorías.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de tutorías", e);
-            System.err.println("Error inesperado al volver al menú de tutorías: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de tutorías", e,
+                    "Ocurrió un error inesperado al volver al menú de tutorías.");
         }
     }
 
@@ -497,5 +485,9 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         lbMensajeInfo.setText("");
         lbMensajeInfo.setVisible(false);
         lbMensajeInfo.setManaged(false);
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

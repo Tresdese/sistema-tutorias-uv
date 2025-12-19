@@ -13,8 +13,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CarreraDAOTest extends BaseDaoTest {
-
     private CarreraDAO dao = new CarreraDAO();
+
+    @Test
+    void obtenerTodasCarreras_devuelveTodas() throws SQLException {
+        assertEquals(2, dao.obtenerTodasCarreras().size());
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -30,10 +34,5 @@ class CarreraDAOTest extends BaseDaoTest {
             ps.setString(2, "Industrial");
             ps.executeUpdate();
         }
-    }
-
-    @Test
-    void obtenerTodasCarreras_devuelveTodas() throws SQLException {
-        assertEquals(2, dao.obtenerTodasCarreras().size());
     }
 }

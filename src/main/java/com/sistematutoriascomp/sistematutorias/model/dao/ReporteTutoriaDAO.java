@@ -19,7 +19,6 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteTutoria;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 
 public class ReporteTutoriaDAO {
-
     private static final String SQL_OBTENER_SESIONES_PENDIENTES = "SELECT t.idTutoria, t.fecha, t.hora_inicio "
             + "FROM tutoria t "
             + "LEFT JOIN reportetutoria r ON r.idTutoria = t.idTutoria "
@@ -27,40 +26,31 @@ public class ReporteTutoriaDAO {
             + "AND r.idTutoria IS NULL "
             + "AND EXISTS (SELECT 1 FROM asistencia a WHERE a.idTutoria = t.idTutoria) "
             + "ORDER BY t.fecha, t.hora_inicio";
-
     private static final String SQL_OBTENER_TOTALES_ASISTENCIA = "SELECT COUNT(*) as total, "
             + "SUM(CASE WHEN asistio = 1 THEN 1 ELSE 0 END) as asistentes, "
             + "SUM(CASE WHEN asistio = 0 THEN 1 ELSE 0 END) as faltantes "
             + "FROM asistencia WHERE idTutoria = ?";
-
     private static final String SQL_OBTENER_TOTAL_PROBLEMATICAS = "SELECT COUNT(*) as total FROM problematica WHERE idTutoria = ?";
-
     private static final String SQL_REGISTRAR_REPORTE = "INSERT INTO reportetutoria (idTutoria, fechaGeneracion, observaciones, estatus) "
             + "VALUES (?, NOW(), ?, ?)";
-
     private static final String SQL_OBTENER_REPORTES_POR_TUTOR = "SELECT r.*, t.idPeriodo, t.fecha, p.nombre as nombrePeriodo "
             + "FROM reportetutoria r "
             + "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria "
             + "INNER JOIN periodo p ON t.idPeriodo = p.idPeriodo "
             + "WHERE t.idTutor = ?";
-
     private static final String SQL_ENVIAR_REPORTE = "UPDATE reportetutoria SET estatus = 'ENVIADO' WHERE idReporteTutoria = ?";
-
     private static final String SQL_OBTENER_REPORTES_POR_PERIODO = "SELECT r.*, t.idPeriodo, t.fecha, tu.nombre, tu.apellidoPaterno, tu.apellidoMaterno "
             + "FROM reportetutoria r "
             + "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria "
             + "INNER JOIN tutor tu ON t.idTutor = tu.idTutor "
             + "WHERE t.idPeriodo = ? "
             + "ORDER BY r.estatus ASC, t.fecha DESC";
-
     private static final String SQL_REGISTRAR_RESPUESTA = "UPDATE reportetutoria SET respuesta = ?, estatus = 'REVISADO' WHERE idReporteTutoria = ?";
-
     private static final String SQL_OBTENER_REPORTES_POR_TUTOR_Y_PERIODO = "SELECT r.*, t.fecha "
             + "FROM reportetutoria r "
             + "INNER JOIN tutoria t ON r.idTutoria = t.idTutoria "
             + "WHERE t.idTutor = ? AND t.idPeriodo = ? "
             + "ORDER BY t.fecha DESC";
-
     private static final String SQL_OBTENER_DATOS_REPORTE_GENERAL = "SELECT "
             + "COUNT(DISTINCT rt.idReporteTutoria) as totalTutores, "
             + "COUNT(a.idAsistencia) as totalTutorados, "

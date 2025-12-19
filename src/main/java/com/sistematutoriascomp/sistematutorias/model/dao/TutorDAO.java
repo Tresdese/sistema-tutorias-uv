@@ -16,7 +16,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class TutorDAO {
-
     private static final String SQL_INSERT = "INSERT INTO tutor (numeroDePersonal, nombre, apellidoPaterno, apellidoMaterno, correo, password, idRol, esActivo, idCarrera) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String SQL_UPDATE = "UPDATE tutor SET nombre = ?, apellidoPaterno = ?, apellidoMaterno = ?, correo = ?, password = ?, idRol = ?, esActivo = ?, idCarrera = ? "
@@ -116,15 +115,17 @@ public class TutorDAO {
         return idTutor;
     }
 
-    public List<Tutor> getAllTutors() throws SQLException {
+    public List<Tutor> obtenerTutoresDisponibles() throws SQLException {
         List<Tutor> tutores = new ArrayList<>();
+
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()) {
-                        tutores.add(mapResultSetToTutor(resultSet));
-                    }
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_TUTORES_DISPONIBLES);
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    Tutor tutor = mapResultSetToTutor(resultSet);
+                    tutor.setCantidadTutorados(resultSet.getInt("totalAlumnos"));
+                    tutores.add(tutor);
                 }
             }
         }
@@ -146,17 +147,15 @@ public class TutorDAO {
         return tutor;
     }
 
-    public List<Tutor> obtenerTutoresDisponibles() throws SQLException {
+    public List<Tutor> getAllTutors() throws SQLException {
         List<Tutor> tutores = new ArrayList<>();
-
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
-                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_TUTORES_DISPONIBLES);
-                ResultSet resultSet = statement.executeQuery();
-                while (resultSet.next()) {
-                    Tutor tutor = mapResultSetToTutor(resultSet);
-                    tutor.setCantidadTutorados(resultSet.getInt("totalAlumnos"));
-                    tutores.add(tutor);
+                PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        tutores.add(mapResultSetToTutor(resultSet));
+                    }
                 }
             }
         }

@@ -14,7 +14,6 @@ import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutor;
 
 public class AutenticacionDAO {
-
     private static final String SQL_VERIFICAR_SESION_TUTOR = "SELECT * FROM tutor WHERE numeroDePersonal = ? AND password = ?";
 
     public static Tutor verificarSesionTutor(String numeroPersonal, String password) throws SQLException {

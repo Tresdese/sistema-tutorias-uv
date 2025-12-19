@@ -23,7 +23,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class FXMLMenuPrincipalController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLMenuPrincipalController.class);
 
     @FXML
@@ -115,11 +114,10 @@ public class FXMLMenuPrincipalController implements Initializable {
         try {
             Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
-            LOGGER.error("Error al cambiar de ventana hacia {}", ruta, ex);
-            System.err.println("Error al cambiar de ventana: " + ex.getMessage());
+            manejarError("Error al cambiar de ventana hacia " + ruta, ex, "No se pudo cambiar de ventana.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cambiar de ventana hacia {}", ruta, e);
-            System.err.println("Error inesperado al cambiar de ventana: " + e.getMessage());
+            manejarError("Error inesperado al cambiar de ventana hacia " + ruta, e,
+                    "Ocurrió un error inesperado al cambiar de ventana.");
         }
     }
 
@@ -129,11 +127,13 @@ public class FXMLMenuPrincipalController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

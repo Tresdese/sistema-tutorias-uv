@@ -35,7 +35,6 @@ public class FXMLRegistrarProblematicaController implements Initializable {
     private TextArea taDescripcion;
     @FXML
     private Label lbNombreAlumno;
-
     private int idTutoria;
     private int idTutorado;
 

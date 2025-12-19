@@ -19,8 +19,39 @@ import org.junit.jupiter.api.Test;
 import com.sistematutoriascomp.sistematutorias.model.pojo.ReporteGeneral;
 
 class ReporteGeneralDAOTest extends BaseDaoTest {
-
     private ReporteGeneralDAO dao = new ReporteGeneralDAO();
+
+    @Test
+    void insertarYObtenerPorId_funciona() throws SQLException {
+        ReporteGeneral rg = construirReporte();
+        assertTrue(dao.insertar(rg));
+        assertTrue(rg.getIdReporteGeneral() > 0);
+
+        ReporteGeneral obtenido = dao.obtenerPorId(rg.getIdReporteGeneral());
+        assertNotNull(obtenido);
+        assertEquals("2024-1", obtenido.getNombrePeriodo());
+    }
+
+    @Test
+    void obtenerTodos_devuelveLista() throws SQLException {
+        dao.insertar(construirReporte());
+        assertEquals(1, dao.obtenerTodos().size());
+    }
+
+    private ReporteGeneral construirReporte() {
+        ReporteGeneral rg = new ReporteGeneral();
+        rg.setIdPeriodo(1);
+        rg.setIdCoordinador(10);
+        rg.setFechaGeneracion(LocalDateTime.of(2024, 1, 10, 10, 0));
+        rg.setEstado("BORRADOR");
+        rg.setTotalTutorados(100);
+        rg.setTotalEstudiantesRiesgo(5);
+        rg.setTotalTutores(8);
+        rg.setPorcentajeAsistencia(new BigDecimal("0.80"));
+        rg.setTotalProblematicas(3);
+        rg.setObservaciones("Observaciones");
+        return rg;
+    }
 
     @BeforeEach
     void setupSchema() throws SQLException {
@@ -47,37 +78,5 @@ class ReporteGeneralDAOTest extends BaseDaoTest {
             ps.setBoolean(2, true);
             ps.executeUpdate();
         }
-    }
-
-    private ReporteGeneral construirReporte() {
-        ReporteGeneral rg = new ReporteGeneral();
-        rg.setIdPeriodo(1);
-        rg.setIdCoordinador(10);
-        rg.setFechaGeneracion(LocalDateTime.of(2024, 1, 10, 10, 0));
-        rg.setEstado("BORRADOR");
-        rg.setTotalTutorados(100);
-        rg.setTotalEstudiantesRiesgo(5);
-        rg.setTotalTutores(8);
-        rg.setPorcentajeAsistencia(new BigDecimal("0.80"));
-        rg.setTotalProblematicas(3);
-        rg.setObservaciones("Observaciones");
-        return rg;
-    }
-
-    @Test
-    void insertarYObtenerPorId_funciona() throws SQLException {
-        ReporteGeneral rg = construirReporte();
-        assertTrue(dao.insertar(rg));
-        assertTrue(rg.getIdReporteGeneral() > 0);
-
-        ReporteGeneral obtenido = dao.obtenerPorId(rg.getIdReporteGeneral());
-        assertNotNull(obtenido);
-        assertEquals("2024-1", obtenido.getNombrePeriodo());
-    }
-
-    @Test
-    void obtenerTodos_devuelveLista() throws SQLException {
-        dao.insertar(construirReporte());
-        assertEquals(1, dao.obtenerTodos().size());
     }
 }

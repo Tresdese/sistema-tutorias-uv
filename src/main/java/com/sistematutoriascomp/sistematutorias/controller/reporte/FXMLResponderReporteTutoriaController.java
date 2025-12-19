@@ -23,9 +23,11 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 public class FXMLResponderReporteTutoriaController implements Initializable {
-    private static final Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger(FXMLResponderReporteTutoriaController.class);
+    private static final Logger LOGGER = org.apache.logging.log4j.LogManager
+            .getLogger(FXMLResponderReporteTutoriaController.class);
 
-    @FXML private TextArea taRespuesta;
+    @FXML
+    private TextArea taRespuesta;
     
     private ReporteTutoria reporte;
     private boolean respuestaGuardada = false;
@@ -44,7 +46,8 @@ public class FXMLResponderReporteTutoriaController implements Initializable {
         String texto = taRespuesta.getText().trim();
 
         if (texto.isEmpty()) {
-            Utilidades.mostrarAlertaSimple("Campo vacío", "No se puede enviar una respuesta vacía.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Campo vacío", "No se puede enviar una respuesta vacía.",
+                    Alert.AlertType.WARNING);
             return;
         }
 

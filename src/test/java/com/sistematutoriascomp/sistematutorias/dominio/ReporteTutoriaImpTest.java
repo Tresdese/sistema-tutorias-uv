@@ -22,7 +22,6 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 
 public class ReporteTutoriaImpTest {
-
     @Test
     public void testObtenerSesionesPendientes_SinSesiones() {
         System.out.println("Prueba: obtenerSesionesPendientes sin sesiones");

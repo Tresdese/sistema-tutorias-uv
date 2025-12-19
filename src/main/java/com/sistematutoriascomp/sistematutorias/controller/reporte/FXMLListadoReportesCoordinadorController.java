@@ -38,7 +38,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLListadoReportesCoordinadorController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLListadoReportesCoordinadorController.class);
 
     @FXML
@@ -53,7 +52,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
     private TableColumn<ReporteTutoria, String> tcObservaciones;
     @FXML
     private ComboBox<Periodo> cbPeriodos;
-
+    
     private ObservableList<ReporteTutoria> listaReportes;
     private ObservableList<Periodo> listaPeriodos;
 
@@ -87,9 +86,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error al cargar periodos", e);
-            System.err.println("Error al cargar periodos: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar los periodos escolares.", Alert.AlertType.ERROR);
+            manejarError("Error al cargar periodos", e, "No se pudieron cargar los periodos escolares.");
         }
     }
 
@@ -99,7 +96,8 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
         if (periodoSeleccionado != null) {
             cargarInformacion(periodoSeleccionado.getIdPeriodo());
         } else {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor selecciona un periodo escolar.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor selecciona un periodo escolar.",
+                    Alert.AlertType.WARNING);
         }
     }
 
@@ -113,15 +111,15 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
                 tvReportes.setItems(listaReportes);
 
                 if (listaReportes.isEmpty()) {
-                    Utilidades.mostrarAlertaSimple("Sin reportes", "No hay reportes registrados en el periodo seleccionado.", Alert.AlertType.INFORMATION);
+                    Utilidades.mostrarAlertaSimple("Sin reportes",
+                            "No hay reportes registrados en el periodo seleccionado.", Alert.AlertType.INFORMATION);
                 }
             } else {
                 Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
-            LOGGER.error("Error al cargar la lista de reportes para coordinador", e);
-            System.err.println("Error al cargar la lista de reportes: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "Error al cargar la información.", Alert.AlertType.ERROR);
+            manejarError("Error al cargar la lista de reportes para coordinador", e,
+                    "No se pudo cargar la información de los reportes.");
         }
     }
 
@@ -130,12 +128,14 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
         ReporteTutoria reporteSeleccionado = tvReportes.getSelectionModel().getSelectedItem();
 
         if (reporteSeleccionado == null) {
-            Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor selecciona un reporte de la lista para responder.", Alert.AlertType.WARNING);
+            Utilidades.mostrarAlertaSimple("Selección requerida",
+                    "Por favor selecciona un reporte de la lista para responder.", Alert.AlertType.WARNING);
             return;
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLConsultarReporteTutoria.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
+                    "/com/sistematutoriascomp/sistematutorias/views/reporte/FXMLConsultarReporteTutoria.fxml"));
             Parent root = loader.load();
             FXMLConsultarReporteTutoriaController controlador = loader.getController();
             controlador.inicializarInformacion(reporteSeleccionado, true);
@@ -153,9 +153,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
             }
 
         } catch (IOException ex) {
-            LOGGER.error("Error al abrir detalles", ex);
-            System.err.println("Error al abrir detalles de reporte: " + ex.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de detalles.", Alert.AlertType.ERROR);
+            manejarError("Error al abrir detalles de reporte", ex, "No se pudo abrir la ventana de detalles.");
         }
     }
 
@@ -164,11 +162,10 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
         try {
             Utilidades.volverMenuGestionarReportes(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de reportes", ex);
-            System.err.println("Error al volver al menú de reportes: " + ex.getMessage());
+            manejarError("Error al volver al menú de reportes", ex, "No se pudo volver al menú de reportes.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de reportes", e);
-            System.err.println("Error inesperado al volver al menú de reportes: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de reportes", e,
+                    "Ocurrió un error inesperado al volver al menú de reportes.");
         }
     }
 
@@ -178,11 +175,13 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

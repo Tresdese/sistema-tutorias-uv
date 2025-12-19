@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,24 +23,42 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Utilidades {
-
-    private final static Logger LOGGER = LogManager.getLogger(Utilidades.class);
-
+    private static final Logger LOGGER = LogManager.getLogger(Utilidades.class);
     private final static String RUTA_VISTAS = "/com/sistematutoriascomp/sistematutorias/views";
 
     public static void mostrarAlertaSimple(String titulo, String contenido, Alert.AlertType tipo) {
-        Alert alerta = new Alert(tipo);
-        alerta.setTitle(titulo);
-        alerta.setHeaderText(null);
-        alerta.setContentText(contenido);
-        alerta.showAndWait();
+        Runnable mostrar = () -> {
+            Alert alerta = new Alert(tipo);
+            alerta.setTitle(titulo);
+            alerta.setHeaderText(null);
+            alerta.setContentText(contenido);
+            alerta.showAndWait();
+        };
+        if (Platform.isFxApplicationThread()) {
+            mostrar.run();
+        } else {
+            try {
+                Platform.runLater(mostrar);
+            } catch (IllegalStateException ex) {
+                LOGGER.warn("No se pudo mostrar la alerta {}", titulo, ex);
+            }
+        }
+    }
+
+    public static void manejarErrorTecnico(Logger logger, String mensajeLog, Exception excepcion, String tituloAlerta,
+            String mensajeUsuario) {
+        if (logger != null) {
+            logger.error(mensajeLog, excepcion);
+        }
+        mostrarAlertaSimple(tituloAlerta, mensajeUsuario, Alert.AlertType.ERROR);
     }
 
     public static Parent loadFXML(String fxmlPath) throws IOException, NullPointerException {
         return FXMLLoader.load(Utilidades.class.getResource(RUTA_VISTAS + fxmlPath));
     }
 
-    public static void goToWindow(String fxmlPath, ActionEvent event, String title) throws IOException, NullPointerException {
+    public static void goToWindow(String fxmlPath, ActionEvent event, String title)
+            throws IOException, NullPointerException {
         Parent vista = loadFXML(fxmlPath);
         Scene escena = new Scene(vista);
         Node source = (Node) event.getSource();

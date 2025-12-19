@@ -38,7 +38,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class FXMLListadoReportesTutoriaController implements Initializable {
-
     private static final Logger LOGGER = LogManager.getLogger(FXMLListadoReportesTutoriaController.class);
 
     @FXML
@@ -51,14 +50,13 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
     private TableColumn<ReporteTutoria, String> tcObservaciones;
     @FXML
     private ComboBox<Periodo> cbPeriodos;
-
     private ObservableList<ReporteTutoria> listaReportes;
     private ObservableList<Periodo> listaPeriodos;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
-        cargarPeriodos(); // 1. Cargamos periodos primero
+        cargarPeriodos(); 
     }
 
     private void configurarTabla() {
@@ -78,15 +76,13 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
                 for (Periodo p : listaPeriodos) {
                     if (p.getIdPeriodo() == idActual) {
                         cbPeriodos.getSelectionModel().select(p);
-                        cargarInformacion(idActual); // 3. Cargamos la tabla automáticamente
+                        cargarInformacion(idActual); 
                         break;
                     }
                 }
             }
         } catch (Exception e) {
-            LOGGER.error("Error al cargar periodos", e);
-            System.err.println("Error al cargar periodos: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "No se pudieron cargar los periodos escolares.", Alert.AlertType.ERROR);
+            manejarError("Error al cargar periodos", e, "No se pudieron cargar los periodos escolares.");
         }
     }
 
@@ -117,9 +113,8 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
                 Utilidades.mostrarAlertaSimple("Error", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
             }
         } catch (Exception e) {
-            LOGGER.error("Error al cargar la lista de reportes", e);
-            System.err.println("Error al cargar la lista de reportes: " + e.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "Error al cargar la información.", Alert.AlertType.ERROR);
+            manejarError("Error al cargar la lista de reportes", e,
+                    "No se pudo cargar la información de los reportes.");
         }
     }
 
@@ -151,9 +146,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
             }
 
         } catch (IOException ex) {
-            LOGGER.error("Error al abrir detalles", ex);
-            System.err.println("Error al abrir detalles del reporte: " + ex.getMessage());
-            Utilidades.mostrarAlertaSimple("Error", "No se pudo abrir la ventana de detalles.", Alert.AlertType.ERROR);
+            manejarError("Error al abrir detalles del reporte", ex, "No se pudo abrir la ventana de detalles.");
         }
     }
 
@@ -162,11 +155,10 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
         try {
             Utilidades.volverMenuGestionarReportes(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al volver al menú de reportes", ex);
-            System.err.println("Error al volver al menú de reportes: " + ex.getMessage());
+            manejarError("Error al volver al menú de reportes", ex, "No se pudo volver al menú de reportes.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al volver al menú de reportes", e);
-            System.err.println("Error inesperado al volver al menú de reportes: " + e.getMessage());
+            manejarError("Error inesperado al volver al menú de reportes", e,
+                    "Ocurrió un error inesperado al volver al menú de reportes.");
         }
     }
 
@@ -176,11 +168,13 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
         try {
             Utilidades.clicCerrarSesion(event);
         } catch (IOException ex) {
-            LOGGER.error("Error al cerrar sesión", ex);
-            System.err.println("Error al cerrar sesión: " + ex.getMessage());
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al cerrar sesión", e);
-            System.err.println("Error inesperado al cerrar sesión: " + e.getMessage());
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, "Error", mensajeUsuario);
     }
 }

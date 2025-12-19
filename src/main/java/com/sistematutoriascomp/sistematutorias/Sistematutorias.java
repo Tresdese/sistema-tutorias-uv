@@ -30,14 +30,14 @@ public class Sistematutorias extends Application {
             primaryStage.setScene(escena);
             primaryStage.show();
         } catch (IOException e) {
-            LOGGER.error("Error al iniciar la aplicación", e);
-            System.err.println("Error al iniciar la aplicación: " + e.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error al iniciar la aplicación", e, "Error",
+                    "No se pudo iniciar la aplicación.");
         } catch (NullPointerException ex) {
-            LOGGER.error("Recurso no encontrado al iniciar la aplicación", ex);
-            System.err.println("Recurso no encontrado al iniciar la aplicación: " + ex.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Recurso no encontrado al iniciar la aplicación", ex,
+                    "Recurso no encontrado", "No se encontró el recurso para iniciar la aplicación.");
         } catch (Exception ex) {
-            LOGGER.error("Error inesperado al iniciar la aplicación", ex);
-            System.err.println("Error inesperado al iniciar la aplicación: " + ex.getMessage());
+            Utilidades.manejarErrorTecnico(LOGGER, "Error inesperado al iniciar la aplicación", ex, "Error inesperado",
+                    "Ocurrió un error inesperado al iniciar la aplicación.");
         }
     }
 
