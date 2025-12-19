@@ -23,7 +23,6 @@ import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
 public class AsignacionTutorImp {
     private static final Logger LOGGER = LogManager.getLogger(AsignacionTutorImp.class);
 
-    
     public static HashMap<String, Object> obtenerListasParaAsignacion() {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", true);
@@ -87,6 +86,9 @@ public class AsignacionTutorImp {
         } catch (SQLException e) {
             respuesta.put("mensaje", "Error de base de datos al asignar: " + e.getMessage());
             LOGGER.error("Error de base de datos al asignar tutor {} a tutorado {}", tutor.getIdTutor(), tutorado.getIdTutorado(), e);
+        } catch (Exception e) {
+            respuesta.put("mensaje", "Error inesperado: " + e.getMessage());
+            LOGGER.error("Error inesperado al asignar tutor {} a tutorado {}", tutor.getIdTutor(), tutorado.getIdTutorado(), e);
         }
 
         return respuesta;

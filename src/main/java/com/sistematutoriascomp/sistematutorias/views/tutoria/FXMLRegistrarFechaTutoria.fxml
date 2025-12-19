@@ -68,7 +68,7 @@
                               </Label>
                               <VBox spacing="5.0" GridPane.columnIndex="1">
                                   <children>
-                                      <TextField fx:id="tfNumeroSesion" disable="true" editable="false" maxWidth="150.0" style="-fx-font-size: 16; -fx-opacity: 1; -fx-text-fill: black;" text="Cargando...">
+                                      <TextField fx:id="txtNumeroSesion" disable="true" editable="false" maxWidth="150.0" style="-fx-font-size: 16; -fx-opacity: 1; -fx-text-fill: black;" text="Cargando...">
                                           <font>
                                               <Font name="Segoe UI Bold" size="16.0" />
                                           </font>
@@ -87,7 +87,7 @@
                               <Label text="Título de la Sesión:" textFill="#333333" GridPane.rowIndex="2">
                                  <font><Font name="Segoe UI Bold" size="16.0" /></font>
                               </Label>
-                              <TextField fx:id="tfTitulo" promptText="Ej. Acercamiento Inicial" style="-fx-font-size: 16;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <TextField fx:id="txtTitulo" promptText="Ej. Acercamiento Inicial" style="-fx-font-size: 16;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <font><Font name="Segoe UI" size="14.0" /></font>
                               </TextField>
                               <Label text="Descripción (Opcional):" textFill="#333333" GridPane.rowIndex="3" GridPane.valignment="TOP">
@@ -96,7 +96,7 @@
                                     <Insets top="5.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextArea fx:id="taDescripcion" prefHeight="83.0" prefWidth="580.0" promptText="Breve descripción del objetivo de la sesión..." style="-fx-font-size: 16;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                              <TextArea fx:id="txtaDescripcion" prefHeight="83.0" prefWidth="580.0" promptText="Breve descripción del objetivo de la sesión..." style="-fx-font-size: 16;" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                  <font><Font name="Segoe UI" size="14.0" /></font>
                               </TextArea>
                            </children>

@@ -80,6 +80,10 @@ public class ReporteGeneralImp {
             respuesta.put("error", true);
             respuesta.put("mensaje", "Error BD: " + ex.getMessage());
             LOGGER.error("Error al guardar reporte general", ex);
+        } catch (Exception ex) {
+            respuesta.put("error", true);
+            respuesta.put("mensaje", "Error: " + ex.getMessage());
+            LOGGER.error("Error inesperado al guardar reporte general", ex);
         }
         return respuesta;
     }

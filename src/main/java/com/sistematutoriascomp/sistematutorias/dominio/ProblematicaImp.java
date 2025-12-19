@@ -33,6 +33,9 @@ public class ProblematicaImp {
         } catch (SQLException ex) {
             respuesta.put("mensaje", "Error de base de datos: " + ex.getMessage());
             LOGGER.error("Error al registrar problemática", ex);
+        } catch (Exception ex) {
+            respuesta.put("mensaje", "Error inesperado: " + ex.getMessage());
+            LOGGER.error("Error inesperado al registrar problemática", ex);
         }
 
         return respuesta;

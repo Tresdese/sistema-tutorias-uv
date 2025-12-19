@@ -114,7 +114,7 @@
                                                 <Font name="Segoe UI Semibold" size="14.0" />
                                             </font>
                                         </Label>
-                                        <TextArea fx:id="taObservaciones" prefHeight="100.0" prefWidth="200.0" promptText="Escriba aquí los comentarios generales sobre la sesión" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" wrapText="true" />
+                                        <TextArea fx:id="txtaObservaciones" prefHeight="100.0" prefWidth="200.0" promptText="Escriba aquí los comentarios generales sobre la sesión" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" wrapText="true" />
                                     </children>
                                 </VBox>
 

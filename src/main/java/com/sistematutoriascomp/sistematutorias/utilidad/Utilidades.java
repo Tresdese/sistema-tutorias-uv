@@ -83,19 +83,19 @@ public class Utilidades {
         stage.close();
     }
 
-    public static void volverMenuPrincipal(ActionEvent event) throws IOException {
+    public static void volverMenuPrincipal(ActionEvent event) throws IOException, NullPointerException {
         goToWindow("/FXMLMenuPrincipal.fxml", event, "Menú Principal");
     }
 
-    public static void volverMenuGestionarReportes(ActionEvent event) throws IOException {
+    public static void volverMenuGestionarReportes(ActionEvent event) throws IOException, NullPointerException {
         goToWindow("/FXMLMenuGestionarReportes.fxml", event, "Menú Reporte");
     }
 
-    public static void volverMenuGestionarTutorias(ActionEvent event) throws IOException {
+    public static void volverMenuGestionarTutorias(ActionEvent event) throws IOException, NullPointerException {
         goToWindow("/FXMLMenuGestionarTutorias.fxml", event, "Menú Gestión de Tutorías");
     }
 
-    public static void clicCerrarSesion(ActionEvent event) throws IOException {
+    public static void clicCerrarSesion(ActionEvent event) throws IOException, NullPointerException {
         goToWindow("/FXMLInicioSesion.fxml", event, "Iniciar Sesión");
     }
 

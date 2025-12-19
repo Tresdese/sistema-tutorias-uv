@@ -7,6 +7,7 @@ package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,7 +42,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLListadoReportesTutoriaController.class);
 
     @FXML
-    private TableView<ReporteTutoria> tvReportesTutoria;
+    private TableView<ReporteTutoria> tblReportesTutoria;
     @FXML
     private TableColumn<ReporteTutoria, String> tcFechaGeneracion;
     @FXML
@@ -50,6 +51,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
     private TableColumn<ReporteTutoria, String> tcObservaciones;
     @FXML
     private ComboBox<Periodo> cbPeriodos;
+    
     private ObservableList<ReporteTutoria> listaReportes;
     private ObservableList<Periodo> listaPeriodos;
 
@@ -81,6 +83,8 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
                     }
                 }
             }
+        } catch (SQLException ex) {
+            manejarError("Error SQL al cargar periodos", ex, "No se pudieron cargar los periodos escolares.");
         } catch (Exception e) {
             manejarError("Error al cargar periodos", e, "No se pudieron cargar los periodos escolares.");
         }
@@ -104,7 +108,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
             if (!(boolean) respuesta.get("error")) {
                 List<ReporteTutoria> reportes = (List<ReporteTutoria>) respuesta.get("reportes");
                 listaReportes = FXCollections.observableArrayList(reportes);
-                tvReportesTutoria.setItems(listaReportes);
+                tblReportesTutoria.setItems(listaReportes);
 
                 if (listaReportes.isEmpty()) {
                     Utilidades.mostrarAlertaSimple("Sin reportes", "No tienes reportes de tutoría en el periodo seleccionado.", Alert.AlertType.INFORMATION);
@@ -120,7 +124,7 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
 
     @FXML
     private void clicConsultar(ActionEvent event) {
-        ReporteTutoria reporteSeleccionado = tvReportesTutoria.getSelectionModel().getSelectedItem();
+        ReporteTutoria reporteSeleccionado = tblReportesTutoria.getSelectionModel().getSelectedItem();
 
         if (reporteSeleccionado == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor, selecciona un reporte de la lista.", Alert.AlertType.WARNING);
@@ -147,6 +151,9 @@ public class FXMLListadoReportesTutoriaController implements Initializable {
 
         } catch (IOException ex) {
             manejarError("Error al abrir detalles del reporte", ex, "No se pudo abrir la ventana de detalles.");
+        } catch (Exception e) {
+            manejarError("Error inesperado al abrir detalles del reporte", e,
+                    "Ocurrió un error inesperado al abrir la ventana de detalles.");
         }
     }
 

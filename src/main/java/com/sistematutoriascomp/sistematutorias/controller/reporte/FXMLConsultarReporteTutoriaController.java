@@ -60,9 +60,9 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     @FXML
     private Label lbTotalProblematicas;
     @FXML
-    private TextArea taObservaciones;
+    private TextArea txtaObservaciones;
     @FXML
-    private TableView<Problematica> tvProblematicas;
+    private TableView<Problematica> tblProblematicas;
     @FXML
     private TableColumn<Problematica, String> tcTitulo;
     @FXML
@@ -72,7 +72,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     @FXML
     private VBox vbRespuesta;
     @FXML
-    private TextArea taRespuesta;
+    private TextArea txtaRespuesta;
     @FXML
     private Button btnEnviar;
     @FXML
@@ -106,13 +106,13 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private void configurarTabla() {
         tcTitulo.setCellValueFactory(new PropertyValueFactory<>("titulo"));
         tcDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        tvProblematicas.setPlaceholder(new Label("Sin problemáticas para mostrar"));
+        tblProblematicas.setPlaceholder(new Label("Sin problemáticas para mostrar"));
     }
 
     private void cargarDatosUI() {
         if (reporteActual != null) {
             lbFecha.setText(reporteActual.getFechaFormato());
-            taObservaciones.setText(reporteActual.getObservaciones());
+            txtaObservaciones.setText(reporteActual.getObservaciones());
             lbEstatus.setText(reporteActual.getEstatus());
 
             btnEnviar.setVisible(false);
@@ -160,7 +160,7 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
             if (reporteActual.getRespuesta() != null && !reporteActual.getRespuesta().trim().isEmpty()) {
                 vbRespuesta.setVisible(true);
                 vbRespuesta.setManaged(true);
-                taRespuesta.setText(reporteActual.getRespuesta());
+                txtaRespuesta.setText(reporteActual.getRespuesta());
             } else {
                 vbRespuesta.setVisible(false);
                 vbRespuesta.setManaged(false);
@@ -182,8 +182,8 @@ public class FXMLConsultarReporteTutoriaController implements Initializable {
     private void cargarProblematicas(int idTutoria) {
         try {
             List<Problematica> lista = ProblematicaDAO.obtenerProblematicasPorTutoria(idTutoria);
-            tvProblematicas.setItems(FXCollections.observableArrayList(lista));
-            tvProblematicas.refresh();
+            tblProblematicas.setItems(FXCollections.observableArrayList(lista));
+            tblProblematicas.refresh();
             LOGGER.info("Problemáticas cargadas para tutoria {}: {} registros", idTutoria, lista.size());
 
             if (lista.isEmpty()) {

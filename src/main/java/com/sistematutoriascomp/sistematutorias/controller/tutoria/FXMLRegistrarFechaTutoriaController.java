@@ -36,17 +36,18 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarFechaTutoriaController.class);
 
     @FXML
-    private TextField tfNumeroSesion;
+    private TextField txtNumeroSesion;
     @FXML
     private DatePicker dpFechaTutoria;
     @FXML
-    private TextField tfTitulo;
+    private TextField txtTitulo;
     @FXML
-    private TextArea taDescripcion;
+    private TextArea txtaDescripcion;
     @FXML
     private Button btnCancelar;
     @FXML
     private Button btnRegistrar;
+
     private int numeroSesionAuto = 0;
 
     @Override
@@ -83,74 +84,78 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             numeroSesionAuto = FechaTutoriaDAO.comprobarSiguienteSesion(idPeriodo);
 
             if (numeroSesionAuto > 3) {
-                tfNumeroSesion.setText("COMPLETO");
+                txtNumeroSesion.setText("COMPLETO");
                 btnRegistrar.setDisable(true);
                 Utilidades.mostrarAlertaSimple("Periodo Completo", "Ya se han registrado las 3 sesiones para este periodo.", Alert.AlertType.INFORMATION);
             } else {
-                tfNumeroSesion.setText(String.valueOf(numeroSesionAuto));
+                txtNumeroSesion.setText(String.valueOf(numeroSesionAuto));
                 btnRegistrar.setDisable(false); 
             }
 
         } catch (SQLException ex) {
-            tfNumeroSesion.setText("Error");
+            txtNumeroSesion.setText("Error");
             Utilidades.manejarErrorTecnico(LOGGER, "Error al calcular la siguiente sesión", ex, "Error de conexión",
                     "No se pudo calcular el número de sesión.");
+        } catch (Exception e) {
+            txtNumeroSesion.setText("Error");
+            Utilidades.manejarErrorTecnico(LOGGER, "Error inesperado al calcular la siguiente sesión", e, "Error inesperado",
+                    "Ocurrió un error inesperado al calcular el número de sesión.");
         }
     }
 
     @FXML
     private void clicRegistrar(ActionEvent event) {
-        try {
-            if (!validarCampos()) {
-                return;
-            }
-
-            FechaTutoria nuevaFecha = new FechaTutoria();
-            nuevaFecha.setNumeroSesion(numeroSesionAuto);
-            nuevaFecha.setFecha(dpFechaTutoria.getValue());
-            nuevaFecha.setTitulo(tfTitulo.getText().trim());
-            nuevaFecha.setDescripcion(taDescripcion.getText().trim());
-
-            registrarInformacion(nuevaFecha);
-
-        } catch (Exception ex) {
-            Utilidades.manejarErrorTecnico(LOGGER, "Error inesperado al intentar registrar fecha de tutoría", ex,
-                    "Error inesperado", "Ocurrió un error al procesar el registro.");
+        if (!validarCampos()) {
+            return;
         }
+
+        FechaTutoria nuevaFecha = new FechaTutoria();
+        nuevaFecha.setNumeroSesion(numeroSesionAuto);
+        nuevaFecha.setFecha(dpFechaTutoria.getValue());
+        nuevaFecha.setTitulo(txtTitulo.getText().trim());
+        nuevaFecha.setDescripcion(txtaDescripcion.getText().trim());
+
+        registrarInformacion(nuevaFecha);
     }
 
     private boolean validarCampos() {
+        boolean respuesta = true;
         if (dpFechaTutoria.getValue() == null) {
             Utilidades.mostrarAlertaSimple("Campos requeridos", "Por favor seleccione la fecha de la tutoría.", Alert.AlertType.WARNING);
-            return false;
+            respuesta = false;
         }
 
         if (dpFechaTutoria.getValue().isBefore(LocalDate.now())) {
             Utilidades.mostrarAlertaSimple("Fecha inválida", "No puede seleccionar una fecha pasada.", Alert.AlertType.WARNING);
-            return false;
+            respuesta = false;
         }
 
-        if (tfTitulo.getText().trim().isEmpty()) {
+        if (txtTitulo.getText().trim().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos requeridos", "El título de la sesión es obligatorio.", Alert.AlertType.WARNING);
-            return false;
+            respuesta = false;
         }
 
-        if (taDescripcion.getText() == null) {
-            taDescripcion.setText("");
+        if (txtaDescripcion.getText() == null) {
+            txtaDescripcion.setText("");
         }
 
-        return true;
+        return respuesta;
     }
 
     private void registrarInformacion(FechaTutoria fecha) {
-        HashMap<String, Object> respuesta = FechaTutoriaImp.registrarFechaTutoria(fecha);
-
-        if (!(boolean) respuesta.get("error")) {
-            Utilidades.mostrarAlertaSimple("Registro exitoso", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
-            limpiarCampos();
-        } else {
-            LOGGER.error("Error al registrar fecha de tutoría: {}", respuesta.get("mensaje"));
-            Utilidades.mostrarAlertaSimple("Error al registrar", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
+        try {
+            HashMap<String, Object> respuesta = FechaTutoriaImp.registrarFechaTutoria(fecha);
+    
+            if (!(boolean) respuesta.get("error")) {
+                Utilidades.mostrarAlertaSimple("Registro exitoso", (String) respuesta.get("mensaje"), Alert.AlertType.INFORMATION);
+                limpiarCampos();
+            } else {
+                LOGGER.error("Error al registrar fecha de tutoría: {}", respuesta.get("mensaje"));
+                Utilidades.mostrarAlertaSimple("Error al registrar", (String) respuesta.get("mensaje"), Alert.AlertType.ERROR);
+            }
+        } catch (Exception ex) {
+            Utilidades.manejarErrorTecnico(LOGGER, "Error inesperado al intentar registrar fecha de tutoría", ex,
+                    "Error inesperado", "Ocurrió un error al procesar el registro.");
         }
     }
 
@@ -162,8 +167,8 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
 
     private void limpiarCampos() {
         dpFechaTutoria.setValue(null);
-        tfTitulo.clear();
-        taDescripcion.clear();
+        txtTitulo.clear();
+        txtaDescripcion.clear();
         cargarSiguienteSesion();
     }
 

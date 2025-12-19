@@ -6,8 +6,8 @@
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +26,7 @@ public class TutoriaImp {
 
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
-            ArrayList<FechaTutoria> fechas = FechaTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
+            List<FechaTutoria> fechas = FechaTutoriaDAO.obtenerFechasPorPeriodo(idPeriodo);
 
             if (!fechas.isEmpty()) {
                 respuesta.put("error", false);
@@ -100,14 +100,16 @@ public class TutoriaImp {
     }
 
     public static boolean comprobarExistenciaEvidencia(int idTutoria) {
+        boolean existe = false;
         try {
-            return TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
+            existe = TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
         } catch (SQLException ex) {
             LOGGER.error("Error al comprobar existencia de evidencia para la tutoría " + idTutoria, ex);
-            return false;
+            existe = false;
         } catch (Exception ex) {
             LOGGER.error("Error inesperado al comprobar existencia de evidencia", ex);
-            return false;
+            existe = false;
         }
+        return existe;
     }
 }

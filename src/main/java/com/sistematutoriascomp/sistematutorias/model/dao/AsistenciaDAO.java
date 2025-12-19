@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
@@ -29,8 +30,8 @@ public class AsistenciaDAO {
             + "ON DUPLICATE KEY UPDATE asistio = VALUES(asistio)";
     private static final String SQL_EXISTE_ASISTENCIA_POR_TUTORIA = "SELECT COUNT(*) AS total FROM asistencia WHERE idTutoria = ?";
 
-    public static ArrayList<Tutoria> obtenerSesionesPorTutor(int idTutor, int idPeriodo) throws SQLException {
-        ArrayList<Tutoria> sesiones = new ArrayList<>();
+    public static List<Tutoria> obtenerSesionesPorTutor(int idTutor, int idPeriodo) throws SQLException {
+        List<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
@@ -53,8 +54,8 @@ public class AsistenciaDAO {
         return sesiones;
     }
 
-    public static ArrayList<AsistenciaRow> obtenerTutoradosPorTutor(int idTutor, int idPeriodo, int idTutoria) throws SQLException {
-        ArrayList<AsistenciaRow> lista = new ArrayList<>();
+    public static List<AsistenciaRow> obtenerTutoradosPorTutor(int idTutor, int idPeriodo, int idTutoria) throws SQLException {
+        List<AsistenciaRow> lista = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
 
         if (conexion != null) {
@@ -84,6 +85,7 @@ public class AsistenciaDAO {
     }
 
     public static boolean registrarAsistencia(int idTutoria, int idTutorado, boolean asistio) throws SQLException {
+        boolean registrado = false;
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {
@@ -91,12 +93,12 @@ public class AsistenciaDAO {
                 ps.setInt(1, idTutoria);
                 ps.setInt(2, idTutorado);
                 ps.setBoolean(3, asistio);
-                return ps.executeUpdate() > 0;
+                registrado = ps.executeUpdate() > 0;
             } finally {
                 ConexionBaseDatos.cerrarConexionBD();
             }
         }
-        return false;
+        return registrado;
     }
 
     public static boolean existeAsistenciaParaTutoria(int idTutoria) throws SQLException {

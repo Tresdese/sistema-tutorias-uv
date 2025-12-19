@@ -27,7 +27,8 @@ public class FXMLResponderReporteGeneralController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLResponderReporteGeneralController.class);
 
     @FXML
-    private TextArea taRespuesta;
+    private TextArea txtaRespuesta;
+
     private final ReporteGeneralDAO reporteGeneralDAO = new ReporteGeneralDAO();
     private ReporteGeneral reporte;
     private boolean respuestaGuardada = false;
@@ -39,12 +40,12 @@ public class FXMLResponderReporteGeneralController implements Initializable {
     public void inicializarReporte(ReporteGeneral reporte) {
         this.reporte = reporte;
         if (reporte != null && reporte.getObservaciones() != null) {
-            taRespuesta.setText(reporte.getObservaciones());
+            txtaRespuesta.setText(reporte.getObservaciones());
         }
     }
 
     @FXML
-    private void onGuardar(ActionEvent event) {
+    private void clicGuardar(ActionEvent event) {
         if (reporte == null) {
             Utilidades.mostrarAlertaSimple("Sin reporte",
                     "No se encontró un reporte general para responder.",
@@ -52,7 +53,7 @@ public class FXMLResponderReporteGeneralController implements Initializable {
             return;
         }
 
-        String respuesta = taRespuesta.getText() != null ? taRespuesta.getText().trim() : "";
+        String respuesta = txtaRespuesta.getText() != null ? txtaRespuesta.getText().trim() : "";
         if (respuesta.isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campo vacío",
                     "Escribe una respuesta antes de guardar.",
@@ -81,29 +82,29 @@ public class FXMLResponderReporteGeneralController implements Initializable {
                         Alert.AlertType.WARNING);
             }
         } catch (SQLException e) {
-            LOGGER.error("Error de base de datos al responder reporte general", e);
-            Utilidades.mostrarAlertaSimple("Error de base de datos",
-                    "No se pudo guardar la respuesta: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
+            manejarError("Error al guardar la respuesta del reporte general en la base de datos", e,
+                    "Error de base de datos", "No se pudo guardar la respuesta del reporte. Intenta más tarde.");
         } catch (Exception e) {
-            LOGGER.error("Error inesperado al responder reporte general", e);
-            Utilidades.mostrarAlertaSimple("Error inesperado",
-                    "Ocurrió un error inesperado: " + e.getMessage(),
-                    Alert.AlertType.ERROR);
+            manejarError("Error inesperado al responder reporte general", e,
+                    "Error inesperado", "Ocurrió un error inesperado al responder el reporte.");
         }
     }
 
     @FXML
-    private void onCancelar(ActionEvent event) {
+    private void clicCancelar(ActionEvent event) {
         cerrarVentana();
     }
 
     private void cerrarVentana() {
-        Stage stage = (Stage) taRespuesta.getScene().getWindow();
+        Stage stage = (Stage) txtaRespuesta.getScene().getWindow();
         stage.close();
     }
 
     public boolean isRespuestaGuardada() {
         return respuestaGuardada;
+    }
+
+    private void manejarError(String mensajeLog, Exception excepcion, String titulo, String mensajeUsuario) {
+        Utilidades.manejarErrorTecnico(LOGGER, mensajeLog, excepcion, titulo, mensajeUsuario);
     }
 }

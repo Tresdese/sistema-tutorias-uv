@@ -126,6 +126,9 @@ public class FXMLMenuGestionarTutoriasController implements Initializable {
             Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
             manejarError("Error al cambiar de ventana hacia " + ruta, ex, "No se pudo cambiar de ventana.");
+        } catch (NullPointerException ex) {
+            manejarError("Error de puntero nulo al cambiar de ventana hacia " + ruta, ex,
+                    "Ocurrió un error inesperado al cambiar de ventana.");
         } catch (Exception e) {
             manejarError("Error inesperado al cambiar de ventana hacia " + ruta, e,
                     "Ocurrió un error inesperado al cambiar de ventana.");

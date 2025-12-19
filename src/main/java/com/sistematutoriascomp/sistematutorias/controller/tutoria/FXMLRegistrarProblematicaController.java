@@ -30,9 +30,9 @@ public class FXMLRegistrarProblematicaController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarProblematicaController.class);
 
     @FXML
-    private TextField tfTitulo;
+    private TextField txtTitulo;
     @FXML
-    private TextArea taDescripcion;
+    private TextArea txtaDescripcion;
     @FXML
     private Label lbNombreAlumno;
     private int idTutoria;
@@ -40,9 +40,9 @@ public class FXMLRegistrarProblematicaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tfTitulo.textProperty().addListener((observable, oldValue, newValue) -> {
+        txtTitulo.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 120) {
-                tfTitulo.setText(oldValue);
+                txtTitulo.setText(oldValue);
             }
         });
     }
@@ -55,8 +55,8 @@ public class FXMLRegistrarProblematicaController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        String titulo = tfTitulo.getText() != null ? tfTitulo.getText().trim() : "";
-        String descripcion = taDescripcion.getText() != null ? taDescripcion.getText().trim() : "";
+        String titulo = txtTitulo.getText() != null ? txtTitulo.getText().trim() : "";
+        String descripcion = txtaDescripcion.getText() != null ? txtaDescripcion.getText().trim() : "";
         if (titulo.isEmpty() || descripcion.isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "Por favor llena todos los campos.", Alert.AlertType.WARNING);
             return;
@@ -103,7 +103,7 @@ public class FXMLRegistrarProblematicaController implements Initializable {
     }
 
     private void cerrarVentana() {
-        Stage stage = (Stage) tfTitulo.getScene().getWindow();
+        Stage stage = (Stage) txtTitulo.getScene().getWindow();
         stage.close();
     }
 }

@@ -6,7 +6,6 @@
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class ReporteTutoriaImp {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
             int periodoActual = Sesion.getIdPeriodoActual();
-            ArrayList<Tutoria> lista = ReporteTutoriaDAO.obtenerSesionesPendientes(idTutor, periodoActual);
+            List<Tutoria> lista = ReporteTutoriaDAO.obtenerSesionesPendientes(idTutor, periodoActual);
             if (lista.isEmpty()) {
                 respuesta.put("error", true);
                 respuesta.put("mensaje", "No hay sesiones pendientes de reporte en este periodo.");

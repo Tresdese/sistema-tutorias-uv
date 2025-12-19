@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,14 +23,14 @@ import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 class AsistenciaDAOTest extends BaseDaoTest {
     @Test
     void obtenerSesionesPorTutor_devuelveSesionesOrdenadas() throws SQLException {
-        ArrayList<Tutoria> sesiones = AsistenciaDAO.obtenerSesionesPorTutor(1, 1);
+        List<Tutoria> sesiones = AsistenciaDAO.obtenerSesionesPorTutor(1, 1);
         assertEquals(2, sesiones.size());
         assertTrue(sesiones.get(0).getFecha().isAfter(sesiones.get(1).getFecha()));
     }
 
     @Test
     void obtenerTutoradosPorTutor_devuelveAsignados() throws SQLException {
-        ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(1, 1, 1);
+        List<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(1, 1, 1);
         assertEquals(2, lista.size());
     }
 

@@ -36,14 +36,14 @@
             <VBox spacing="5.0">
                <children>
                   <Label text="Título de la problemática:" />
-                  <TextField fx:id="tfTitulo" promptText="Ej. Dificultades con Matemáticas Discretas" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" />
+                  <TextField fx:id="txtTitulo" promptText="Ej. Dificultades con Matemáticas Discretas" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" />
                </children>
             </VBox>
 
             <VBox spacing="5.0">
                <children>
                   <Label text="Descripción detallada:" />
-                  <TextArea fx:id="taDescripcion" prefHeight="150.0" prefWidth="200.0" promptText="Describa la situación" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" wrapText="true" />
+                  <TextArea fx:id="txtaDescripcion" prefHeight="150.0" prefWidth="200.0" promptText="Describa la situación" style="-fx-background-radius: 5; -fx-border-color: #bdbdbd; -fx-border-radius: 5;" wrapText="true" />
                </children>
             </VBox>
             

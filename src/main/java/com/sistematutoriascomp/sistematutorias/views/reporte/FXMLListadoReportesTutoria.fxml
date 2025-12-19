@@ -55,7 +55,7 @@
                         </Button>
                      </children>
                   </HBox>
-                  <TableView fx:id="tvReportesTutoria" style="-fx-font-size: 15;" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="tblReportesTutoria" style="-fx-font-size: 15;" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="tcFechaGeneracion" prefWidth="180.0" text="Fecha Generación" />
                       <TableColumn fx:id="tcEstatus" prefWidth="120.0" style="-fx-alignment: CENTER;" text="Estatus" />

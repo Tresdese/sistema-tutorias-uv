@@ -138,19 +138,20 @@ public class ReporteGeneralDAO {
     }
 
     public ReporteGeneral obtenerPorId(int idReporteGeneral) throws SQLException {
+        ReporteGeneral reporteGeneral = null;
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID);
                 statement.setInt(1, idReporteGeneral);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        return mapResultSetToReporteGeneral(resultSet);
+                        reporteGeneral = mapResultSetToReporteGeneral(resultSet);
                     }
                 }
             }
         }
 
-        return null;
+        return reporteGeneral;
     }
 
     public ObservableList<ReporteGeneral> obtenerTodos() throws SQLException {

@@ -6,8 +6,8 @@
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +25,7 @@ public class AsistenciaImp {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
-            ArrayList<Tutoria> lista = AsistenciaDAO.obtenerSesionesPorTutor(idTutor, idPeriodo);
+            List<Tutoria> lista = AsistenciaDAO.obtenerSesionesPorTutor(idTutor, idPeriodo);
             if (lista.isEmpty()) {
                 LOGGER.info("No se encontraron sesiones para el tutor con ID: {}", idTutor);
                 respuesta.put("error", true);
@@ -47,7 +47,7 @@ public class AsistenciaImp {
         HashMap<String, Object> respuesta = new HashMap<>();
         try {
             int idPeriodo = Sesion.getIdPeriodoActual();
-            ArrayList<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(idTutor, idPeriodo, idTutoria);
+            List<AsistenciaRow> lista = AsistenciaDAO.obtenerTutoradosPorTutor(idTutor, idPeriodo, idTutoria);
             respuesta.put("error", false);
             respuesta.put("tutorados", lista);
         } catch (SQLException ex) {
@@ -58,7 +58,7 @@ public class AsistenciaImp {
         return respuesta;
     }
 
-    public static HashMap<String, Object> guardarListaAsistencia(int idTutoria, ArrayList<AsistenciaRow> lista) {
+    public static HashMap<String, Object> guardarListaAsistencia(int idTutoria, List<AsistenciaRow> lista) {
         HashMap<String, Object> respuesta = new HashMap<>();
         respuesta.put("error", false);
         try {
@@ -75,12 +75,18 @@ public class AsistenciaImp {
     }
 
     public static boolean yaTieneAsistenciaRegistrada(int idTutoria) {
+        boolean respuesta = false;
         try {
-            return AsistenciaDAO.existeAsistenciaParaTutoria(idTutoria);
+            respuesta = AsistenciaDAO.existeAsistenciaParaTutoria(idTutoria);
         } catch (SQLException ex) {
             Utilidades.manejarErrorTecnico(LOGGER, "Error al verificar asistencia", ex, "Error",
                     "No se pudo verificar la asistencia.");
-            return false;
+            respuesta = false;
+        } catch (Exception ex) {
+            Utilidades.manejarErrorTecnico(LOGGER, "Error inesperado al verificar asistencia", ex, "Error",
+                    "Ocurrió un error inesperado.");
+            respuesta = false;
         }
+        return respuesta;
     }
 }

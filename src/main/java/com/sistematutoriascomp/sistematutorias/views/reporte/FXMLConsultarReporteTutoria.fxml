@@ -127,7 +127,7 @@
                                        </children>
                                     </HBox>
                                     
-                                    <TableView fx:id="tvProblematicas" 
+                                    <TableView fx:id="tblProblematicas" 
            prefHeight="200.0" 
            style="-fx-font-size: 13px;">
    <columns>
@@ -148,7 +148,7 @@
                                     <Label text="Observaciones Generales:" textFill="#333333">
                                        <font><Font name="Segoe UI Bold" size="16.0" /></font>
                                     </Label>
-                                    <TextArea fx:id="taObservaciones" editable="false" prefHeight="80.0" style="-fx-font-size: 15; -fx-background-color: #f9f9f9;" wrapText="true" />
+                                    <TextArea fx:id="txtaObservaciones" editable="false" prefHeight="80.0" style="-fx-font-size: 15; -fx-background-color: #f9f9f9;" wrapText="true" />
                                  </children>
                               </VBox>
                               
@@ -158,7 +158,7 @@
                                     <Label text="Retroalimentación del Coordinador:" textFill="#18529d">
                                        <font><Font name="Segoe UI Bold" size="16.0" /></font>
                                     </Label>
-                                    <TextArea fx:id="taRespuesta" editable="false" prefHeight="80.0" style="-fx-font-size: 15; -fx-background-color: #E8F0FE; -fx-control-inner-background: #E8F0FE;" wrapText="true" />
+                                    <TextArea fx:id="txtaRespuesta" editable="false" prefHeight="80.0" style="-fx-font-size: 15; -fx-background-color: #E8F0FE; -fx-control-inner-background: #E8F0FE;" wrapText="true" />
                                  </children>
                               </VBox>
                               

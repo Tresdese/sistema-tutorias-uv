@@ -17,11 +17,11 @@
             <children>
                 <Label text="Responder reporte general" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
                 <Label text="Agrega las observaciones o comentarios para este reporte general." style="-fx-text-fill: #555;" />
-                <TextArea fx:id="taRespuesta" promptText="Escribe tu respuesta" prefHeight="180.0" wrapText="true" />
+                <TextArea fx:id="txtaRespuesta" promptText="Escribe tu respuesta" prefHeight="180.0" wrapText="true" />
                 <HBox alignment="CENTER_RIGHT" spacing="10.0">
                     <children>
-                        <Button text="Cancelar" onAction="#onCancelar" />
-                        <Button text="Guardar" defaultButton="true" onAction="#onGuardar" />
+                        <Button text="Cancelar" onAction="#clicCancelar" />
+                        <Button text="Guardar" defaultButton="true" onAction="#clicGuardar" />
                     </children>
                 </HBox>
             </children>

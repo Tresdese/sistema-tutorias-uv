@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 /*
  * Autor: Hernandez Romero Jarly
  * Ultima modificación hecha por: Delgado Santiago Darlington
  * Versión: 3.0
  */
-=======
-
-
-
-
->>>>>>> 936e751 (Se añadieron manejadores de excepciones y se eliminaron mensajes de error en la consola)
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -33,8 +26,6 @@ public class AutenticacionImpTest {
         Tutor tutorSimulado = new Tutor();
         tutorSimulado.setNombre("Profesor de Prueba");
 
-        
-        
         try (MockedStatic<AutenticacionDAO> daoMock = Mockito.mockStatic(AutenticacionDAO.class);
              MockedStatic<Sesion> sesionMock = Mockito.mockStatic(Sesion.class)) {
 

@@ -69,13 +69,13 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
     @FXML
     private Label lbTotalProblematicas;
     @FXML
-    private TableView<Problematica> tvProblematicas;
+    private TableView<Problematica> tblProblematicas;
     @FXML
     private TableColumn<Problematica, String> tcTitulo;
     @FXML
     private TableColumn<Problematica, String> tcDescripcion;
     @FXML
-    private TextArea taComentariosGenerales;
+    private TextArea txtaComentariosGenerales;
     
     private ReporteGeneral reporteCalculado;
 
@@ -175,7 +175,7 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
             lbTotalProblematicas.setText(String.valueOf(reporteCalculado.getTotalProblematicas()));
 
             List<Problematica> listaProbs = (List<Problematica>) respuesta.get("listaProblematicas");
-            tvProblematicas.setItems(FXCollections.observableArrayList(listaProbs));
+            tblProblematicas.setItems(FXCollections.observableArrayList(listaProbs));
 
             vbDatosReporte.setVisible(true);
             vbDatosReporte.setManaged(true);
@@ -192,7 +192,7 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
 
     @FXML
     private void clicGuardar(ActionEvent event) {
-        String comentarios = taComentariosGenerales.getText();
+        String comentarios = txtaComentariosGenerales.getText();
 
         if (comentarios == null || comentarios.trim().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos requeridos", "Es necesario agregar observaciones generales.",
@@ -215,8 +215,8 @@ public class FXMLGenerarReporteGeneralController implements Initializable {
                 Utilidades.mostrarAlertaSimple("Éxito", "Reporte General guardado correctamente.",
                         Alert.AlertType.INFORMATION);
 
-                taComentariosGenerales.setEditable(false);
-                taComentariosGenerales.setStyle("-fx-opacity: 1; -fx-background-color: #f4f4f4;");
+                txtaComentariosGenerales.setEditable(false);
+                txtaComentariosGenerales.setStyle("-fx-opacity: 1; -fx-background-color: #f4f4f4;");
 
                 hbBotonesEdicion.setVisible(false);
                 hbBotonesEdicion.setManaged(false);

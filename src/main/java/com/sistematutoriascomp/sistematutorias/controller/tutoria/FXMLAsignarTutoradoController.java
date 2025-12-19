@@ -33,10 +33,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class FXMLAsignarTutoradoController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLAsignarTutoradoController.class);
-
     
     @FXML
-    private TableView<Tutorado> tvTutorados;
+    private TableView<Tutorado> tblTutorados;
     @FXML
     private TableColumn<Tutorado, String> tcMatricula;
     @FXML
@@ -44,7 +43,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
     @FXML
     private TableColumn<Tutorado, String> tcApellidosTutorado;
     @FXML
-    private TableView<Tutor> tvTutores;
+    private TableView<Tutor> tblTutores;
     @FXML
     private TableColumn<Tutor, String> tcNombresTutor;
     @FXML
@@ -55,6 +54,7 @@ public class FXMLAsignarTutoradoController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnAsignar;
+
     private ObservableList<Tutorado> listaTutorados;
     private ObservableList<Tutor> listaTutores;
 
@@ -78,13 +78,13 @@ public class FXMLAsignarTutoradoController implements Initializable {
             HashMap<String, Object> respuesta = AsignacionTutorImp.obtenerListasParaAsignacion();
 
             if (!(boolean) respuesta.get("error")) {
-                List<Tutorado> listaT = (List<Tutorado>) respuesta.get("tutorados");
-                List<Tutor> listaP = (List<Tutor>) respuesta.get("tutores");
+                List<Tutorado> listaTutoradosTemporal = (List<Tutorado>) respuesta.get("tutorados");
+                List<Tutor> listaTutoresTemporal = (List<Tutor>) respuesta.get("tutores");
 
-                listaTutorados = FXCollections.observableArrayList(listaT);
-                listaTutores = FXCollections.observableArrayList(listaP);
-                tvTutorados.setItems(listaTutorados);
-                tvTutores.setItems(listaTutores);
+                listaTutorados = FXCollections.observableArrayList(listaTutoradosTemporal);
+                listaTutores = FXCollections.observableArrayList(listaTutoresTemporal);
+                tblTutorados.setItems(listaTutorados);
+                tblTutores.setItems(listaTutores);
 
                 if (listaTutorados.isEmpty()) {
                     Utilidades.mostrarAlertaSimple("Sin pendientes", "Actualmente no hay Tutorados por asignar.", Alert.AlertType.INFORMATION);
@@ -99,8 +99,8 @@ public class FXMLAsignarTutoradoController implements Initializable {
 
     @FXML
     private void clicAsignar(ActionEvent event) {
-        Tutorado tutoradoSeleccionado = tvTutorados.getSelectionModel().getSelectedItem();
-        Tutor tutorSeleccionado = tvTutores.getSelectionModel().getSelectedItem();
+        Tutorado tutoradoSeleccionado = tblTutorados.getSelectionModel().getSelectedItem();
+        Tutor tutorSeleccionado = tblTutores.getSelectionModel().getSelectedItem();
 
         if (tutoradoSeleccionado == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione un Estudiante de la lista izquierda.", Alert.AlertType.WARNING);

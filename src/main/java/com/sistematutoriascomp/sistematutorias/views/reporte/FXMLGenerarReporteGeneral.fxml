@@ -165,7 +165,7 @@
                                           <Font name="Segoe UI Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <TableView fx:id="tvProblematicas" prefHeight="150.0" style="-fx-font-size: 14;">
+                                    <TableView fx:id="tblProblematicas" prefHeight="150.0" style="-fx-font-size: 14;">
                                       <columns>
                                         <TableColumn fx:id="tcTitulo" prefWidth="200.0" text="Tipo / Título" />
                                         <TableColumn fx:id="tcDescripcion" prefWidth="550.0" text="Descripción" />
@@ -186,7 +186,7 @@
                                           <Font name="Segoe UI Bold" size="16.0" />
                                        </font>
                                     </Label>
-                                    <TextArea fx:id="taComentariosGenerales" prefHeight="120.0" promptText="Escriba aquí los comentarios generales de la sesión..." style="-fx-font-size: 14;" wrapText="true" />
+                                    <TextArea fx:id="txtaComentariosGenerales" prefHeight="120.0" promptText="Escriba aquí los comentarios generales de la sesión..." style="-fx-font-size: 14;" wrapText="true" />
                                  </children>
                               </VBox>
                               

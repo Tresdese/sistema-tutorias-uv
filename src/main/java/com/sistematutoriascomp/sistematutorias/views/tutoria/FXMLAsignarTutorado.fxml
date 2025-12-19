@@ -66,7 +66,7 @@
                                     <Label text="1. Estudiantes sin Tutor" textFill="#333333">
                                        <font><Font name="Segoe UI Bold" size="15.0" /></font>
                                     </Label>
-                                    <TableView fx:id="tvTutorados" style="-fx-font-size: 13;" VBox.vgrow="ALWAYS">
+                                    <TableView fx:id="tblTutorados" style="-fx-font-size: 13;" VBox.vgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="tcMatricula" prefWidth="90.0" text="Matrícula" />
                                         <TableColumn fx:id="tcNombresTutorado" prefWidth="120.0" text="Nombre" />
@@ -84,7 +84,7 @@
                                     <Label text="2. Tutores Disponibles" textFill="#333333">
                                        <font><Font name="Segoe UI Bold" size="15.0" /></font>
                                     </Label>
-                                    <TableView fx:id="tvTutores" style="-fx-font-size: 13;" VBox.vgrow="ALWAYS">
+                                    <TableView fx:id="tblTutores" style="-fx-font-size: 13;" VBox.vgrow="ALWAYS">
                                       <columns>
                                         <TableColumn fx:id="tcNombresTutor" prefWidth="120.0" text="Nombre" />
                                         <TableColumn fx:id="tcApellidosTutor" prefWidth="120.0" text="Apellidos" />

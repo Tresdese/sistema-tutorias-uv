@@ -42,6 +42,33 @@ public class FXMLMenuPrincipalController implements Initializable {
         cargarDatosUsuario();
     }
 
+    @FXML
+    private void clicGestionarTutorias(ActionEvent event) {
+        irPantalla("/FXMLMenuGestionarTutorias.fxml", "Menú Gestión de Tutorías", event);
+    }
+
+    @FXML
+    private void clicGestionarReportes(ActionEvent event) {
+        irPantalla("/FXMLMenuGestionarReportes.fxml", "Menú Gestión de Reportes", event);
+    }
+
+    @FXML
+    private void clicGestionarUsuarios(ActionEvent event) {
+        irPantalla("/FXMLMenuGestionarUsuarios.fxml", "Menú Gestión de Usuarios", event);
+    }
+
+    @FXML
+    private void clicCerrarSesion(ActionEvent event) {
+        Sesion.cerrarSesion();
+        try {
+            Utilidades.clicCerrarSesion(event);
+        } catch (IOException ex) {
+            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
+        } catch (Exception e) {
+            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
+        }
+    }
+
     private void configurarPermisos() {
         String rol = Sesion.getRolActual();
 
@@ -95,41 +122,17 @@ public class FXMLMenuPrincipalController implements Initializable {
         lbRol.setText(rol);
     }
 
-    @FXML
-    private void clicGestionarTutorias(ActionEvent event) {
-        irPantalla("/FXMLMenuGestionarTutorias.fxml", "Menú Gestión de Tutorías", event);
-    }
-
-    @FXML
-    private void clicGestionarReportes(ActionEvent event) {
-        irPantalla("/FXMLMenuGestionarReportes.fxml", "Menú Gestión de Reportes", event);
-    }
-
-    @FXML
-    private void clicGestionarUsuarios(ActionEvent event) {
-        irPantalla("/FXMLMenuGestionarUsuarios.fxml", "Menú Gestión de Usuarios", event);
-    }
-
     private void irPantalla(String ruta, String titulo, ActionEvent event) {
         try {
             Utilidades.goToWindow(ruta, event, titulo);
         } catch (IOException ex) {
             manejarError("Error al cambiar de ventana hacia " + ruta, ex, "No se pudo cambiar de ventana.");
+        } catch (NullPointerException ex) {
+            manejarError("Error de referencia nula al cambiar de ventana hacia " + ruta, ex,
+                    "Ocurrió un error inesperado al cambiar de ventana.");
         } catch (Exception e) {
             manejarError("Error inesperado al cambiar de ventana hacia " + ruta, e,
                     "Ocurrió un error inesperado al cambiar de ventana.");
-        }
-    }
-
-    @FXML
-    private void clicCerrarSesion(ActionEvent event) {
-        Sesion.cerrarSesion();
-        try {
-            Utilidades.clicCerrarSesion(event);
-        } catch (IOException ex) {
-            manejarError("Error al cerrar sesión", ex, "No se pudo cerrar la sesión.");
-        } catch (Exception e) {
-            manejarError("Error inesperado al cerrar sesión", e, "Ocurrió un error inesperado al cerrar la sesión.");
         }
     }
 

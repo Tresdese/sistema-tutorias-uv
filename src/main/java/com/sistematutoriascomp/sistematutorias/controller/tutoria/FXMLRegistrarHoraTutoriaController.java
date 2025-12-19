@@ -8,7 +8,7 @@ package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -62,7 +62,7 @@ public class FXMLRegistrarHoraTutoriaController implements Initializable {
     private void cargarFechas() {
         HashMap<String, Object> respuesta = TutoriaImp.obtenerFechasPeriodoActual();
         if (!(boolean) respuesta.get("error")) {
-            ArrayList<FechaTutoria> lista = (ArrayList<FechaTutoria>) respuesta.get("fechas");
+            List<FechaTutoria> lista = (List<FechaTutoria>) respuesta.get("fechas");
             ObservableList<FechaTutoria> fechasObs = FXCollections.observableArrayList(lista);
             cbFechas.setItems(fechasObs);
         }

@@ -61,8 +61,8 @@ public class ReporteTutoriaDAO {
             + "INNER JOIN asistencia a ON rt.idTutoria = a.idTutoria "
             + "WHERE t.fecha = (SELECT fecha FROM fechatutoria WHERE idFechaTutoria = ?)";
 
-    public static ArrayList<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
-        ArrayList<Tutoria> sesiones = new ArrayList<>();
+    public static List<Tutoria> obtenerSesionesPendientes(int idTutor, int idPeriodo) throws SQLException {
+        List<Tutoria> sesiones = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
         if (conexion != null) {
             try {

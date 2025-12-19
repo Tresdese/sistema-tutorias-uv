@@ -81,18 +81,19 @@ public class TutorDAO {
     }
 
     public Tutor searchTutorByStaffNumber(String numeroDePersonal) throws SQLException {
+        Tutor tutor = null;
         try (Connection connection = ConexionBaseDatos.abrirConexionBD()) {
             if (connection != null) {
                 PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_STAFF_NUMBER);
                 statement.setString(1, numeroDePersonal);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (resultSet.next()) {
-                        return mapResultSetToTutor(resultSet);
+                        tutor = mapResultSetToTutor(resultSet);
                     }
                 }
             }
         }
-        return null;
+        return tutor;
     }
 
     public int obtenerIdPorNombre(String nombreTutor) throws SQLException {

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.sistematutoriascomp.sistematutorias.model.ConexionBaseDatos;
 import com.sistematutoriascomp.sistematutorias.model.pojo.FechaTutoria;
@@ -22,8 +23,8 @@ public class FechaTutoriaDAO {
     private static final String SQL_OBTENER_PERIODO_ACTUAL = "SELECT idPeriodo FROM periodo WHERE esActual = 1 LIMIT 1";
     private static final String SQL_MAX_NUMERO_SESION = "SELECT MAX(numeroSesion) FROM fechatutoria WHERE idPeriodo = ?";
 
-    public static ArrayList<FechaTutoria> obtenerFechasPorPeriodo(int idPeriodo) throws SQLException {
-        ArrayList<FechaTutoria> fechas = new ArrayList<>();
+    public static List<FechaTutoria> obtenerFechasPorPeriodo(int idPeriodo) throws SQLException {
+        List<FechaTutoria> fechas = new ArrayList<>();
         Connection conexion = ConexionBaseDatos.abrirConexionBD();
 
         if (conexion != null) {
@@ -134,11 +135,15 @@ public class FechaTutoriaDAO {
     }
 
     private static boolean hasColumn(ResultSet rs, String columnLabel) {
+        boolean existe = false;
         try {
             rs.findColumn(columnLabel);
-            return true;
+            existe = true;
         } catch (SQLException ex) {
-            return false;
+            existe = false;
+        } catch (Exception e) {
+            existe = false;
         }
+        return existe;
     }
 }

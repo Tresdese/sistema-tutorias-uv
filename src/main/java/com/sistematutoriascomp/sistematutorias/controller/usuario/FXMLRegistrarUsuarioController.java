@@ -50,7 +50,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     @FXML
     private TextField txtCorreoInstitucional;
     @FXML
-    private PasswordField txtPassword;
+    private PasswordField pwdPassword;
     @FXML
     private ComboBox<String> cbRol;
     @FXML
@@ -66,20 +66,20 @@ public class FXMLRegistrarUsuarioController implements Initializable {
     }
 
     @FXML
-    private void onGuardar(ActionEvent event) {
+    private void clicGuardar(ActionEvent event) {
         if (validarCampos()) {
             registrarTutor();
         }
     }
 
     @FXML
-    private void onCancelar(ActionEvent event) {
+    private void clicCancelar(ActionEvent event) {
         limpiarCampos();
         irAtras(event);
     }
 
     @FXML
-    private void onVolver(ActionEvent event) {
+    private void clicVolver(ActionEvent event) {
         limpiarCampos();
         irAtras(event);
     }
@@ -94,8 +94,8 @@ public class FXMLRegistrarUsuarioController implements Initializable {
         txtApellidoPaterno.clear();
         txtApellidoMaterno.clear();
         txtCorreoInstitucional.clear();
-        if (txtPassword != null) {
-            txtPassword.clear();
+        if (pwdPassword != null) {
+            pwdPassword.clear();
         }
         cbRol.getSelectionModel().clearSelection();
         cbCarrera.getSelectionModel().clearSelection();
@@ -160,7 +160,7 @@ public class FXMLRegistrarUsuarioController implements Initializable {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "El correo institucional es obligatorio", Alert.AlertType.WARNING);
             respuesta = false;
         }
-        if (txtPassword != null && txtPassword.getText().trim().isEmpty()) {
+        if (pwdPassword != null && pwdPassword.getText().trim().isEmpty()) {
             Utilidades.mostrarAlertaSimple("Campos vacíos", "La contraseña es obligatoria", Alert.AlertType.WARNING);
             respuesta = false;
         }
@@ -177,8 +177,8 @@ public class FXMLRegistrarUsuarioController implements Initializable {
             tutor.setIdRol(cbRol.getSelectionModel().getSelectedIndex() + 1);
             tutor.setCorreo(txtCorreoInstitucional.getText().trim());
             tutor.setIdCarrera(cbCarrera.getSelectionModel().getSelectedIndex() + 1);
-            if (txtPassword != null) {
-                tutor.setPassword(txtPassword.getText());
+            if (pwdPassword != null) {
+                tutor.setPassword(pwdPassword.getText());
             }
 
             boolean registrado = tutorDAO.insertarTutor(tutor);

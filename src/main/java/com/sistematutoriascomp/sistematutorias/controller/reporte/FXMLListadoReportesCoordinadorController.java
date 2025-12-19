@@ -7,6 +7,7 @@ package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -41,7 +42,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLListadoReportesCoordinadorController.class);
 
     @FXML
-    private TableView<ReporteTutoria> tvReportes;
+    private TableView<ReporteTutoria> tblReportes;
     @FXML
     private TableColumn<ReporteTutoria, String> tcTutor;
     @FXML
@@ -85,6 +86,8 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
                     }
                 }
             }
+        } catch (SQLException ex) {
+            manejarError("Error SQL al cargar periodos", ex, "No se pudieron cargar los periodos escolares.");
         } catch (Exception e) {
             manejarError("Error al cargar periodos", e, "No se pudieron cargar los periodos escolares.");
         }
@@ -108,7 +111,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
             if (!(boolean) respuesta.get("error")) {
                 List<ReporteTutoria> reportes = (List<ReporteTutoria>) respuesta.get("reportes");
                 listaReportes = FXCollections.observableArrayList(reportes);
-                tvReportes.setItems(listaReportes);
+                tblReportes.setItems(listaReportes);
 
                 if (listaReportes.isEmpty()) {
                     Utilidades.mostrarAlertaSimple("Sin reportes",
@@ -125,7 +128,7 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
 
     @FXML
     private void clicConsultar(ActionEvent event) {
-        ReporteTutoria reporteSeleccionado = tvReportes.getSelectionModel().getSelectedItem();
+        ReporteTutoria reporteSeleccionado = tblReportes.getSelectionModel().getSelectedItem();
 
         if (reporteSeleccionado == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida",
@@ -154,6 +157,9 @@ public class FXMLListadoReportesCoordinadorController implements Initializable {
 
         } catch (IOException ex) {
             manejarError("Error al abrir detalles de reporte", ex, "No se pudo abrir la ventana de detalles.");
+        } catch (Exception e) {
+            manejarError("Error inesperado al abrir detalles de reporte", e,
+                    "Ocurrió un error inesperado al abrir la ventana de detalles.");
         }
     }
 

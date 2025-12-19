@@ -6,7 +6,7 @@
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -45,7 +45,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     @FXML
     private Label lbTotalProblematicas;
     @FXML
-    private TextArea taObservaciones;
+    private TextArea txtaObservaciones;
     @FXML
     private Button btnGenerar;
 
@@ -57,9 +57,9 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     }
 
     private void configurarAreaTexto() {
-        taObservaciones.textProperty().addListener((observable, oldValue, newValue) -> {
+        txtaObservaciones.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.length() > 500) {
-                taObservaciones.setText(oldValue);
+                txtaObservaciones.setText(oldValue);
             }
         });
     }
@@ -68,7 +68,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
         int idTutor = Sesion.getTutorSesion().getIdTutor();
         HashMap<String, Object> respuesta = ReporteTutoriaImp.obtenerSesionesPendientes(idTutor);
         if (!(boolean) respuesta.get("error")) {
-            ArrayList<Tutoria> lista = (ArrayList<Tutoria>) respuesta.get("sesiones");
+            List<Tutoria> lista = (List<Tutoria>) respuesta.get("sesiones");
             ObservableList<Tutoria> sesionesObs = FXCollections.observableArrayList(lista);
             cbSesiones.setItems(sesionesObs);
         } else {
@@ -77,7 +77,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
                     Alert.AlertType.INFORMATION);
             btnGenerar.setDisable(true);
             cbSesiones.setDisable(true);
-            taObservaciones.setDisable(true);
+            txtaObservaciones.setDisable(true);
         }
     }
 
@@ -115,7 +115,7 @@ public class FXMLGenerarReporteTutoriaController implements Initializable {
     @FXML
     private void clicGenerar(ActionEvent event) {
         Tutoria sesionSeleccionada = cbSesiones.getValue();
-        String observaciones = taObservaciones.getText() != null ? taObservaciones.getText().trim() : "";
+        String observaciones = txtaObservaciones.getText() != null ? txtaObservaciones.getText().trim() : "";
         if (sesionSeleccionada == null) {
             Utilidades.mostrarAlertaSimple("Selección requerida", "Por favor seleccione una sesión de tutoría.",
                     Alert.AlertType.WARNING);

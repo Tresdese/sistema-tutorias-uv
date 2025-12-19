@@ -24,7 +24,7 @@
                </font>
             </Label>
             
-            <TextArea fx:id="taRespuesta" prefHeight="200.0" prefWidth="200.0" promptText="Escribe aquí la retroalimentación..." wrapText="true" VBox.vgrow="ALWAYS" style="-fx-font-size: 14; -fx-background-color: #F9F9F9;">
+            <TextArea fx:id="txtaRespuesta" prefHeight="200.0" prefWidth="200.0" promptText="Escribe aquí la retroalimentación..." wrapText="true" VBox.vgrow="ALWAYS" style="-fx-font-size: 14; -fx-background-color: #F9F9F9;">
                <font>
                   <Font name="Segoe UI" size="14.0" />
                </font>

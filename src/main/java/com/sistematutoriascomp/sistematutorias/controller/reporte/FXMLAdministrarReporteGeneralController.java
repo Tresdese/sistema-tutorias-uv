@@ -68,17 +68,17 @@ public class FXMLAdministrarReporteGeneralController implements Initializable {
     }
 
     @FXML
-    private void onVolver(ActionEvent event) {
+    private void clicVolver(ActionEvent event) {
         irVolver(event);
     }
 
     @FXML
-    private void onRegistrar(ActionEvent event) {
+    private void clicRegistrar(ActionEvent event) {
         abrirVentanaRegistrarReporteGeneral();
     }
 
     @FXML
-    private void onVerReporte(ActionEvent event) {
+    private void clicVerReporte(ActionEvent event) {
         editarReporteSeleccionado();
     }
 

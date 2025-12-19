@@ -53,6 +53,8 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     @FXML
     private Button btnEditar;
     @FXML
+    private TextField txtTotalEstudiantesRiesgo;
+    @FXML
     private TextField txtIdReporteGeneral;
     @FXML
     private TextField txtFechaGeneracion;
@@ -69,6 +71,7 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     @FXML
     private ComboBox cbPeriodo;
     @FXML
+    
     private ComboBox cbCoordinador;
     private TutorDAO tutorDAO = new TutorDAO();
     private PeriodoDAO periodoDAO = new PeriodoDAO();
@@ -146,29 +149,29 @@ public class FXMLFormularioReporteGeneralController implements Initializable {
     }
 
     @FXML
-    private void onVolver(ActionEvent event) {
+    private void clicVolver(ActionEvent event) {
         cerrarVentana(event);
     }
 
     @FXML
-    private void onResponder(ActionEvent event) {
+    private void clicResponder(ActionEvent event) {
         responderReporte();
     }
 
     @FXML
-    private void onCancelar(ActionEvent event) {
+    private void clicCancelar(ActionEvent event) {
         cerrarVentana(event);
     }
 
     @FXML
-    private void onGuardar(ActionEvent event) {
+    private void clicGuardar(ActionEvent event) {
         if (validarCampos()) {
             guardarReporteGeneral();
         }
     }
 
     @FXML
-    private void onEditar(ActionEvent event) {
+    private void clicEditar(ActionEvent event) {
         habilitarEdicion(true);
         btnGuardar.setDisable(false);
         btnEditar.setVisible(false);

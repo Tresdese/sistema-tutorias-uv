@@ -19,7 +19,7 @@
 
                         <Region HBox.hgrow="ALWAYS" />
 
-                        <Button fx:id="btnVolver" onAction="#onVolver" style="-fx-background-color: rgba(255,255,255,0.15);                                        -fx-text-fill: white;                                        -fx-background-radius: 8;                                        -fx-padding: 8 16;                                        -fx-cursor: hand;                                        -fx-font-size: 13;" text="Volver" />
+                        <Button fx:id="btnVolver" onAction="#clicVolver" style="-fx-background-color: rgba(255,255,255,0.15);                                        -fx-text-fill: white;                                        -fx-background-radius: 8;                                        -fx-padding: 8 16;                                        -fx-cursor: hand;                                        -fx-font-size: 13;" text="Volver" />
                     </children>
                 </HBox>
             </top>
@@ -43,9 +43,9 @@
                                     <children>
                                         <TextField fx:id="txtBuscar" prefWidth="220.0" promptText="Buscar por periodo, estado, etc." style="-fx-font-size: 13px;" />
 
-                                        <Button fx:id="btnRegistrar" onAction="#onRegistrar" style="-fx-font-size: 13px;" text="Registrar" />
+                                        <Button fx:id="btnRegistrar" onAction="#clicRegistrar" style="-fx-font-size: 13px;" text="Registrar" />
 
-                                        <Button fx:id="btnVerReporte" onAction="#onVerReporte" style="-fx-font-size: 13px;" text="Ver reporte" />
+                                        <Button fx:id="btnVerReporte" onAction="#clicVerReporte" style="-fx-font-size: 13px;" text="Ver reporte" />
 
                                         <Region HBox.hgrow="ALWAYS" />
                                     </children>

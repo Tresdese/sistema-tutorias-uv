@@ -6,7 +6,7 @@
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
 import com.sistematutoriascomp.sistematutorias.dominio.AsistenciaImp;
-import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp; 
+import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp;
 import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,17 +49,28 @@ import javafx.util.Callback;
 public class FXMLRegistrarAsistenciaTutoradoController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarAsistenciaTutoradoController.class);
 
-    @FXML private ComboBox<Tutoria> cbSesiones;
-    @FXML private TableView<AsistenciaRow> tvAsistencia;
-    @FXML private TableColumn<AsistenciaRow, String> colMatricula;
-    @FXML private TableColumn<AsistenciaRow, String> colNombre;
-    @FXML private TableColumn<AsistenciaRow, Integer> colSemestre;
-    @FXML private TableColumn<AsistenciaRow, Boolean> colAsistio;
-    @FXML private TableColumn<AsistenciaRow, Void> colAcciones;
-    @FXML private Button btnRegistrar;
-    @FXML private Button btnSubirEvidencia;
-    @FXML private Label lbErrorSesion;
-    @FXML private Label lbMensajeInfo;
+    @FXML
+    private ComboBox<Tutoria> cbSesiones;
+    @FXML
+    private TableView<AsistenciaRow> tvAsistencia;
+    @FXML
+    private TableColumn<AsistenciaRow, String> colMatricula;
+    @FXML
+    private TableColumn<AsistenciaRow, String> colNombre;
+    @FXML
+    private TableColumn<AsistenciaRow, Integer> colSemestre;
+    @FXML
+    private TableColumn<AsistenciaRow, Boolean> colAsistio;
+    @FXML
+    private TableColumn<AsistenciaRow, Void> colAcciones;
+    @FXML
+    private Button btnRegistrar;
+    @FXML
+    private Button btnSubirEvidencia;
+    @FXML
+    private Label lbErrorSesion;
+    @FXML
+    private Label lbMensajeInfo;
 
     private ObservableList<AsistenciaRow> listaAlumnos;
 
@@ -154,7 +167,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         HashMap<String, Object> respuesta = AsistenciaImp.obtenerSesionesTutor(idTutor);
 
         if (!(boolean) respuesta.get("error")) {
-            ArrayList<Tutoria> sesiones = (ArrayList<Tutoria>) respuesta.get("sesiones");
+            List<Tutoria> sesiones = (List<Tutoria>) respuesta.get("sesiones");
             cbSesiones.setItems(FXCollections.observableArrayList(sesiones));
         } else {
             Utilidades.mostrarAlertaSimple(
@@ -213,8 +226,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         HashMap<String, Object> respuesta = AsistenciaImp.obtenerListaAsistencia(idTutor, sesion.getIdTutoria());
         if (!(boolean) respuesta.get("error")) {
             listaAlumnos = FXCollections.observableArrayList(
-                    (ArrayList<AsistenciaRow>) respuesta.get("tutorados")
-            );
+                    (List<AsistenciaRow>) respuesta.get("tutorados"));
             tvAsistencia.setItems(listaAlumnos);
         } else {
             Utilidades.mostrarAlertaSimple(
@@ -263,8 +275,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
         HashMap<String, Object> res = AsistenciaImp.guardarListaAsistencia(
                 sesion.getIdTutoria(),
-                new ArrayList<>(listaAlumnos)
-        );
+                new ArrayList<>(listaAlumnos));
         if (!(boolean) res.get("error")) {
             Utilidades.mostrarAlertaSimple(
                     "Éxito",
@@ -319,18 +330,20 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
     }
 
     private boolean validarSesionParaEvidencia(Tutoria sesion) {
+        boolean respuesta = true;
         if (sesion == null) {
             Utilidades.mostrarAlertaSimple(
                     "Selección requerida",
                     "Por favor seleccione una sesión de tutoría.",
                     Alert.AlertType.WARNING
             );
-            return false;
+            respuesta = false;
         }
-        return true;
+        return respuesta;
     }
 
     private boolean yaTieneEvidenciaEnBD(Tutoria sesion) {
+        boolean respuesta = false;
         try {
             if (TutoriaImp.comprobarExistenciaEvidencia(sesion.getIdTutoria())) {
                 Utilidades.mostrarAlertaSimple(
@@ -340,13 +353,13 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                 );
                 btnSubirEvidencia.setDisable(true);
                 mostrarMensajeInfo("Ya se ha subido evidencia para esta sesión.", "#2e7d32");
-                return true;
+                respuesta = true;
             }
         } catch (Exception e) {
             manejarError("Error al verificar evidencia existente para la sesión " + sesion.getIdTutoria(), e,
                     "No se pudo verificar la evidencia de la sesión.");
         }
-        return false;
+        return respuesta;
     }
 
     private File mostrarSelectorArchivoPdf() {
@@ -359,6 +372,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
     }
 
     private boolean validarArchivoPdf(File archivo) {
+        boolean respuesta = true;
         long maxBytes = 5L * 1024L * 1024L;
         if (archivo.length() > maxBytes) {
             Utilidades.mostrarAlertaSimple(
@@ -366,7 +380,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                     "El archivo debe pesar menos de 5MB.",
                     Alert.AlertType.WARNING
             );
-            return false;
+            respuesta = false;
         }
 
         try {
@@ -378,7 +392,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                         "El archivo seleccionado no es un PDF válido.",
                         Alert.AlertType.WARNING
                 );
-                return false;
+                respuesta = false;
             }
 
             if (mimeType == null && !archivo.getName().toLowerCase().endsWith(".pdf")) {
@@ -387,15 +401,15 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                         "El archivo debe tener extensión .pdf",
                         Alert.AlertType.WARNING
                 );
-                return false;
+                respuesta = false;
             }
 
         } catch (IOException e) {
             manejarError("Error al validar archivo PDF", e, "No se pudo validar el archivo seleccionado.");
-            return false;
+            respuesta = false;
         }
 
-        return true;
+        return respuesta;
     }
 
     private void subirEvidenciaAServicio(Tutoria sesion, File archivo) {
@@ -419,6 +433,12 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
                         Alert.AlertType.ERROR
                 );
             }
+        } catch (IOException ex) {
+            manejarError("Error al leer archivo para subir evidencia de la sesión " + sesion.getIdTutoria(), ex,
+                    "No se pudo leer el archivo seleccionado.");
+        } catch (NullPointerException ex) {
+            manejarError("Error al leer archivo para subir evidencia de la sesión " + sesion.getIdTutoria(), ex,
+                    "No se pudo leer el archivo seleccionado.");
         } catch (Exception ex) {
             manejarError("Error al subir evidencia para la sesión " + sesion.getIdTutoria(), ex,
                     "No se pudo procesar la evidencia seleccionada.");
@@ -450,6 +470,9 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
             escenario.initModality(javafx.stage.Modality.APPLICATION_MODAL);
             escenario.showAndWait();
 
+        } catch (IOException ex) {
+            manejarError("Error al cargar ventana de problemática para el alumno " + nombreAlumno, ex,
+                    "No se pudo cargar la ventana para registrar la problemática.");
         } catch (Exception ex) {
             manejarError("Error al abrir ventana de problemática para el alumno " + nombreAlumno, ex,
                     "No se pudo abrir la ventana para registrar la problemática.");

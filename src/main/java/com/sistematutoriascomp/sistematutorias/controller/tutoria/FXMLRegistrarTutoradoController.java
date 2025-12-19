@@ -30,6 +30,7 @@ import javafx.scene.control.TextField;
 
 public class FXMLRegistrarTutoradoController implements Initializable {
     private final Logger LOGGER = LogManager.getLogger(FXMLRegistrarTutoradoController.class);
+    
     @FXML
     private TextField txtMatricula;
     @FXML
@@ -50,6 +51,7 @@ public class FXMLRegistrarTutoradoController implements Initializable {
     private Button btnCancelar;
     @FXML
     private Button btnGuardar;
+
     private TutorDAO tutorDAO = new TutorDAO();
     private CarreraDAO carreraDAO = new CarreraDAO();
     private TutoradoDAO tutoradoDAO = new TutoradoDAO();
@@ -60,20 +62,20 @@ public class FXMLRegistrarTutoradoController implements Initializable {
     }
 
     @FXML
-    private void onGuardar(ActionEvent event) {
+    private void clicGuardar(ActionEvent event) {
         if (validarCampos()) {
             registrarTutorado();
         }
     }
 
     @FXML
-    private void onCancelar(ActionEvent event) {
+    private void clicCancelar(ActionEvent event) {
         limpiarCampos();
         irAtras(event);
     }
 
     @FXML
-    private void onVolver(ActionEvent event) {
+    private void clicVolver(ActionEvent event) {
         limpiarCampos();
         irAtras(event);
     }

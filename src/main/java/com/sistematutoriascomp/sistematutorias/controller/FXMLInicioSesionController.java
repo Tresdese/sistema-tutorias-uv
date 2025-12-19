@@ -30,9 +30,9 @@ public class FXMLInicioSesionController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLInicioSesionController.class);
 
     @FXML
-    private TextField tfUsuario;
+    private TextField txtUsuario;
     @FXML
-    private PasswordField pfContrasenia;
+    private PasswordField pwdContrasenia;
     @FXML
     private Label lbErrorUsuario;
     @FXML
@@ -44,9 +44,9 @@ public class FXMLInicioSesionController implements Initializable {
     }
 
     @FXML
-    private void btnClicIniciarSesion(ActionEvent event) {
-        String usuario = tfUsuario.getText();
-        String password = pfContrasenia.getText();
+    private void clicIniciarSesion(ActionEvent event) {
+        String usuario = txtUsuario.getText();
+        String password = pwdContrasenia.getText();
 
         if (sonDatosValidos(usuario, password)) {
             validarSesion(usuario, password);
@@ -117,7 +117,7 @@ public class FXMLInicioSesionController implements Initializable {
 
     private void irMenuPrincipal() {
         try {
-            Stage escenario = (Stage) tfUsuario.getScene().getWindow();
+            Stage escenario = (Stage) txtUsuario.getScene().getWindow();
             Parent root = Utilidades.loadFXML("/FXMLMenuPrincipal.fxml");
             Scene escena = new Scene(root);
             escenario.setScene(escena);
