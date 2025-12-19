@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
@@ -31,6 +32,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 public class FXMLRegistrarFechaTutoriaController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarFechaTutoriaController.class);
@@ -72,6 +74,30 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
             }
         };
         dpFechaTutoria.setDayCellFactory(dayCellFactory);
+        dpFechaTutoria.setEditable(false);
+
+        final StringConverter<LocalDate> defaultConverter = dpFechaTutoria.getConverter();
+        dpFechaTutoria.setConverter(new StringConverter<LocalDate>() {
+            @Override
+            public String toString(LocalDate object) {
+                return defaultConverter.toString(object);
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string == null || string.trim().isEmpty()) {
+                    return null;
+                }
+                try {
+                    return defaultConverter.fromString(string.trim());
+                } catch (DateTimeParseException ex) {
+                    LOGGER.warn("Formato de fecha inv\u00E1lido ingresado: {}", string, ex);
+                    Utilidades.mostrarAlertaSimple("Fecha inv\u00E1lida", "Seleccione la fecha usando el calendario.", Alert.AlertType.WARNING);
+                    dpFechaTutoria.getEditor().clear();
+                    return null;
+                }
+            }
+        });
     }
 
     private void cargarSiguienteSesion() {
@@ -120,12 +146,11 @@ public class FXMLRegistrarFechaTutoriaController implements Initializable {
 
     private boolean validarCampos() {
         boolean respuesta = true;
-        if (dpFechaTutoria.getValue() == null) {
+        LocalDate fechaSeleccionada = dpFechaTutoria.getValue();
+        if (fechaSeleccionada == null) {
             Utilidades.mostrarAlertaSimple("Campos requeridos", "Por favor seleccione la fecha de la tutoría.", Alert.AlertType.WARNING);
             respuesta = false;
-        }
-
-        if (dpFechaTutoria.getValue().isBefore(LocalDate.now())) {
+        } else if (fechaSeleccionada.isBefore(LocalDate.now())) {
             Utilidades.mostrarAlertaSimple("Fecha inválida", "No puede seleccionar una fecha pasada.", Alert.AlertType.WARNING);
             respuesta = false;
         }
