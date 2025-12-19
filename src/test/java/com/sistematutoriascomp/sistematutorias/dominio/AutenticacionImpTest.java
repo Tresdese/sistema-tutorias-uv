@@ -1,6 +1,7 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Autor: Hernandez Romero Jarly
+ * Ultima modificación hecha por: Delgado Santiago Darlington
+ * Versión: 3.0
  */
 package com.sistematutoriascomp.sistematutorias.dominio;
 

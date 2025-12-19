@@ -1,3 +1,8 @@
+/*
+ * Autor: Hernandez Romero Jarly
+ * Ultima modificación hecha por: Delgado Santiago Darlington
+ * Versión: 4.0
+ */
 package com.sistematutoriascomp.sistematutorias.model;
 
 import java.io.FileInputStream;

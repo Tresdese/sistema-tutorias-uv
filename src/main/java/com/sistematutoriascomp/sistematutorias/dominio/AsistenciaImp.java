@@ -1,3 +1,8 @@
+/*
+ * Autor: Hernandez Romero Jarly
+ * Ultima modificación hecha por: Hernandez Romero Jarly
+ * Versión: 6.0
+ */
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;

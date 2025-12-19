@@ -1,3 +1,8 @@
+/*
+ * Autor: Delgado Santiago Darlington Diego
+ * Ultima modificación hecha por: Delgado Santiago Darlington Diego
+ * Versión: 5.0
+ */
 package com.sistematutoriascomp.sistematutorias.controller.reporte;
 
 import java.net.URL;

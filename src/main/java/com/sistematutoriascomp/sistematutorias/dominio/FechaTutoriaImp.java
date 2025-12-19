@@ -1,3 +1,8 @@
+/*
+ * Autor: Soria Vazquez Mariana
+ * Ultima modificación hecha por: Soria Vazquez Mariana
+ * Versión: 4.0
+ */
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;

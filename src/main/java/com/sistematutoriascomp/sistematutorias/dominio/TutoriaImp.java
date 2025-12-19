@@ -1,3 +1,8 @@
+/*
+ * Autor: Hernandez Romero Jarly
+ * Ultima modificación hecha por: Hernandez Romero Jarly
+ * Versión: 5.0
+ */
 package com.sistematutoriascomp.sistematutorias.dominio;
 
 import java.sql.SQLException;
@@ -92,5 +97,17 @@ public class TutoriaImp {
         }
 
         return respuesta;
+    }
+
+    public static boolean comprobarExistenciaEvidencia(int idTutoria) {
+        try {
+            return TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
+        } catch (SQLException ex) {
+            LOGGER.error("Error al comprobar existencia de evidencia para la tutoría " + idTutoria, ex);
+            return false;
+        } catch (Exception ex) {
+            LOGGER.error("Error inesperado al comprobar existencia de evidencia", ex);
+            return false;
+        }
     }
 }

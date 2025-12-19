@@ -1,8 +1,12 @@
+/*
+ * Autor: Hernandez Romero Jarly
+ * Ultima modificación hecha por: Hernandez Romero Jarly
+ * Versión: 7.0
+ */
 package com.sistematutoriascomp.sistematutorias.controller.tutoria;
 
 import com.sistematutoriascomp.sistematutorias.dominio.AsistenciaImp;
-import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp;
-import com.sistematutoriascomp.sistematutorias.model.dao.TutoriaDAO;
+import com.sistematutoriascomp.sistematutorias.dominio.TutoriaImp; 
 import com.sistematutoriascomp.sistematutorias.model.pojo.AsistenciaRow;
 import com.sistematutoriascomp.sistematutorias.model.pojo.Tutoria;
 import com.sistematutoriascomp.sistematutorias.utilidad.Sesion;
@@ -43,28 +47,17 @@ import javafx.util.Callback;
 public class FXMLRegistrarAsistenciaTutoradoController implements Initializable {
     private static final Logger LOGGER = LogManager.getLogger(FXMLRegistrarAsistenciaTutoradoController.class);
 
-    @FXML
-    private ComboBox<Tutoria> cbSesiones;
-    @FXML
-    private TableView<AsistenciaRow> tvAsistencia;
-    @FXML
-    private TableColumn<AsistenciaRow, String> colMatricula;
-    @FXML
-    private TableColumn<AsistenciaRow, String> colNombre;
-    @FXML
-    private TableColumn<AsistenciaRow, Integer> colSemestre;
-    @FXML
-    private TableColumn<AsistenciaRow, Boolean> colAsistio;
-    @FXML
-    private TableColumn<AsistenciaRow, Void> colAcciones;
-    @FXML
-    private Button btnRegistrar;
-    @FXML
-    private Button btnSubirEvidencia;
-    @FXML
-    private Label lbErrorSesion;
-    @FXML
-    private Label lbMensajeInfo;
+    @FXML private ComboBox<Tutoria> cbSesiones;
+    @FXML private TableView<AsistenciaRow> tvAsistencia;
+    @FXML private TableColumn<AsistenciaRow, String> colMatricula;
+    @FXML private TableColumn<AsistenciaRow, String> colNombre;
+    @FXML private TableColumn<AsistenciaRow, Integer> colSemestre;
+    @FXML private TableColumn<AsistenciaRow, Boolean> colAsistio;
+    @FXML private TableColumn<AsistenciaRow, Void> colAcciones;
+    @FXML private Button btnRegistrar;
+    @FXML private Button btnSubirEvidencia;
+    @FXML private Label lbErrorSesion;
+    @FXML private Label lbMensajeInfo;
 
     private ObservableList<AsistenciaRow> listaAlumnos;
 
@@ -192,7 +185,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
         btnRegistrar.setDisable(yaTieneAsistencia);
 
         try {
-            boolean tieneEvidencia = TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
+            boolean tieneEvidencia = TutoriaImp.comprobarExistenciaEvidencia(idTutoria);
 
             if (tieneEvidencia) {
                 btnSubirEvidencia.setDisable(true);
@@ -291,7 +284,8 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
     private void habilitarSubirEvidenciaSiCorresponde(int idTutoria) {
         try {
-            boolean tieneEvidencia = TutoriaDAO.comprobarExistenciaEvidencia(idTutoria);
+            boolean tieneEvidencia = TutoriaImp.comprobarExistenciaEvidencia(idTutoria);
+            
             if (!tieneEvidencia) {
                 btnSubirEvidencia.setDisable(false);
                 ocultarMensajeInfo();
@@ -338,7 +332,7 @@ public class FXMLRegistrarAsistenciaTutoradoController implements Initializable 
 
     private boolean yaTieneEvidenciaEnBD(Tutoria sesion) {
         try {
-            if (TutoriaDAO.comprobarExistenciaEvidencia(sesion.getIdTutoria())) {
+            if (TutoriaImp.comprobarExistenciaEvidencia(sesion.getIdTutoria())) {
                 Utilidades.mostrarAlertaSimple(
                         "Aviso",
                         "Ya existe una evidencia para esta sesión.",

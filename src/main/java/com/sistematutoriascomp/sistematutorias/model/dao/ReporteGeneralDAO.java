@@ -1,3 +1,8 @@
+/*
+ * Autor: Soria Vazquez Mariana
+ * Ultima modificación hecha por: Soria Vazquez Mariana
+ * Versión: 5.0
+ */
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Connection;

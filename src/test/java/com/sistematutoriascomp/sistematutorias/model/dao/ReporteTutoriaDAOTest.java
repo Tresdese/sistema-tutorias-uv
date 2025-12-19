@@ -1,3 +1,8 @@
+/*
+ * Autor: Delgado Santiago Darlington
+ * Ultima modificación hecha por: Delgado Santiago Darlington
+ * Versión: 4.0
+ */
 package com.sistematutoriascomp.sistematutorias.model.dao;
 
 import java.sql.Date;
